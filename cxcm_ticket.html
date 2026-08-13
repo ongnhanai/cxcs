@@ -1,0 +1,1870 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CloudXCS Ticket System</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Phosphor Icons CDN -->
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <!-- Inter Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+          colors: {
+            cloudx: {
+              main: '#EF5330',     /* CloudX CS Signature Orange */
+              hover: '#D94322',
+              dark: '#0B132B',     /* Dark Sidebar Background */
+              sidebar: '#0F172A',
+              accent: '#3B82F6',
+              bg: '#F8FAFC'
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #F8FAFC;
+    }
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #F1F5F9;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #CBD5E1;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #94A3B8;
+    }
+  </style>
+</head>
+<body class="text-slate-800 bg-slate-50 min-h-screen flex flex-col antialiased selection:bg-orange-100 selection:text-cloudx-main">
+
+  <!-- TOP APP HEADER -->
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-30 h-12 flex items-center justify-between px-4">
+    <div class="flex items-center gap-3">
+      <!-- Sidebar Collapse Toggle Button -->
+      <button onclick="toggleSidebar()" class="text-slate-500 hover:text-slate-800 p-1 rounded hover:bg-slate-100 transition">
+        <i class="ph ph-list text-lg"></i>
+      </button>
+      
+      <!-- Interactive Navigation Tabs Container -->
+      <div id="top-tabs-container" class="flex items-center gap-1 overflow-x-auto py-1 max-w-full">
+        <button id="tab-dashboard" onclick="switchView('dashboard')" class="flex items-center gap-1.5 px-3 py-1 rounded text-xs font-medium bg-orange-50 text-cloudx-main border border-orange-200">
+          <span>Dashboard</span>
+          <i class="ph ph-x text-slate-400 hover:text-slate-700"></i>
+        </button>
+
+        <button id="tab-report" onclick="switchView('report')" class="hidden items-center gap-1.5 px-3 py-1 rounded text-xs font-medium bg-slate-100 text-slate-700 hover:bg-slate-200 transition">
+          <span>Report</span>
+          <i class="ph ph-x text-slate-400 hover:text-slate-700"></i>
+        </button>
+
+        <button id="tab-leads" onclick="switchView('leads')" class="flex items-center gap-1.5 px-3 py-1 rounded text-xs font-medium bg-slate-100 text-slate-700 hover:bg-slate-200 transition">
+          <i class="ph ph-funnel-simple text-xs text-amber-500"></i>
+          <span>Leads</span>
+          <i class="ph ph-x text-slate-400 hover:text-slate-700"></i>
+        </button>
+
+        <button id="tab-ticket-list" onclick="switchView('ticket-list')" class="flex items-center gap-1.5 px-3 py-1 rounded text-xs font-medium bg-slate-100 text-slate-700 hover:bg-slate-200 transition">
+          <span>Tickets</span>
+          <i class="ph ph-x text-slate-400 hover:text-slate-700"></i>
+        </button>
+
+        <button id="tab-contacts-list" onclick="switchView('contacts-list')" class="flex items-center gap-1.5 px-3 py-1 rounded text-xs font-medium bg-slate-100 text-slate-700 hover:bg-slate-200 transition">
+          <span>Contacts</span>
+          <i class="ph ph-x text-slate-400 hover:text-slate-700"></i>
+        </button>
+
+        <button id="tab-company-detail" onclick="switchView('company-detail')" class="hidden items-center gap-1.5 px-3 py-1 rounded text-xs font-medium bg-slate-100 text-slate-700 hover:bg-slate-200 transition">
+          <span>#DNTG</span>
+          <i class="ph ph-x text-slate-400 hover:text-slate-700"></i>
+        </button>
+
+        <button id="tab-ticket-detail" onclick="switchView('ticket-detail')" class="hidden items-center gap-1.5 px-3 py-1 rounded text-xs font-medium bg-slate-100 text-slate-700 hover:bg-slate-200 transition">
+          <span id="tab-ticket-title">#1411 OUT...</span>
+          <i class="ph ph-x text-slate-400 hover:text-slate-700"></i>
+        </button>
+
+        <button class="p-1 text-slate-400 hover:text-slate-600 rounded">
+          <i class="ph ph-plus text-xs"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Header Right Controls -->
+    <div class="flex items-center gap-3 shrink-0">
+      <!-- Notification Icon -->
+      <div class="relative cursor-pointer" onclick="showToast('Thông báo', 'Bạn có 10 công việc/vé chưa xử lý', 'blue')">
+        <i class="ph ph-bell text-slate-600 text-lg"></i>
+        <span class="absolute -top-1 -right-1.5 bg-rose-500 text-white text-[10px] font-bold px-1 rounded-full min-w-[16px] text-center">10</span>
+      </div>
+
+      <!-- Language Switcher Pill (VN <-> EN) -->
+      <button onclick="toggleLanguage()" class="flex items-center bg-slate-800 hover:bg-slate-700 text-white text-[11px] font-bold px-2.5 py-1 rounded-full cursor-pointer transition border border-slate-700 shadow-xs gap-1">
+        <i class="ph ph-globe text-xs text-orange-400"></i>
+        <span id="lang-label">EN</span>
+      </button>
+
+      <!-- User Profile Avatar -->
+      <div class="flex items-center gap-2 border-l border-slate-200 pl-3">
+        <div class="w-7 h-7 rounded-full bg-orange-100 border border-orange-300 text-cloudx-main flex items-center justify-center font-bold text-xs">
+          PT
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN APP WRAPPER -->
+  <div class="flex flex-1 overflow-hidden">
+
+    <!-- SIDEBAR NAVIGATION -->
+    <aside id="app-sidebar" class="w-56 bg-slate-900 text-slate-300 flex flex-col shrink-0 transition-all duration-300 z-20">
+      <!-- Brand Header -->
+      <div class="h-12 px-4 flex items-center gap-2.5 border-b border-slate-800/80">
+        <div class="w-6 h-6 rounded bg-cloudx-main flex items-center justify-center font-bold text-white text-xs shadow-xs">
+          C
+        </div>
+        <span class="font-bold text-white text-xs tracking-tight">CloudXCS Ticket System</span>
+      </div>
+
+      <!-- Navigation Menu -->
+      <nav class="p-3 space-y-1 text-xs font-medium flex-1 overflow-y-auto">
+        <button id="nav-dashboard" onclick="switchView('dashboard')" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-white bg-cloudx-main font-semibold shadow-xs transition-all">
+          <i class="ph ph-squares-four text-base"></i>
+          <span data-i18n="dashboard">Dashboard</span>
+        </button>
+
+        <button id="nav-report" onclick="switchView('report')" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/60 transition-all">
+          <i class="ph ph-chart-bar text-base"></i>
+          <span data-i18n="report">Report</span>
+        </button>
+
+        <!-- Leads Menu for Sales Opportunities -->
+        <button id="nav-leads" onclick="switchView('leads')" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/60 transition-all">
+          <i class="ph ph-funnel-simple text-base text-amber-400"></i>
+          <span data-i18n="leads">Leads</span>
+        </button>
+
+        <button id="nav-tickets" onclick="switchView('ticket-list')" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/60 transition-all">
+          <i class="ph ph-ticket text-base"></i>
+          <span data-i18n="tickets">Tickets</span>
+        </button>
+
+        <button id="nav-contacts" onclick="switchView('contacts-list')" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/60 transition-all">
+          <i class="ph ph-users text-base"></i>
+          <span data-i18n="contacts">Contacts</span>
+        </button>
+
+        <button id="nav-companies" onclick="switchView('company-detail')" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/60 transition-all">
+          <i class="ph ph-buildings text-base"></i>
+          <span data-i18n="companies">Companies</span>
+        </button>
+
+        <div class="pt-4 pb-1">
+          <p class="px-3 text-[10px] uppercase font-bold text-slate-500 tracking-wider">AI Integration</p>
+        </div>
+
+        <!-- CloudXCS Agents Sub-menu (Positioned above Setting) -->
+        <div class="space-y-0.5">
+          <button onclick="toggleAgentsMenu()" class="w-full flex items-center justify-between px-3.5 py-2.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800/60 transition-all">
+            <div class="flex items-center gap-3">
+              <i class="ph ph-robot text-base text-orange-400"></i>
+              <span class="font-semibold">CloudXCS Agents</span>
+            </div>
+            <i id="agents-chevron" class="ph ph-caret-down text-xs text-slate-400 transition-transform"></i>
+          </button>
+
+          <!-- Submenu List (Sales Agent first, then Service Agent, then QA Agent) -->
+          <div id="agents-submenu" class="pl-9 pr-2 space-y-1 py-1">
+            <button id="subnav-sales" onclick="switchAgent('sales')" class="w-full text-left px-3 py-1.5 rounded text-xs text-slate-400 hover:text-white hover:bg-slate-800/80 transition flex items-center justify-between">
+              <span>Sales Agent</span>
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+            </button>
+            <button id="subnav-service" onclick="switchAgent('service')" class="w-full text-left px-3 py-1.5 rounded text-xs text-slate-400 hover:text-white hover:bg-slate-800/80 transition flex items-center justify-between">
+              <span>Service Agent</span>
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+            </button>
+            <button id="subnav-qa" onclick="switchAgent('qa')" class="w-full text-left px-3 py-1.5 rounded text-xs text-slate-400 hover:text-white hover:bg-slate-800/80 transition flex items-center justify-between">
+              <span>QA Agent</span>
+              <span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
+            </button>
+          </div>
+        </div>
+
+        <button id="nav-setting" onclick="showToast('Setting', 'Trang Cấu hình hệ thống', 'blue')" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/60 transition-all">
+          <i class="ph ph-gear text-base"></i>
+          <span>Setting</span>
+        </button>
+      </nav>
+
+      <!-- Sidebar Footprint -->
+      <div class="p-3 border-t border-slate-800 text-[11px] text-slate-500 text-center">
+        CloudXCS v2.4 • 2026
+      </div>
+    </aside>
+
+    <!-- CONTENT DISPLAY CONTAINER -->
+    <div class="flex-1 overflow-y-auto bg-slate-100/70 relative">
+
+      <!-- ================= VIEW 1: DASHBOARDS ================= -->
+      <main id="view-dashboard" class="p-4 space-y-4 max-w-[1600px] w-full mx-auto">
+        <!-- Dashboard Top Switcher Bar -->
+        <div class="flex items-center justify-between pb-1">
+          <h1 id="dashboard-title" class="text-sm font-bold text-slate-800">Service Agent Dashboard</h1>
+          
+          <!-- Droplist for switching Agent Dashboards -->
+          <div class="flex items-center gap-2">
+            <span class="text-xs font-medium text-slate-500" data-i18n="db_mode">Chế độ Dashboard:</span>
+            <select id="dashboard-agent-select" onchange="changeDashboardType(this.value)" class="text-xs font-semibold text-slate-700 bg-white border border-slate-300 rounded-md px-3 py-1.5 shadow-xs focus:outline-none focus:border-cloudx-main">
+              <option value="service" selected>Service Agent Dashboard</option>
+              <option value="sales">Sales Agent Dashboard</option>
+              <option value="qa">QA Agent Dashboard</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- 1.1 SERVICE AGENT DASHBOARD CONTAINER -->
+        <div id="db-container-service" class="space-y-4">
+          <!-- Top Analytics Grid -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <!-- Ticket Completion Rate & Priority Card -->
+            <div class="bg-white p-4 rounded-lg border border-slate-200 shadow-xs space-y-4">
+              <div class="flex items-center justify-between border-b border-slate-100 pb-2">
+                <span class="text-xs font-bold text-slate-700 uppercase tracking-wider">Ticket completion rate</span>
+              </div>
+              <div class="flex items-center justify-center py-2">
+                <div class="relative w-28 h-28 flex items-center justify-center border-8 border-slate-100 border-t-emerald-500 rounded-full">
+                  <span class="text-xl font-bold text-slate-800">3%</span>
+                </div>
+              </div>
+              <div class="pt-2 border-t border-slate-100 text-xs flex justify-between text-slate-600 font-medium">
+                <span>Priority of ticket</span>
+                <span class="font-bold text-slate-800">Low: 64 | 100%</span>
+              </div>
+            </div>
+
+            <!-- Ticket Overdue Rate & Type Ticket Card -->
+            <div class="bg-white p-4 rounded-lg border border-slate-200 shadow-xs space-y-4">
+              <div class="flex items-center justify-between border-b border-slate-100 pb-2">
+                <span class="text-xs font-bold text-slate-700 uppercase tracking-wider">Ticket overdue rate</span>
+              </div>
+              <div class="flex items-center justify-center py-2">
+                <div class="relative w-28 h-28 flex items-center justify-center border-8 border-slate-100 rounded-full">
+                  <span class="text-xl font-bold text-slate-800">0%</span>
+                </div>
+              </div>
+              <div class="pt-2 border-t border-slate-100 text-xs flex justify-between text-slate-600 font-medium">
+                <span>Type ticket</span>
+                <span class="font-bold text-slate-800">Other (60+)</span>
+              </div>
+            </div>
+
+            <!-- Distribution by Date Chart Card -->
+            <div class="bg-white p-4 rounded-lg border border-slate-200 shadow-xs flex flex-col justify-between">
+              <div class="flex items-center justify-between border-b border-slate-100 pb-2">
+                <span class="text-xs font-bold text-slate-700 uppercase tracking-wider">Distribution by date</span>
+                <div class="flex items-center gap-2 text-[11px] font-bold">
+                  <span class="px-2 py-0.5 bg-slate-100 rounded text-slate-700">Total: 64</span>
+                  <span class="px-2 py-0.5 bg-emerald-50 text-emerald-700 rounded">Open: 61</span>
+                </div>
+              </div>
+              <!-- Simulated Line Graph -->
+              <div class="h-32 w-full flex items-end justify-between gap-1 pt-4 px-2">
+                <div class="bg-emerald-400 w-2 h-4 rounded-t"></div>
+                <div class="bg-emerald-400 w-2 h-8 rounded-t"></div>
+                <div class="bg-emerald-400 w-2 h-2 rounded-t"></div>
+                <div class="bg-emerald-400 w-2 h-16 rounded-t"></div>
+                <div class="bg-emerald-500 w-2 h-28 rounded-t"></div>
+                <div class="bg-emerald-500 w-2 h-32 rounded-t"></div>
+                <div class="bg-emerald-400 w-2 h-6 rounded-t"></div>
+                <div class="bg-emerald-400 w-2 h-14 rounded-t"></div>
+                <div class="bg-emerald-400 w-2 h-18 rounded-t"></div>
+              </div>
+              <div class="flex justify-between text-[10px] text-slate-400 font-mono pt-2 border-t border-slate-100">
+                <span>07-17</span>
+                <span>07-27</span>
+                <span>07-29</span>
+                <span>08-04</span>
+                <span>08-06</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bottom SLA & Sources Grid -->
+          <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <!-- SLA Violations -->
+            <div class="bg-white p-4 rounded-lg border border-slate-200 shadow-xs space-y-3">
+              <span class="text-xs font-bold text-slate-700 uppercase tracking-wider">SLA violations</span>
+              <div class="space-y-2 text-xs">
+                <div>
+                  <div class="flex justify-between text-[11px] font-bold text-rose-600 mb-1">
+                    <span>URGENT</span>
+                    <span>0%</span>
+                  </div>
+                  <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
+                    <div class="bg-rose-500 h-full w-0"></div>
+                  </div>
+                </div>
+                <div>
+                  <div class="flex justify-between text-[11px] font-bold text-amber-500 mb-1">
+                    <span>HIGH</span>
+                    <span>0%</span>
+                  </div>
+                  <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
+                    <div class="bg-amber-400 h-full w-0"></div>
+                  </div>
+                </div>
+                <div>
+                  <div class="flex justify-between text-[11px] font-bold text-sky-600 mb-1">
+                    <span>NORMAL</span>
+                    <span>0%</span>
+                  </div>
+                  <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
+                    <div class="bg-sky-400 h-full w-0"></div>
+                  </div>
+                </div>
+                <div>
+                  <div class="flex justify-between text-[11px] font-bold text-emerald-600 mb-1">
+                    <span>LOW</span>
+                    <span>100%</span>
+                  </div>
+                  <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
+                    <div class="bg-emerald-500 h-full w-full"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- SLA Counters -->
+            <div class="bg-white p-4 rounded-lg border border-slate-200 shadow-xs flex flex-col justify-between text-center">
+              <div>
+                <span class="text-xs font-bold text-slate-500 block uppercase">SLA breach ticket</span>
+                <span class="text-2xl font-bold text-rose-600 mt-1 block">64</span>
+              </div>
+              <div class="border-t border-slate-100 pt-2">
+                <span class="text-xs font-bold text-slate-500 block uppercase">AVG first response</span>
+                <span class="text-lg font-bold text-emerald-600 mt-0.5 block font-mono">00:00:00</span>
+              </div>
+            </div>
+
+            <!-- Ticket Rate Pie -->
+            <div class="bg-white p-4 rounded-lg border border-slate-200 shadow-xs flex flex-col items-center justify-center text-center">
+              <span class="text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Ticket Rate</span>
+              <div class="w-20 h-20 rounded-full border-4 border-emerald-500 border-t-amber-400 bg-emerald-50 my-1 flex items-center justify-center">
+                <span class="text-[10px] font-bold text-emerald-700">95.31% Open</span>
+              </div>
+            </div>
+
+            <!-- Source Ticket Bar -->
+            <div class="bg-white p-4 rounded-lg border border-slate-200 shadow-xs space-y-2">
+              <span class="text-xs font-bold text-slate-700 uppercase tracking-wider">Source ticket</span>
+              <div class="space-y-1.5 text-xs pt-1">
+                <div class="flex items-center gap-2">
+                  <span class="w-12 text-[11px] text-slate-500">Phone</span>
+                  <div class="flex-1 bg-sky-500 h-3 rounded-xs text-[9px] text-white font-bold px-1 flex items-center">64</div>
+                </div>
+                <div class="flex items-center gap-2">
+                  <span class="w-12 text-[11px] text-slate-500">Website</span>
+                  <div class="flex-1 bg-slate-100 h-3 rounded-xs"></div>
+                </div>
+                <div class="flex items-center gap-2">
+                  <span class="w-12 text-[11px] text-slate-500">Zalo</span>
+                  <div class="flex-1 bg-slate-100 h-3 rounded-xs"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 1.2 SALES AGENT DASHBOARD CONTAINER -->
+        <div id="db-container-sales" class="hidden space-y-4">
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <!-- Left Card: Sales Performance -->
+            <div class="bg-white p-4 rounded-lg border border-slate-200 shadow-xs flex flex-col justify-between">
+              <div>
+                <div class="flex items-center justify-between border-b border-slate-100 pb-2">
+                  <span class="text-xs font-bold text-slate-800">Sales Performance</span>
+                  <i class="ph ph-info text-slate-400"></i>
+                </div>
+
+                <div class="grid grid-cols-2 gap-6 my-4 px-2">
+                  <div>
+                    <span class="text-xs font-bold text-slate-600 block">Total New</span>
+                    <span class="text-4xl font-extrabold text-slate-900 mt-1 block">78</span>
+                  </div>
+                  <div>
+                    <span class="text-xs font-bold text-slate-600 block">Total Overdue</span>
+                    <div class="flex items-baseline gap-1 mt-1">
+                      <span class="text-4xl font-extrabold text-rose-600">18</span>
+                      <span class="text-sm font-bold text-rose-600">(23%)</span>
+                    </div>
+                  </div>
+                  <div>
+                    <span class="text-xs font-bold text-slate-600 block">Total Closed-Won</span>
+                    <div class="flex items-baseline gap-1 mt-1">
+                      <span class="text-4xl font-extrabold text-emerald-600">2</span>
+                      <span class="text-sm font-bold text-emerald-600">(5%)</span>
+                    </div>
+                  </div>
+                  <div>
+                    <span class="text-xs font-bold text-slate-600 block">Total Loss</span>
+                    <div class="flex items-baseline gap-1 mt-1">
+                      <span class="text-4xl font-extrabold text-rose-600">4</span>
+                      <span class="text-sm font-bold text-rose-600">(5%)</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- CloryAI Recommendation Banner -->
+              <div class="mt-2 bg-orange-50 border border-dashed border-orange-300 rounded-lg p-3 flex items-start gap-2.5">
+                <i class="ph ph-sparkle text-orange-500 text-lg shrink-0 mt-0.5"></i>
+                <p class="text-xs font-bold text-orange-900 leading-snug">
+                  "Tôi nhận thấy bạn cần xử lý ngay 18 cơ hội đang bị quá hạn (chiếm đến 23%) trước khi để mất thêm khách hàng mới vào tay đối thủ"
+                </p>
+              </div>
+            </div>
+
+            <!-- Right Card: Sales Pipeline & Sales Trend -->
+            <div class="bg-white p-4 rounded-lg border border-slate-200 shadow-xs space-y-4">
+              <div class="flex items-center justify-between border-b border-slate-100 pb-2">
+                <span class="text-xs font-bold text-slate-800">Sales Pipeline</span>
+                <i class="ph ph-info text-slate-400"></i>
+              </div>
+
+              <!-- Arrow Chevron Pipeline -->
+              <div class="grid grid-cols-5 gap-1 text-center font-bold text-white text-[11px]">
+                <div class="bg-sky-600 py-2 rounded-l relative">
+                  <div>New</div>
+                  <div class="text-amber-300 font-black">78</div>
+                </div>
+                <div class="bg-blue-600 py-2">
+                  <div>Interested</div>
+                  <div class="text-amber-300 font-black">34 <span class="text-[9px] font-normal">(50%)</span></div>
+                </div>
+                <div class="bg-indigo-600 py-2">
+                  <div>Quoted</div>
+                  <div class="text-amber-300 font-black">15 <span class="text-[9px] font-normal">(44%)</span></div>
+                </div>
+                <div class="bg-purple-600 py-2">
+                  <div>Potential</div>
+                  <div class="text-amber-300 font-black">7 <span class="text-[9px] font-normal">(46%)</span></div>
+                </div>
+                <div class="bg-emerald-600 py-2 rounded-r">
+                  <div>Close-Won</div>
+                  <div class="text-amber-300 font-black">2 <span class="text-[9px] font-normal">(28%)</span></div>
+                </div>
+              </div>
+
+              <div class="pt-2">
+                <span class="text-xs font-bold text-slate-800 block mb-2">Sales Trend</span>
+                <div class="h-28 w-full border-b border-slate-200 flex items-end justify-between px-2 pt-2">
+                  <div class="bg-emerald-500 w-1.5 h-8"></div>
+                  <div class="bg-emerald-500 w-1.5 h-24"></div>
+                  <div class="bg-emerald-500 w-1.5 h-8"></div>
+                  <div class="bg-emerald-500 w-1.5 h-16"></div>
+                  <div class="bg-emerald-500 w-1.5 h-12"></div>
+                  <div class="bg-emerald-500 w-1.5 h-4"></div>
+                  <div class="bg-emerald-500 w-1.5 h-8"></div>
+                  <div class="bg-emerald-500 w-1.5 h-8"></div>
+                  <div class="bg-emerald-500 w-1.5 h-16"></div>
+                </div>
+                <div class="flex justify-between text-[9px] text-slate-400 font-mono mt-1">
+                  <span>2026-05-21</span>
+                  <span>2026-05-27</span>
+                  <span>2026-06-03</span>
+                  <span>2026-06-17</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bottom Row: Leads Breakdown & To-do List -->
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <!-- Leads by Topics & Sources -->
+            <div class="bg-white p-4 rounded-lg border border-slate-200 shadow-xs space-y-3">
+              <div class="grid grid-cols-2 gap-4">
+                <div>
+                  <span class="text-xs font-bold text-slate-800 block mb-2">Leads by Topics</span>
+                  <div class="w-24 h-24 rounded-full border-8 border-rose-500 border-t-sky-500 border-r-amber-400 border-l-emerald-500 mx-auto my-2"></div>
+                  <div class="text-[10px] text-slate-500 text-center font-medium">Services 32.4% • IT 15.2%</div>
+                </div>
+                <div>
+                  <span class="text-xs font-bold text-slate-800 block mb-2">Leads by Sources</span>
+                  <div class="space-y-1 text-[11px] pt-1">
+                    <div class="flex items-center gap-1">
+                      <span class="w-12 text-slate-500">Phone</span>
+                      <div class="flex-1 bg-sky-500 h-2.5 rounded-xs"></div>
+                    </div>
+                    <div class="flex items-center gap-1">
+                      <span class="w-12 text-slate-500">Website</span>
+                      <div class="w-8 bg-slate-300 h-2.5 rounded-xs"></div>
+                    </div>
+                    <div class="flex items-center gap-1">
+                      <span class="w-12 text-slate-500">Zalo</span>
+                      <div class="w-4 bg-slate-300 h-2.5 rounded-xs"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- To-do List ✨ -->
+            <div class="bg-white p-4 rounded-lg border border-slate-200 shadow-xs space-y-3">
+              <div class="flex items-center justify-between border-b border-slate-100 pb-2">
+                <div class="flex items-center gap-1.5">
+                  <span class="text-xs font-bold text-slate-800">To-do-list</span>
+                  <i class="ph ph-sparkle text-orange-500 text-xs"></i>
+                </div>
+                <i class="ph ph-info text-slate-400"></i>
+              </div>
+
+              <!-- Actionable Table -->
+              <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse text-xs">
+                  <thead>
+                    <tr class="bg-slate-50 border-b border-slate-200 text-slate-700 font-bold text-[11px]">
+                      <th class="py-2 px-2 border border-slate-200">Subject</th>
+                      <th class="py-2 px-2 border border-slate-200">Contact</th>
+                      <th class="py-2 px-2 border border-slate-200">Created on</th>
+                      <th class="py-2 px-2 border border-slate-200">Assigned to</th>
+                      <th class="py-2 px-2 border border-slate-200">Status</th>
+                      <th class="py-2 px-2 border border-slate-200">Actions Required</th>
+                      <th class="py-2 px-2 border border-slate-200 text-center">Button*</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-slate-200 text-slate-800 font-medium">
+                    <tr id="todo-row-1328" class="hover:bg-slate-50 transition">
+                      <td class="py-2 px-2 border border-slate-200 font-bold">#1328 INBOUND ...</td>
+                      <td class="py-2 px-2 border border-slate-200 text-slate-600">Unknown 0913 xxxxxx</td>
+                      <td class="py-2 px-2 border border-slate-200 font-mono text-[11px]">08/01/2026</td>
+                      <td class="py-2 px-2 border border-slate-200">Nguyễn Ngọc Liên</td>
+                      <td class="py-2 px-2 border border-slate-200"><span class="px-1.5 py-0.5 bg-blue-50 text-blue-700 rounded font-semibold text-[10px]">New</span></td>
+                      <td class="py-2 px-2 border border-slate-200 text-rose-600 font-bold">Gửi báo giá dịch vụ AI cho khách hàng trong hôm nay</td>
+                      <td class="py-2 px-2 border border-slate-200 text-center">
+                        <button onclick="solveTodoTask('todo-row-1328', '#1328 INBOUND')" class="px-2 py-1 bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs rounded transition shadow-xs">
+                          [Solve]
+                        </button>
+                      </td>
+                    </tr>
+
+                    <tr id="todo-row-1332" class="hover:bg-slate-50 transition">
+                      <td class="py-2 px-2 border border-slate-200 font-bold">#1332 INBOUND ...</td>
+                      <td class="py-2 px-2 border border-slate-200 text-slate-600">Unknown 0918 xxxxxx</td>
+                      <td class="py-2 px-2 border border-slate-200 font-mono text-[11px]">06/01/2026</td>
+                      <td class="py-2 px-2 border border-slate-200">Lê Đào Tuyết Anh</td>
+                      <td class="py-2 px-2 border border-slate-200"><span class="px-1.5 py-0.5 bg-purple-50 text-purple-700 rounded font-semibold text-[10px]">Potential</span></td>
+                      <td class="py-2 px-2 border border-slate-200 text-rose-600 font-bold">Soạn hợp đồng nháp và gửi cho khách hàng sớm nhất có thể</td>
+                      <td class="py-2 px-2 border border-slate-200 text-center">
+                        <button onclick="solveTodoTask('todo-row-1332', '#1332 INBOUND')" class="px-2 py-1 bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs rounded transition shadow-xs">
+                          [Solve]
+                        </button>
+                      </td>
+                    </tr>
+
+                    <tr id="todo-row-1330" class="hover:bg-slate-50 transition">
+                      <td class="py-2 px-2 border border-slate-200 font-bold">#1330 INBOUND ...</td>
+                      <td class="py-2 px-2 border border-slate-200 text-slate-600">Unknown 0122 xxxxxx</td>
+                      <td class="py-2 px-2 border border-slate-200 font-mono text-[11px]">05/01/2026</td>
+                      <td class="py-2 px-2 border border-slate-200">Lê Đào Tuyết Anh</td>
+                      <td class="py-2 px-2 border border-slate-200"><span class="px-1.5 py-0.5 bg-blue-50 text-blue-700 rounded font-semibold text-[10px]">New</span></td>
+                      <td class="py-2 px-2 border border-slate-200 text-rose-600 font-bold">Gửi tài liệu giải pháp và báo giá sơ bộ cho khách hàng</td>
+                      <td class="py-2 px-2 border border-slate-200 text-center">
+                        <button onclick="solveTodoTask('todo-row-1330', '#1330 INBOUND')" class="px-2 py-1 bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs rounded transition shadow-xs">
+                          [Solve]
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <!-- Instruction Footnote -->
+              <p class="text-[11px] text-slate-500 font-medium italic pt-1">
+                Lưu ý: *Sau khi thực hiện xong, nhân viên bấm [Solve] sẽ ẩn công việc trên danh sách.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 1.3 QA AGENT DASHBOARD CONTAINER -->
+        <div id="db-container-qa" class="hidden space-y-4">
+          <!-- Top QA Metrics Row -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="bg-white p-4 rounded-lg border border-slate-200 shadow-xs flex items-center justify-between">
+              <div>
+                <span class="text-xs font-bold text-slate-500 block">Average Score (30 Days)</span>
+                <span class="text-3xl font-extrabold text-blue-600 mt-1 block">73.23</span>
+              </div>
+              <span class="px-2 py-1 bg-rose-500 text-white text-[10px] font-bold rounded">Target ≥ 90</span>
+            </div>
+
+            <div class="bg-white p-4 rounded-lg border border-slate-200 shadow-xs flex items-center justify-between">
+              <div>
+                <span class="text-xs font-bold text-slate-500 block">Total Evaluated Cases</span>
+                <span class="text-3xl font-extrabold text-slate-800 mt-1 block">26</span>
+              </div>
+              <span class="text-xs font-bold text-rose-600">Critical Fails: 4 Case</span>
+            </div>
+
+            <div class="bg-white p-4 rounded-lg border border-slate-200 shadow-xs space-y-2">
+              <span class="text-xs font-bold text-slate-500 block">Sentiment</span>
+              <div class="w-full bg-slate-100 h-3 rounded-full overflow-hidden flex">
+                <div class="bg-sky-500 h-full w-[69.23%]"></div>
+                <div class="bg-emerald-500 h-full w-[30.77%]"></div>
+              </div>
+              <p class="text-[10px] text-rose-600 font-semibold">Most customers have a neutral sentiment.</p>
+            </div>
+          </div>
+
+          <!-- Score Trend & Sentiment Line Chart -->
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <div class="bg-white p-4 rounded-lg border border-slate-200 shadow-xs space-y-2">
+              <span class="text-xs font-bold text-slate-800 block">Score Trend</span>
+              <div class="h-32 w-full flex items-end justify-around border-b border-slate-200 pt-4">
+                <div class="bg-orange-500 w-8 h-20 rounded-t"></div>
+                <div class="bg-orange-500 w-8 h-28 rounded-t"></div>
+                <div class="bg-orange-500 w-8 h-32 rounded-t"></div>
+              </div>
+              <div class="flex justify-around text-[10px] text-slate-500 font-mono">
+                <span>26/05</span>
+                <span>01/06</span>
+                <span>09/06</span>
+              </div>
+            </div>
+
+            <div class="bg-white p-4 rounded-lg border border-slate-200 shadow-xs space-y-2">
+              <span class="text-xs font-bold text-slate-800 block">Sentiment Distribution</span>
+              <div class="h-32 w-full flex items-center justify-center border-b border-slate-200">
+                <span class="text-xs text-slate-400 font-medium">Bình thường: 69.23% • Hài lòng: 30.77%</span>
+              </div>
+              <div class="flex justify-between text-[10px] text-slate-500 font-mono">
+                <span>26/05</span>
+                <span>01/06</span>
+                <span>09/06</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <!-- ================= VIEW 1.5: REPORT VIEW ================= -->
+      <main id="view-report" class="hidden p-4 space-y-4 max-w-[1600px] w-full mx-auto">
+        <div class="flex items-center justify-between pb-1">
+          <h1 class="text-sm font-bold text-slate-800">Report</h1>
+        </div>
+
+        <!-- Filter Bar -->
+        <div class="bg-white p-3 rounded-lg border border-slate-200 shadow-xs flex flex-wrap items-center gap-4 text-xs font-medium">
+          <div class="flex flex-col gap-1">
+            <label class="text-slate-500">Create date range</label>
+            <div class="flex items-center bg-white border border-slate-300 rounded px-2.5 py-1 text-slate-700 gap-2">
+              <span>2026-07-01</span>
+              <span class="text-slate-400">→</span>
+              <span>2026-07-31</span>
+              <i class="ph ph-calendar text-slate-400"></i>
+            </div>
+          </div>
+
+          <div class="flex flex-col gap-1">
+            <label class="text-slate-500">Quick Select</label>
+            <select class="border border-slate-300 rounded px-3 py-1 bg-white text-slate-700">
+              <option>Last month</option>
+              <option>This month</option>
+            </select>
+          </div>
+
+          <div class="flex flex-col gap-1">
+            <label class="text-slate-500">Report Type</label>
+            <select class="border border-slate-300 rounded px-3 py-1 bg-white text-slate-700">
+              <option>Ticket</option>
+              <option>Agent</option>
+            </select>
+          </div>
+
+          <button class="mt-4 px-4 py-1.5 bg-cloudx-main hover:bg-cloudx-hover text-white font-bold rounded shadow-xs transition">
+            Apply
+          </button>
+
+          <button class="mt-4 ml-auto px-3.5 py-1.5 border border-slate-300 hover:bg-slate-50 text-slate-700 rounded transition">
+            Filter
+          </button>
+        </div>
+
+        <!-- Top Metric Summary Cards -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div class="bg-white p-3.5 rounded-lg border border-slate-200 shadow-xs text-center">
+            <span class="text-xs font-bold text-slate-500 uppercase">Total New Ticket</span>
+            <span class="text-2xl font-black text-slate-800 block mt-1">62</span>
+          </div>
+          <div class="bg-white p-3.5 rounded-lg border border-slate-200 shadow-xs text-center">
+            <span class="text-xs font-bold text-slate-500 uppercase">Total Resovled Ticket</span>
+            <span class="text-2xl font-black text-slate-800 block mt-1">1</span>
+          </div>
+          <div class="bg-white p-3.5 rounded-lg border border-slate-200 shadow-xs text-center">
+            <span class="text-xs font-bold text-slate-500 uppercase">First Response Due</span>
+            <span class="text-2xl font-black text-slate-800 block mt-1">63</span>
+          </div>
+          <div class="bg-white p-3.5 rounded-lg border border-slate-200 shadow-xs text-center">
+            <span class="text-xs font-bold text-slate-500 uppercase">Overdue</span>
+            <span class="text-2xl font-black text-slate-800 block mt-1">63</span>
+          </div>
+        </div>
+
+        <!-- Ticket List Table in Report -->
+        <div class="bg-white rounded-lg border border-slate-200 shadow-xs overflow-hidden">
+          <div class="p-3 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
+            <span class="text-xs font-bold text-slate-800">Ticket List</span>
+            <div class="flex items-center gap-2">
+              <input type="text" placeholder="Search by..." class="px-3 py-1 bg-white border border-slate-300 rounded text-xs w-48">
+              <button class="px-3 py-1 bg-white border border-slate-300 rounded text-xs font-medium">Reset</button>
+              <button class="px-3 py-1 bg-slate-800 text-white rounded text-xs font-semibold">Export CSV</button>
+            </div>
+          </div>
+
+          <table class="w-full text-left border-collapse text-xs">
+            <thead>
+              <tr class="bg-slate-100/70 border-b border-slate-200 text-slate-600 font-bold uppercase tracking-wider text-[11px]">
+                <th class="py-2.5 px-3">Subject</th>
+                <th class="py-2.5 px-3">Group</th>
+                <th class="py-2.5 px-3">Agent</th>
+                <th class="py-2.5 px-3">Create Date</th>
+                <th class="py-2.5 px-3">Priority</th>
+                <th class="py-2.5 px-3">Status</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100 text-slate-700">
+              <tr class="hover:bg-slate-50 cursor-pointer" onclick="openTicketDetail('#1399 OUTBOUND CALL 1...')">
+                <td class="py-2.5 px-3">
+                  <span class="font-bold text-slate-900">#1399 OUTBOUND CALL 1...</span>
+                  <span class="ml-2 px-1.5 py-0.2 text-[10px] bg-rose-50 text-rose-600 rounded border border-rose-200 font-semibold">Overdue</span>
+                </td>
+                <td class="py-2.5 px-3">Technical Support</td>
+                <td class="py-2.5 px-3">Phan Thanh Nam</td>
+                <td class="py-2.5 px-3 font-mono text-[11px]">31-07-2026</td>
+                <td class="py-2.5 px-3"><span class="px-2 py-0.5 bg-emerald-50 text-emerald-700 rounded border border-emerald-200 font-bold">Low</span></td>
+                <td class="py-2.5 px-3"><span class="px-2 py-0.5 bg-orange-50 text-orange-700 rounded border border-orange-200 font-bold">Solved</span></td>
+              </tr>
+              <tr class="hover:bg-slate-50 cursor-pointer" onclick="openTicketDetail('#1398 OUTBOUND CALL 1...')">
+                <td class="py-2.5 px-3">
+                  <span class="font-bold text-slate-900">#1398 OUTBOUND CALL 1...</span>
+                  <span class="ml-2 px-1.5 py-0.2 text-[10px] bg-rose-50 text-rose-600 rounded border border-rose-200 font-semibold">Overdue</span>
+                </td>
+                <td class="py-2.5 px-3">Technical Support</td>
+                <td class="py-2.5 px-3">Phan Thanh Nam</td>
+                <td class="py-2.5 px-3 font-mono text-[11px]">31-07-2026</td>
+                <td class="py-2.5 px-3"><span class="px-2 py-0.5 bg-emerald-50 text-emerald-700 rounded border border-emerald-200 font-bold">Low</span></td>
+                <td class="py-2.5 px-3"><span class="px-2 py-0.5 bg-emerald-50 text-emerald-700 rounded border border-emerald-200 font-bold">Open</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </main>
+
+      <!-- ================= VIEW 1.8: LEADS LIST ================= -->
+      <main id="view-leads" class="hidden p-4 space-y-4 max-w-[1600px] w-full mx-auto">
+        <div class="flex items-center justify-between pb-1">
+          <h1 class="text-sm font-bold text-slate-800">Leads Management</h1>
+        </div>
+
+        <div class="bg-white rounded-lg border border-slate-200 shadow-xs overflow-hidden">
+          <!-- Toolbar Bar -->
+          <div class="p-3 bg-slate-50 border-b border-slate-200 flex flex-wrap items-center justify-between gap-3">
+            <button onclick="showToast('Thêm Lead', 'Khởi tạo Lead bán hàng mới...', 'blue')" class="px-3.5 py-1.5 bg-cloudx-main hover:bg-cloudx-hover text-white text-xs font-semibold rounded shadow-xs transition flex items-center gap-1.5">
+              <i class="ph ph-plus-bold"></i>
+              <span>Add New</span>
+            </button>
+
+            <div class="flex items-center gap-2">
+              <div class="relative">
+                <input type="text" placeholder="Search by lead ID, subject..." class="pl-3 pr-8 py-1.5 text-xs bg-white border border-slate-300 rounded-md w-64 focus:outline-none focus:border-cloudx-main">
+                <i class="ph ph-magnifying-glass absolute right-2.5 top-2 text-slate-400 text-xs"></i>
+              </div>
+              <button class="px-3 py-1.5 bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 text-xs font-medium rounded transition">Reset</button>
+              <button class="px-3.5 py-1.5 bg-cloudx-main hover:bg-cloudx-hover text-white text-xs font-semibold rounded transition flex items-center gap-1">
+                <i class="ph ph-funnel"></i>
+                <span>Filter</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Table Container -->
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse text-xs">
+              <thead>
+                <tr class="bg-slate-100/80 border-b border-slate-200 text-slate-600 font-bold uppercase tracking-wider text-[11px]">
+                  <th class="py-2.5 px-3">#ID</th>
+                  <th class="py-2.5 px-3">Contact</th>
+                  <th class="py-2.5 px-3">Type</th>
+                  <th class="py-2.5 px-3">Created on</th>
+                  <th class="py-2.5 px-3">Assigned to</th>
+                  <th class="py-2.5 px-3">Priority</th>
+                  <th class="py-2.5 px-3">Status</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-100 text-slate-700">
+                <!-- Row 1: Hot Lead -->
+                <tr class="hover:bg-slate-50 transition cursor-pointer" onclick="openTicketDetail('#1328 INBOUND CALL')">
+                  <td class="py-2.5 px-3">
+                    <div class="font-bold text-slate-900">#1328 INBOUND ...</div>
+                    <span class="inline-flex items-center gap-1 mt-0.5 text-[10px] font-bold text-amber-600 bg-amber-50 px-1.5 py-0.2 rounded border border-amber-200">
+                      🔥 Hot
+                    </span>
+                  </td>
+                  <td class="py-2.5 px-3 text-slate-700 font-medium">A Minh 0913 xxxxxx</td>
+                  <td class="py-2.5 px-3">Quote</td>
+                  <td class="py-2.5 px-3 font-mono text-[11px] text-slate-500">12/01/2026</td>
+                  <td class="py-2.5 px-3 font-medium text-slate-800">Nguyễn Ngọc Liên</td>
+                  <td class="py-2.5 px-3"><span class="font-bold text-rose-600">Urgent</span></td>
+                  <td class="py-2.5 px-3"><span class="font-bold text-emerald-600">Open</span></td>
+                </tr>
+
+                <!-- Row 2: Cold Lead -->
+                <tr class="hover:bg-slate-50 transition cursor-pointer" onclick="openTicketDetail('#1332 INBOUND CALL')">
+                  <td class="py-2.5 px-3">
+                    <div class="font-bold text-slate-900">#1332 INBOUND ...</div>
+                    <span class="inline-flex items-center gap-1 mt-0.5 text-[10px] font-bold text-sky-600 bg-sky-50 px-1.5 py-0.2 rounded border border-sky-200">
+                      ❄️ Cold
+                    </span>
+                  </td>
+                  <td class="py-2.5 px-3 text-slate-700 font-medium">A Trung 0918 xxxxxx</td>
+                  <td class="py-2.5 px-3">Unknown</td>
+                  <td class="py-2.5 px-3 font-mono text-[11px] text-slate-500">10/01/2026</td>
+                  <td class="py-2.5 px-3 font-medium text-slate-800">Lê Đào Tuyết Anh</td>
+                  <td class="py-2.5 px-3"><span class="font-bold text-slate-400">Low</span></td>
+                  <td class="py-2.5 px-3"><span class="font-bold text-emerald-500/70">Closed</span></td>
+                </tr>
+
+                <!-- Row 3: Warm Lead -->
+                <tr class="hover:bg-slate-50 transition cursor-pointer" onclick="openTicketDetail('#1330 INBOUND CALL')">
+                  <td class="py-2.5 px-3">
+                    <div class="font-bold text-slate-900">#1330 INBOUND ...</div>
+                    <span class="inline-flex items-center gap-1 mt-0.5 text-[10px] font-bold text-amber-500 bg-amber-50 px-1.5 py-0.2 rounded border border-amber-200">
+                      ⚡ Warm
+                    </span>
+                  </td>
+                  <td class="py-2.5 px-3 text-slate-700 font-medium">Unknown 0122 xxxxxx</td>
+                  <td class="py-2.5 px-3">Support</td>
+                  <td class="py-2.5 px-3 font-mono text-[11px] text-slate-500">10/01/2026</td>
+                  <td class="py-2.5 px-3 font-medium text-slate-800">Lê Đào Tuyết Anh</td>
+                  <td class="py-2.5 px-3"><span class="font-bold text-sky-600">Normal</span></td>
+                  <td class="py-2.5 px-3"><span class="font-bold text-rose-600">Pending</span></td>
+                </tr>
+
+                <!-- Row 4: Unqualified Lead -->
+                <tr class="hover:bg-slate-50 transition cursor-pointer">
+                  <td class="py-2.5 px-3">
+                    <div class="font-bold text-slate-900">#1328 INBOUND ...</div>
+                    <span class="inline-flex items-center gap-1 mt-0.5 text-[10px] font-bold text-rose-600 bg-rose-50 px-1.5 py-0.2 rounded border border-rose-200">
+                      ❌ Unqualified
+                    </span>
+                  </td>
+                  <td class="py-2.5 px-3 text-slate-700 font-medium">c Trâm 0122 xxxxxx</td>
+                  <td class="py-2.5 px-3">Quote</td>
+                  <td class="py-2.5 px-3 font-mono text-[11px] text-slate-500">08/01/2026</td>
+                  <td class="py-2.5 px-3 font-medium text-slate-800">Lê Nguyễn Ngọc Ngân</td>
+                  <td class="py-2.5 px-3"><span class="font-bold text-amber-500">Hight</span></td>
+                  <td class="py-2.5 px-3">
+                    <select class="text-xs font-bold text-blue-600 bg-blue-50 border border-blue-200 rounded px-1.5 py-0.5 focus:outline-none cursor-pointer">
+                      <option selected>Solved</option>
+                      <option>Open</option>
+                      <option>Closed</option>
+                    </select>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Pagination Footer -->
+          <div class="p-3 bg-slate-50 border-t border-slate-200 flex items-center justify-between text-xs text-slate-500">
+            <span>Showing 1 to 10 of 1,370 entries</span>
+            <div class="flex items-center gap-2">
+              <div class="flex items-center gap-1 font-mono">
+                <button class="px-2 py-0.5 border border-slate-300 rounded bg-white text-slate-600 hover:bg-slate-100">&lt;</button>
+                <button class="px-2 py-0.5 border border-cloudx-main rounded bg-cloudx-main text-white font-bold">1</button>
+                <button class="px-2 py-0.5 border border-slate-300 rounded bg-white text-slate-600 hover:bg-slate-100">2</button>
+                <button class="px-2 py-0.5 border border-slate-300 rounded bg-white text-slate-600 hover:bg-slate-100">3</button>
+                <span>...</span>
+                <button class="px-2 py-0.5 border border-slate-300 rounded bg-white text-slate-600 hover:bg-slate-100">137</button>
+                <button class="px-2 py-0.5 border border-slate-300 rounded bg-white text-slate-600 hover:bg-slate-100">&gt;</button>
+              </div>
+              <select class="px-2 py-0.5 border border-slate-300 rounded bg-white text-xs">
+                <option>10 / page</option>
+                <option>25 / page</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <!-- ================= VIEW 2: TICKET LIST ================= -->
+      <main id="view-ticket-list" class="hidden p-4 space-y-4 max-w-[1600px] w-full mx-auto">
+        <div class="flex items-center justify-between pb-1">
+          <h1 class="text-sm font-bold text-slate-800">Tickets</h1>
+        </div>
+
+        <div class="bg-white rounded-lg border border-slate-200 shadow-xs overflow-hidden">
+          <!-- Toolbar -->
+          <div class="p-3 bg-slate-50 border-b border-slate-200 flex flex-wrap items-center justify-between gap-3">
+            <button onclick="switchView('create-ticket')" class="px-3.5 py-1.5 bg-cloudx-main hover:bg-cloudx-hover text-white text-xs font-semibold rounded shadow-xs transition flex items-center gap-1.5">
+              <i class="ph ph-plus-bold"></i>
+              <span>Add New</span>
+            </button>
+
+            <div class="flex items-center gap-2">
+              <div class="relative">
+                <input type="text" placeholder="Search by ticket ID, subject..." class="pl-3 pr-8 py-1.5 text-xs bg-white border border-slate-300 rounded-md w-64 focus:outline-none focus:border-cloudx-main">
+                <i class="ph ph-magnifying-glass absolute right-2.5 top-2 text-slate-400 text-xs"></i>
+              </div>
+              <button class="px-3 py-1.5 bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 text-xs font-medium rounded transition">Reset</button>
+              <button class="px-3.5 py-1.5 bg-cloudx-main hover:bg-cloudx-hover text-white text-xs font-semibold rounded transition flex items-center gap-1">
+                <i class="ph ph-funnel"></i>
+                <span>Filter</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Table -->
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse text-xs">
+              <thead>
+                <tr class="bg-slate-100/70 border-b border-slate-200 text-slate-600 font-bold uppercase tracking-wider text-[11px]">
+                  <th class="py-2.5 px-3">Subject</th>
+                  <th class="py-2.5 px-3">Contact</th>
+                  <th class="py-2.5 px-3">Group</th>
+                  <th class="py-2.5 px-3">Type</th>
+                  <th class="py-2.5 px-3">Created on</th>
+                  <th class="py-2.5 px-3">Assigned to</th>
+                  <th class="py-2.5 px-3">Priority</th>
+                  <th class="py-2.5 px-3">Status</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-100 text-slate-700">
+                <tr class="hover:bg-slate-50 transition cursor-pointer" onclick="openTicketDetail('#1411 OUTBOUND CALL 1...')">
+                  <td class="py-2.5 px-3">
+                    <div class="font-bold text-slate-900">#1411 OUTBOUND CALL 1...</div>
+                    <div class="flex items-center gap-1 mt-0.5">
+                      <span class="text-[10px] text-rose-600 bg-rose-50 px-1.5 py-0.2 rounded border border-rose-200 font-semibold">First response due Overdue</span>
+                    </div>
+                  </td>
+                  <td class="py-2.5 px-3 text-slate-600">Unknown 19000119 (19000119)</td>
+                  <td class="py-2.5 px-3">Technical Support</td>
+                  <td class="py-2.5 px-3">Other</td>
+                  <td class="py-2.5 px-3 font-mono text-[11px]">06-08-2026 11:31:59</td>
+                  <td class="py-2.5 px-3 font-medium">Phan Thanh Nam</td>
+                  <td class="py-2.5 px-3"><span class="px-2 py-0.5 bg-slate-100 text-slate-600 rounded font-bold border border-slate-200">Low</span></td>
+                  <td class="py-2.5 px-3"><span class="px-2 py-0.5 bg-slate-100 text-slate-600 rounded font-bold border border-slate-200">Closed</span></td>
+                </tr>
+
+                <tr class="hover:bg-slate-50 transition cursor-pointer" onclick="openTicketDetail('#1410 OUTBOUND CALL 1...')">
+                  <td class="py-2.5 px-3">
+                    <div class="font-bold text-slate-900">#1410 OUTBOUND CALL 1...</div>
+                    <div class="flex items-center gap-1 mt-0.5">
+                      <span class="text-[10px] text-rose-600 bg-rose-50 px-1.5 py-0.2 rounded border border-rose-200 font-semibold">First response due Overdue</span>
+                    </div>
+                  </td>
+                  <td class="py-2.5 px-3 text-slate-600">Unknown 19000119 (19000119)</td>
+                  <td class="py-2.5 px-3">Technical Support</td>
+                  <td class="py-2.5 px-3">Other</td>
+                  <td class="py-2.5 px-3 font-mono text-[11px]">05-08-2026 10:44:42</td>
+                  <td class="py-2.5 px-3 font-medium">Phan Thanh Nam</td>
+                  <td class="py-2.5 px-3"><span class="px-2 py-0.5 bg-slate-100 text-slate-600 rounded font-bold border border-slate-200">Low</span></td>
+                  <td class="py-2.5 px-3"><span class="px-2 py-0.5 bg-orange-50 text-orange-600 rounded font-bold border border-orange-200">Solved</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </main>
+
+      <!-- ================= VIEW 2.1: CREATE TICKET ================= -->
+      <main id="view-create-ticket" class="hidden p-4 space-y-4 max-w-[1200px] w-full mx-auto">
+        <div class="flex items-center justify-between pb-1">
+          <div class="flex items-center gap-2 text-xs text-slate-500">
+            <span>Ticket</span>
+            <span>/</span>
+            <span>Create</span>
+            <span>/</span>
+            <span class="font-bold text-slate-800">New</span>
+          </div>
+          <button onclick="showToast('Tạo vé thành công', 'Ticket mới đã được lưu', 'emerald')" class="px-5 py-1.5 bg-cloudx-main hover:bg-cloudx-hover text-white text-xs font-bold rounded shadow-xs transition">
+            Accept
+          </button>
+        </div>
+
+        <div class="bg-white p-6 rounded-lg border border-slate-200 shadow-xs grid grid-cols-1 md:grid-cols-2 gap-6 text-xs">
+          <!-- Left Column -->
+          <div class="space-y-4">
+            <div>
+              <div class="flex justify-between items-center mb-1">
+                <label class="font-bold text-slate-700">* Contact</label>
+                <button onclick="openAddContactModal()" class="text-xs font-semibold text-sky-600 hover:underline">Add New Contact</button>
+              </div>
+              <select class="w-full border border-slate-300 rounded px-3 py-2 bg-white text-slate-700">
+                <option value="">Select Contact</option>
+                <option value="19000119">Unknown 19000119</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="font-bold text-slate-700 block mb-1">Type</label>
+              <select class="w-full border border-slate-300 rounded px-3 py-2 bg-white text-slate-700">
+                <option>Other</option>
+                <option>Quote</option>
+                <option>Support</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="font-bold text-slate-700 block mb-1">Source</label>
+              <select class="w-full border border-slate-300 rounded px-3 py-2 bg-white text-slate-700">
+                <option>Phone</option>
+                <option>Website</option>
+                <option>Zalo</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="font-bold text-slate-700 block mb-1">Status</label>
+              <select class="w-full border border-slate-300 rounded px-3 py-2 bg-white text-slate-700">
+                <option>Open</option>
+                <option>Pending</option>
+                <option>Solved</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="font-bold text-slate-700 block mb-1">Priority</label>
+              <select class="w-full border border-slate-300 rounded px-3 py-2 bg-white text-slate-700">
+                <option>Low</option>
+                <option>Normal</option>
+                <option>High</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="font-bold text-slate-700 block mb-1">* Department</label>
+              <select class="w-full border border-slate-300 rounded px-3 py-2 bg-white text-slate-700">
+                <option>Select Department</option>
+                <option selected>Đồng Nhất</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="font-bold text-slate-700 block mb-1">* Group</label>
+              <select class="w-full border border-slate-300 rounded px-3 py-2 bg-white text-slate-700">
+                <option>Select Group</option>
+                <option selected>Technical Support</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="font-bold text-slate-700 block mb-1">Assigned To</label>
+              <select class="w-full border border-slate-300 rounded px-3 py-2 bg-white text-slate-700">
+                <option>Select an agent</option>
+                <option selected>Phan Thanh Nam</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Right Column -->
+          <div class="space-y-4">
+            <div>
+              <div class="flex justify-between items-center mb-1">
+                <label class="font-bold text-slate-700">* Subject</label>
+                <span class="text-[10px] text-slate-400">0/50</span>
+              </div>
+              <input type="text" placeholder="Enter subject..." class="w-full border border-slate-300 rounded px-3 py-2 text-xs focus:outline-none focus:border-cloudx-main">
+            </div>
+
+            <div>
+              <label class="font-bold text-slate-700 block mb-1">* Description</label>
+              <textarea rows="14" placeholder="Enter detailed ticket description..." class="w-full border border-slate-300 rounded p-3 text-xs focus:outline-none focus:border-cloudx-main"></textarea>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <!-- ================= VIEW 3: CONTACTS LIST ================= -->
+      <main id="view-contacts-list" class="hidden p-4 space-y-4 max-w-[1600px] w-full mx-auto">
+        <div class="flex items-center justify-between pb-1">
+          <h1 class="text-sm font-bold text-slate-800">Contacts</h1>
+        </div>
+
+        <div class="bg-white rounded-lg border border-slate-200 shadow-xs overflow-hidden">
+          <div class="p-3 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
+            <button onclick="openAddContactModal()" class="px-3.5 py-1.5 bg-cloudx-main hover:bg-cloudx-hover text-white text-xs font-semibold rounded shadow-xs transition flex items-center gap-1">
+              <i class="ph ph-plus-bold"></i>
+              <span>Add New</span>
+            </button>
+
+            <div class="flex items-center gap-2">
+              <input type="text" placeholder="Search by contact name, co..." class="px-3 py-1.5 bg-white border border-slate-300 rounded text-xs w-64">
+              <button class="px-3 py-1.5 bg-white border border-slate-300 rounded text-xs">Reset</button>
+              <button class="px-3.5 py-1.5 bg-cloudx-main text-white text-xs font-semibold rounded">Filter</button>
+            </div>
+          </div>
+
+          <table class="w-full text-left border-collapse text-xs">
+            <thead>
+              <tr class="bg-slate-100/70 border-b border-slate-200 text-slate-600 font-bold uppercase text-[11px]">
+                <th class="py-2.5 px-3">Name</th>
+                <th class="py-2.5 px-3">Gender</th>
+                <th class="py-2.5 px-3">Company</th>
+                <th class="py-2.5 px-3">Phone</th>
+                <th class="py-2.5 px-3">Work Phone</th>
+                <th class="py-2.5 px-3">Email</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100 text-slate-700">
+              <tr class="hover:bg-slate-50 cursor-pointer" onclick="openContactDetail('Unknown 0017472022766')">
+                <td class="py-2.5 px-3 font-bold text-slate-900">Unknown 0017472022766</td>
+                <td class="py-2.5 px-3">Other</td>
+                <td class="py-2.5 px-3">--</td>
+                <td class="py-2.5 px-3 font-mono">0017472022766</td>
+                <td class="py-2.5 px-3 font-mono">--</td>
+                <td class="py-2.5 px-3">--</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </main>
+
+      <!-- ================= VIEW 3.1: CONTACT DETAIL ================= -->
+      <main id="view-contact-detail" class="hidden p-4 space-y-4 max-w-[1600px] w-full mx-auto">
+        <div class="flex items-center justify-between pb-1">
+          <h1 class="text-sm font-bold text-slate-800">Contact Detail</h1>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <!-- Left Personal Info Sidebar -->
+          <div class="bg-white p-4 rounded-lg border border-slate-200 shadow-xs space-y-4">
+            <div class="flex items-center gap-3 border-b border-slate-100 pb-3">
+              <div class="w-12 h-12 rounded-full bg-purple-100 text-purple-600 font-bold text-lg flex items-center justify-center">
+                <i class="ph ph-user"></i>
+              </div>
+              <div>
+                <h3 id="contact-detail-name" class="font-bold text-slate-900 text-sm">Unknown 0017472022766</h3>
+                <span class="text-xs text-slate-500 font-mono">0017472022766</span>
+              </div>
+            </div>
+
+            <div class="space-y-2 text-xs">
+              <span class="font-bold text-slate-800 block text-[11px] uppercase tracking-wider">Personal Information</span>
+              <div class="flex justify-between py-1 border-b border-slate-50"><span class="text-slate-500">Gender:</span><span class="font-medium">Other</span></div>
+              <div class="flex justify-between py-1 border-b border-slate-50"><span class="text-slate-500">Phone:</span><span class="font-mono font-medium">0017472022766</span></div>
+              <div class="flex justify-between py-1 border-b border-slate-50"><span class="text-slate-500">Company:</span><span class="font-medium">--</span></div>
+            </div>
+
+            <button onclick="switchView('contacts-list')" class="w-full py-1.5 border border-slate-300 hover:bg-slate-50 rounded text-xs font-semibold text-slate-700">
+              Back
+            </button>
+          </div>
+
+          <!-- Right Activity Timeline -->
+          <div class="md:col-span-2 bg-white p-4 rounded-lg border border-slate-200 shadow-xs space-y-4">
+            <h3 class="font-bold text-slate-800 text-xs uppercase tracking-wider border-b border-slate-100 pb-2">Activity Timeline</h3>
+            <div class="bg-slate-50 p-3 rounded border border-slate-200 space-y-2">
+              <div class="flex justify-between items-center text-xs">
+                <span class="font-mono text-slate-500">17-03-2026 16:54</span>
+                <span class="px-2 py-0.5 bg-emerald-50 text-emerald-700 rounded font-bold">Phone</span>
+              </div>
+              <p class="font-bold text-slate-900 text-xs">#1189 - INCOMING CALL 0017472022766</p>
+              <audio controls class="w-full h-8 mt-2"></audio>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <!-- ================= VIEW 4: COMPANY DETAIL (#DNTG) ================= -->
+      <main id="view-company-detail" class="hidden p-4 space-y-4 max-w-[1600px] w-full mx-auto">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <!-- Left Company Info Sidebar -->
+          <div class="bg-white p-4 rounded-lg border border-slate-200 shadow-xs space-y-4">
+            <div class="flex items-center gap-3 border-b border-slate-100 pb-3">
+              <div class="w-12 h-12 rounded-full bg-orange-100 text-cloudx-main font-bold text-lg flex items-center justify-center">
+                <i class="ph ph-buildings"></i>
+              </div>
+              <div>
+                <h3 class="font-bold text-slate-900 text-base">DNTG</h3>
+                <span class="text-xs text-slate-500 font-medium">DONGNHAT TECHNOLOGY GROUP</span>
+              </div>
+            </div>
+
+            <div class="space-y-2 text-xs">
+              <div class="flex justify-between py-1 border-b border-slate-50"><span class="text-slate-500">Tax Number:</span><span class="font-mono font-medium">--</span></div>
+              <div class="flex justify-between py-1 border-b border-slate-50"><span class="text-slate-500">Industry:</span><span class="font-medium">Technology</span></div>
+            </div>
+
+            <button onclick="openAddCompanyModal()" class="w-full py-1.5 bg-cloudx-main hover:bg-cloudx-hover text-white rounded text-xs font-semibold">
+              Edit Company
+            </button>
+          </div>
+
+          <!-- Right Associated Contact List -->
+          <div class="md:col-span-2 bg-white p-4 rounded-lg border border-slate-200 shadow-xs space-y-4">
+            <h3 class="font-bold text-slate-800 text-xs uppercase tracking-wider border-b border-slate-100 pb-2">Contact List</h3>
+            <table class="w-full text-left border-collapse text-xs">
+              <thead>
+                <tr class="bg-slate-50 border-b border-slate-200 text-slate-600 font-bold">
+                  <th class="py-2 px-3">Name</th>
+                  <th class="py-2 px-3">Gender</th>
+                  <th class="py-2 px-3">Phone</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-100">
+                <tr>
+                  <td class="py-2 px-3 font-medium">Anh Long</td>
+                  <td class="py-2 px-3">Other</td>
+                  <td class="py-2 px-3 font-mono">0902993440</td>
+                </tr>
+                <tr>
+                  <td class="py-2 px-3 font-medium">PhươngTL</td>
+                  <td class="py-2 px-3">Female</td>
+                  <td class="py-2 px-3 font-mono">0908442308</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </main>
+
+      <!-- ================= VIEW 5: TICKET DETAIL ================= -->
+      <main id="view-ticket-detail" class="hidden p-4 space-y-4 max-w-[1600px] w-full mx-auto">
+        <!-- Top SLA Banner -->
+        <div class="bg-rose-50 border border-rose-200 p-3 rounded-lg flex items-center justify-between text-xs text-rose-800 font-medium">
+          <div class="flex items-center gap-2">
+            <i class="ph ph-warning-circle text-rose-600 text-base"></i>
+            <span>Ticket SLA Status: <strong>First response due Overdue</strong></span>
+          </div>
+          <span class="font-mono text-rose-700">Due: 2026-08-06 11:46:59</span>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+          <!-- Left Column: Audio + Call Summary + Full Transcription -->
+          <div class="lg:col-span-2 space-y-4">
+            <!-- Audio Card -->
+            <div class="bg-white p-4 rounded-lg border border-slate-200 shadow-xs space-y-3">
+              <div class="flex items-center justify-between border-b border-slate-100 pb-2">
+                <h2 id="detail-ticket-heading" class="font-bold text-slate-900 text-sm">#1411 OUTBOUND CALL 1...</h2>
+                <div class="flex items-center gap-2">
+                  <span class="px-2 py-0.5 bg-slate-100 text-slate-600 rounded text-xs font-bold">Low</span>
+                  <span class="px-2 py-0.5 bg-slate-100 text-slate-600 rounded text-xs font-bold">Closed</span>
+                </div>
+              </div>
+
+              <!-- Audio Player -->
+              <div class="bg-slate-50 p-3 rounded-lg border border-slate-200 flex items-center gap-3">
+                <button onclick="toggleAudio()" class="w-8 h-8 rounded-full bg-cloudx-main text-white flex items-center justify-center shrink-0">
+                  <i id="audio-play-icon" class="ph ph-play-fill text-xs"></i>
+                </button>
+                <div class="flex-1">
+                  <div class="w-full bg-slate-200 h-1.5 rounded-full overflow-hidden">
+                    <div id="audio-progress" class="bg-cloudx-main h-full w-1/4"></div>
+                  </div>
+                  <div class="flex justify-between text-[10px] text-slate-500 font-mono mt-1">
+                    <span>0:14</span>
+                    <span>0:56</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Action Toolbar: Full Transcription & Add Note -->
+              <div class="flex items-center gap-2 pt-1">
+                <!-- Full Transcription Button -->
+                <button onclick="toggleTranscriptionModal(true)" class="px-3.5 py-2 bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold rounded-lg shadow-xs transition flex items-center gap-1.5">
+                  <i class="ph ph-article-ny-times text-orange-400 text-sm"></i>
+                  <span>Full Transcription</span>
+                  <span class="px-1.5 py-0.2 bg-orange-500/20 text-orange-300 text-[9px] rounded uppercase font-bold">AI</span>
+                </button>
+
+                <button onclick="openAddNoteModal()" class="px-3.5 py-2 bg-cloudx-main hover:bg-cloudx-hover text-white text-xs font-bold rounded-lg shadow-xs transition">
+                  Add Note
+                </button>
+              </div>
+
+              <!-- Call Summary Card (Tóm tắt nội dung cuộc gọi) -->
+              <div class="mt-4 bg-orange-50/70 border border-orange-200 rounded-lg p-4 space-y-3">
+                <div class="flex items-center justify-between border-b border-orange-200/80 pb-2">
+                  <div class="flex items-center gap-2">
+                    <i class="ph ph-sparkle text-cloudx-main text-base"></i>
+                    <h3 class="font-bold text-slate-900 text-xs uppercase tracking-wider">Tóm tắt cuộc gọi (AI Call Summary)</h3>
+                  </div>
+                  <span class="text-[10px] bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full font-bold">Thành công</span>
+                </div>
+
+                <div class="space-y-2 text-xs text-slate-700">
+                  <p><strong>• Mục đích cuộc gọi:</strong> Khách hàng gọi lên liên quan đến báo giá thiết bị tổng đài CloudXCS.</p>
+                  <p><strong>• Nội dung trao đổi chính:</strong> Nhân viên tư vấn cấu hình gói 50 Agent, giải đáp chính sách bảo hành 24/7 và hỗ trợ tích hợp CRM sẵn có.</p>
+                  <p><strong>• Kết quả & Hướng xử lý:</strong> Đã chốt phương án gửi báo giá chính thức qua Zalo trong chiều nay.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Column: Ticket Properties & Contact Summary -->
+          <div class="space-y-4">
+            <div class="bg-white p-4 rounded-lg border border-slate-200 shadow-xs space-y-3 text-xs">
+              <h3 class="font-bold text-slate-800 uppercase tracking-wider border-b border-slate-100 pb-2">Properties</h3>
+              
+              <div>
+                <label class="text-slate-500 font-medium block mb-1">Status</label>
+                <select class="w-full border border-slate-300 rounded px-2.5 py-1.5 bg-white font-bold text-slate-700">
+                  <option selected>Closed</option>
+                  <option>Open</option>
+                  <option>Solved</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="text-slate-500 font-medium block mb-1">Priority</label>
+                <select class="w-full border border-slate-300 rounded px-2.5 py-1.5 bg-white font-bold text-slate-700">
+                  <option selected>Low</option>
+                  <option>Normal</option>
+                  <option>High</option>
+                </select>
+              </div>
+
+              <button onclick="showToast('Cập nhật thành công', 'Thông tin vé đã được lưu', 'emerald')" class="w-full py-2 bg-cloudx-main hover:bg-cloudx-hover text-white font-bold rounded shadow-xs transition mt-2">
+                Update Ticket
+              </button>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <!-- ================= VIEW 6: CLOUDXCS AGENTS CONFIG ================= -->
+      <main id="view-agent-config" class="hidden p-4 space-y-4 max-w-[1600px] w-full mx-auto">
+        <!-- Header -->
+        <div class="flex items-center justify-between border-b border-slate-200 pb-3">
+          <div>
+            <span class="text-xs text-slate-500">CloudXCS Agents / Configuration</span>
+            <h1 id="agent-config-title" class="text-base font-bold text-slate-900 mt-0.5">Service Agent</h1>
+          </div>
+
+          <!-- Clean Online/Offline Status Switch Pill -->
+          <div class="flex items-center gap-3 bg-white px-3.5 py-1.5 rounded-full border border-slate-200 shadow-xs">
+            <span class="text-xs font-bold text-slate-600">Trạng thái Agent:</span>
+            <div class="flex items-center gap-2">
+              <button id="agent-status-toggle" onclick="toggleAgentStatus()" class="w-10 h-5 bg-emerald-500 rounded-full transition-colors relative p-0.5">
+                <div id="agent-status-knob" class="w-4 h-4 bg-white rounded-full shadow-xs transform translate-x-5 transition-transform"></div>
+              </button>
+              <span id="agent-status-text" class="text-xs font-bold text-emerald-600">Online</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 1: Agent Management Info -->
+        <div class="bg-white p-5 rounded-lg border border-slate-200 shadow-xs space-y-4">
+          <h2 class="text-xs font-bold text-slate-800 uppercase tracking-wider border-b border-slate-100 pb-2">1. Quản lý thông tin Agent</h2>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+            <div>
+              <label class="font-bold text-slate-700 block mb-1">Tên Agent</label>
+              <input id="agent-input-name" type="text" value="Clory Service Agent #1" class="w-full border border-slate-300 rounded px-3 py-2 font-medium focus:outline-none focus:border-cloudx-main">
+            </div>
+
+            <div>
+              <label class="font-bold text-slate-700 block mb-1">Vị trí</label>
+              <input id="agent-input-pos" type="text" value="Customer Support Line 1" class="w-full border border-slate-300 rounded px-3 py-2 font-medium focus:outline-none focus:border-cloudx-main">
+            </div>
+
+            <div class="md:col-span-2">
+              <label class="font-bold text-slate-700 block mb-1">Mô tả</label>
+              <textarea id="agent-input-desc" rows="2" class="w-full border border-slate-300 rounded p-3 text-xs focus:outline-none focus:border-cloudx-main">Agent dedicated to tier 1 general inquiries and initial ticket triaging.</textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 2: Prompts Training with Enlarged Height -->
+        <div class="bg-white p-5 rounded-lg border border-slate-200 shadow-xs space-y-4">
+          <h2 class="text-xs font-bold text-slate-800 uppercase tracking-wider border-b border-slate-100 pb-2">2. Huấn luyện (Prompts)</h2>
+
+          <!-- 2 Text Areas Side-by-Side -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="text-xs font-bold text-slate-700 block mb-1">Prompt hiện tại</label>
+              <textarea id="current-prompt" readonly class="w-full h-80 border border-slate-200 bg-slate-50 rounded-lg p-3 text-xs font-mono text-slate-700 leading-relaxed focus:outline-none" resize="none">
+You are a helpful customer service agent for CloudXCS.
+Greet the customer professionally.
+Your goal is to gather ticket information to check all custom fields and add notes.
+Ensure clear tone and escalate urgent issues to human supervisors.
+              </textarea>
+            </div>
+
+            <div>
+              <label class="text-xs font-bold text-slate-700 block mb-1">Prompt mới</label>
+              <textarea id="new-prompt" placeholder="Nhập câu lệnh prompt huấn luyện mới..." class="w-full h-80 border border-slate-300 rounded-lg p-3 text-xs font-mono text-slate-800 leading-relaxed focus:outline-none focus:border-cloudx-main shadow-inner" resize="none"></textarea>
+            </div>
+          </div>
+
+          <!-- Training Documents & Links -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2 text-xs">
+            <!-- Upload Documents -->
+            <div class="space-y-2">
+              <label class="font-bold text-slate-700 block">Tài liệu đào tạo (Upload max 3 file)</label>
+              <div class="space-y-1.5">
+                <input type="file" class="block w-full text-xs text-slate-500 file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:text-xs file:font-semibold file:bg-orange-50 file:text-cloudx-main hover:file:bg-orange-100">
+                <input type="file" class="block w-full text-xs text-slate-500 file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:text-xs file:font-semibold file:bg-orange-50 file:text-cloudx-main hover:file:bg-orange-100">
+                <input type="file" class="block w-full text-xs text-slate-500 file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:text-xs file:font-semibold file:bg-orange-50 file:text-cloudx-main hover:file:bg-orange-100">
+              </div>
+            </div>
+
+            <!-- URL Inputs -->
+            <div class="space-y-2">
+              <label class="font-bold text-slate-700 block">URL tài liệu / Website</label>
+              <div class="space-y-1.5">
+                <input type="url" placeholder="https://docs.cloudxcs.com/kb/1" class="w-full border border-slate-300 rounded px-3 py-1.5 text-xs">
+                <input type="url" placeholder="https://docs.cloudxcs.com/kb/2" class="w-full border border-slate-300 rounded px-3 py-1.5 text-xs">
+                <input type="url" placeholder="https://docs.cloudxcs.com/kb/3" class="w-full border border-slate-300 rounded px-3 py-1.5 text-xs">
+              </div>
+            </div>
+          </div>
+
+          <!-- Action Button: Compact Submit -->
+          <div class="flex justify-end pt-3 border-t border-slate-100">
+            <button onclick="submitTraining()" class="px-5 py-2 bg-cloudx-main hover:bg-cloudx-hover text-white text-xs font-bold rounded-lg shadow-xs transition flex items-center gap-2">
+              <i class="ph ph-check-bold"></i>
+              <span>Submit Training</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Section 3: History Log -->
+        <div class="bg-white p-5 rounded-lg border border-slate-200 shadow-xs space-y-3">
+          <h2 class="text-xs font-bold text-slate-800 uppercase tracking-wider border-b border-slate-100 pb-2">3. Lịch sử thay đổi (History)</h2>
+          <table class="w-full text-left border-collapse text-xs">
+            <thead>
+              <tr class="bg-slate-50 border-b border-slate-200 text-slate-600 font-bold">
+                <th class="py-2 px-3">Ngày/Giờ</th>
+                <th class="py-2 px-3">Loại thay đổi</th>
+                <th class="py-2 px-3">Người thực hiện</th>
+                <th class="py-2 px-3">Nội dung</th>
+              </tr>
+            </thead>
+            <tbody id="history-table-body" class="divide-y divide-slate-100 text-slate-700">
+              <tr>
+                <td class="py-2 px-3 font-mono">2026-08-06 12:48:32</td>
+                <td class="py-2 px-3 font-semibold text-cloudx-main">Prompt Update</td>
+                <td class="py-2 px-3">Phan Thanh Nam</td>
+                <td class="py-2 px-3">Cập nhật quy trình phản hồi khách hàng theo chuẩn ISO.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </main>
+
+    </div>
+  </div>
+
+  <!-- MODAL: FULL TRANSCRIPTION -->
+  <div id="modal-transcription" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-xl shadow-2xl max-w-2xl w-full overflow-hidden flex flex-col max-h-[85vh]">
+      <!-- Modal Header -->
+      <div class="p-4 bg-slate-900 text-white flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <i class="ph ph-article-ny-times text-orange-400 text-lg"></i>
+          <h3 class="font-bold text-sm">Full Speech-to-Text Transcription</h3>
+        </div>
+        <button onclick="toggleTranscriptionModal(false)" class="text-slate-400 hover:text-white">
+          <i class="ph ph-x text-lg"></i>
+        </button>
+      </div>
+
+      <!-- Transcript Dialogue Body -->
+      <div class="p-5 overflow-y-auto space-y-4 text-xs font-sans">
+        <div class="p-3 bg-slate-50 border border-slate-200 rounded-lg">
+          <div class="flex justify-between font-bold text-slate-800 mb-1">
+            <span class="text-cloudx-main">Agent Phan Thanh Nam</span>
+            <span class="font-mono text-slate-400 text-[10px]">00:02</span>
+          </div>
+          <p class="text-slate-700 leading-relaxed">Dạ alo, CloudXCS xin nghe ạ. Em có thể hỗ trợ gì cho anh Minh ạ?</p>
+        </div>
+
+        <div class="p-3 bg-slate-50 border border-slate-200 rounded-lg">
+          <div class="flex justify-between font-bold text-slate-800 mb-1">
+            <span class="text-sky-600">Khách hàng Unknown 19000119</span>
+            <span class="font-mono text-slate-400 text-[10px]">00:08</span>
+          </div>
+          <p class="text-slate-700 leading-relaxed">Chào bạn, bên mình đang muốn tư vấn nâng cấp gói tổng đài AI Service Agent cho 50 nhận sự chăm sóc khách hàng.</p>
+        </div>
+
+        <div class="p-3 bg-slate-50 border border-slate-200 rounded-lg">
+          <div class="flex justify-between font-bold text-slate-800 mb-1">
+            <span class="text-cloudx-main">Agent Phan Thanh Nam</span>
+            <span class="font-mono text-slate-400 text-[10px]">00:22</span>
+          </div>
+          <p class="text-slate-700 leading-relaxed">Dạ vâng anh, hệ thống CloudXCS hiện hỗ trợ tự động bốc tách thoại, ghi nhận Ticket và phân tích cảm xúc khách hàng real-time. Em gửi báo giá qua Zalo số này cho anh nhé?</p>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="p-3 bg-slate-50 border-t border-slate-200 flex justify-end gap-2">
+        <button onclick="copyTranscript()" class="px-3.5 py-1.5 border border-slate-300 hover:bg-slate-100 text-slate-700 font-bold rounded text-xs transition">
+          Sao chép
+        </button>
+        <button onclick="toggleTranscriptionModal(false)" class="px-4 py-1.5 bg-slate-900 text-white font-bold rounded text-xs">
+          Đóng
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: ADD NEW CONTACT -->
+  <div id="modal-add-contact" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-xl shadow-2xl max-w-lg w-full p-6 space-y-4 text-xs">
+      <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+        <h3 class="font-bold text-sm text-slate-900">Add New Contact</h3>
+        <button onclick="closeAddContactModal()" class="text-slate-400 hover:text-slate-600"><i class="ph ph-x text-lg"></i></button>
+      </div>
+
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label class="font-bold text-slate-700 block mb-1">* Name</label>
+          <input type="text" placeholder="Input name" class="w-full border border-slate-300 rounded px-2.5 py-1.5">
+        </div>
+        <div>
+          <label class="font-bold text-slate-700 block mb-1">* Phone</label>
+          <input type="text" placeholder="Input phone" class="w-full border border-slate-300 rounded px-2.5 py-1.5">
+        </div>
+      </div>
+
+      <div class="flex justify-end gap-2 pt-2">
+        <button onclick="closeAddContactModal()" class="px-4 py-1.5 border border-slate-300 rounded font-semibold text-slate-700">Cancel</button>
+        <button onclick="closeAddContactModal(); showToast('Tạo thành công', 'Liên hệ mới đã được thêm', 'emerald')" class="px-4 py-1.5 bg-cloudx-main text-white rounded font-bold">Accept</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: ADD NEW COMPANY -->
+  <div id="modal-add-company" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-xl shadow-2xl max-w-lg w-full p-6 space-y-4 text-xs">
+      <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+        <h3 class="font-bold text-sm text-slate-900">Add New Company</h3>
+        <button onclick="closeAddCompanyModal()" class="text-slate-400 hover:text-slate-600"><i class="ph ph-x text-lg"></i></button>
+      </div>
+
+      <div class="space-y-3">
+        <div>
+          <label class="font-bold text-slate-700 block mb-1">* Company Name</label>
+          <input type="text" placeholder="Input company name" class="w-full border border-slate-300 rounded px-2.5 py-1.5">
+        </div>
+        <div>
+          <label class="font-bold text-slate-700 block mb-1">Industry</label>
+          <input type="text" placeholder="Input industry" class="w-full border border-slate-300 rounded px-2.5 py-1.5">
+        </div>
+      </div>
+
+      <div class="flex justify-end gap-2 pt-2">
+        <button onclick="closeAddCompanyModal()" class="px-4 py-1.5 border border-slate-300 rounded font-semibold text-slate-700">Cancel</button>
+        <button onclick="closeAddCompanyModal(); showToast('Tạo thành công', 'Công ty mới đã được tạo', 'emerald')" class="px-4 py-1.5 bg-cloudx-main text-white rounded font-bold">Accept</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION CONTAINER -->
+  <div id="toast" class="fixed bottom-5 right-5 z-50 bg-slate-900 text-white px-4 py-3 rounded-lg shadow-xl hidden flex items-center gap-3 border border-slate-700 text-xs">
+    <i id="toast-icon" class="ph ph-check-circle text-emerald-400 text-lg"></i>
+    <div>
+      <h4 id="toast-title" class="font-bold text-white">Title</h4>
+      <p id="toast-msg" class="text-slate-300 text-[11px]">Message body</p>
+    </div>
+  </div>
+
+  <!-- JAVASCRIPT APP LOGIC -->
+  <script>
+    // State management for Agent Configs
+    const agentsData = {
+      sales: {
+        title: "Sales Agent",
+        name: "Clory Sales Agent #1",
+        position: "Inbound Sales Line",
+        desc: "Agent specialized in qualifying leads, presenting solution quotes, and follow-ups.",
+        prompt: "You are a sales agent for CloudXCS. Focus on discovering customer business requirements and promoting relevant product bundles."
+      },
+      service: {
+        title: "Service Agent",
+        name: "Clory Service Agent #1",
+        position: "Customer Support Line 1",
+        desc: "Agent dedicated to tier 1 general inquiries and initial ticket triaging.",
+        prompt: "You are a helpful customer service agent for CloudXCS. Greet the customer professionally and collect ticket details."
+      },
+      qa: {
+        title: "QA Agent",
+        name: "Clory QA Evaluator #1",
+        position: "Call Quality Audit Line",
+        desc: "Automated quality assurance agent evaluating call compliance and agent performance.",
+        prompt: "You are a QA Auditor. Analyze speech transcripts against standard customer service criteria."
+      }
+    };
+
+    let activeAgentKey = 'service';
+    let isAgentOnline = true;
+    let currentLang = 'EN';
+
+    const translations = {
+      EN: {
+        dashboard: "Dashboard",
+        report: "Report",
+        leads: "Leads",
+        tickets: "Tickets",
+        contacts: "Contacts",
+        companies: "Companies",
+        db_mode: "Dashboard Mode:"
+      },
+      VN: {
+        dashboard: "Bảng điều khiển",
+        report: "Báo cáo",
+        leads: "Cơ hội (Leads)",
+        tickets: "Phiếu hỗ trợ (Tickets)",
+        contacts: "Danh bạ",
+        companies: "Công ty",
+        db_mode: "Chế độ Dashboard:"
+      }
+    };
+
+    function toggleLanguage() {
+      currentLang = currentLang === 'EN' ? 'VN' : 'EN';
+      const langLabel = document.getElementById('lang-label');
+      if (langLabel) langLabel.innerText = currentLang;
+
+      // Update internationalized text nodes
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (translations[currentLang] && translations[currentLang][key]) {
+          el.innerText = translations[currentLang][key];
+        }
+      });
+
+      showToast('Ngôn ngữ / Language', `Đã chuyển sang ngôn ngữ ${currentLang}`, 'blue');
+    }
+
+    function switchView(viewName) {
+      const views = ['dashboard', 'report', 'leads', 'ticket-list', 'create-ticket', 'contacts-list', 'contact-detail', 'company-detail', 'ticket-detail', 'agent-config'];
+      
+      views.forEach(v => {
+        const viewEl = document.getElementById(`view-${v}`);
+        const tabEl = document.getElementById(`tab-${v}`);
+
+        if (v === viewName) {
+          if (viewEl) viewEl.classList.remove('hidden');
+          if (tabEl) {
+            tabEl.classList.remove('hidden');
+            tabEl.classList.add('flex', 'bg-orange-50', 'text-cloudx-main', 'border', 'border-orange-200', 'font-semibold');
+          }
+        } else {
+          if (viewEl) viewEl.classList.add('hidden');
+          if (tabEl && !['dashboard', 'leads', 'ticket-list', 'contacts-list'].includes(v)) {
+            tabEl.classList.add('hidden');
+          } else if (tabEl) {
+            tabEl.classList.remove('bg-orange-50', 'text-cloudx-main', 'border', 'border-orange-200', 'font-semibold');
+            tabEl.classList.add('bg-slate-100', 'text-slate-700');
+          }
+        }
+      });
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function changeDashboardType(type) {
+      const dbTypes = ['service', 'sales', 'qa'];
+      dbTypes.forEach(t => {
+        const el = document.getElementById(`db-container-${t}`);
+        if (el) {
+          if (t === type) el.classList.remove('hidden');
+          else el.classList.add('hidden');
+        }
+      });
+
+      const titleEl = document.getElementById('dashboard-title');
+      if (titleEl) {
+        if (type === 'sales') titleEl.innerText = "Sales Agent Dashboard";
+        else if (type === 'qa') titleEl.innerText = "QA Agent Dashboard";
+        else titleEl.innerText = "Service Agent Dashboard";
+      }
+    }
+
+    function toggleAgentsMenu() {
+      const submenu = document.getElementById('agents-submenu');
+      const chevron = document.getElementById('agents-chevron');
+      if (submenu) submenu.classList.toggle('hidden');
+      if (chevron) chevron.classList.toggle('rotate-180');
+    }
+
+    function switchAgent(key) {
+      const data = agentsData[key];
+      if (!data) return;
+
+      activeAgentKey = key;
+      switchView('agent-config');
+
+      const titleEl = document.getElementById('agent-config-title');
+      const nameInput = document.getElementById('agent-input-name');
+      const posInput = document.getElementById('agent-input-pos');
+      const descInput = document.getElementById('agent-input-desc');
+      const currentPrompt = document.getElementById('current-prompt');
+
+      if (titleEl) titleEl.innerText = data.title;
+      if (nameInput) nameInput.value = data.name;
+      if (posInput) posInput.value = data.position;
+      if (descInput) descInput.value = data.desc;
+      if (currentPrompt) currentPrompt.value = data.prompt;
+
+      ['sales', 'service', 'qa'].forEach(k => {
+        const btn = document.getElementById(`subnav-${k}`);
+        if (btn) {
+          if (k === key) {
+            btn.classList.add('bg-slate-800', 'text-white', 'font-bold');
+          } else {
+            btn.classList.remove('bg-slate-800', 'text-white', 'font-bold');
+          }
+        }
+      });
+    }
+
+    function toggleAgentStatus() {
+      isAgentOnline = !isAgentOnline;
+      const knob = document.getElementById('agent-status-knob');
+      const toggle = document.getElementById('agent-status-toggle');
+      const text = document.getElementById('agent-status-text');
+
+      if (isAgentOnline) {
+        toggle.className = "w-10 h-5 bg-emerald-500 rounded-full transition-colors relative p-0.5";
+        knob.className = "w-4 h-4 bg-white rounded-full shadow-xs transform translate-x-5 transition-transform";
+        text.className = "text-xs font-bold text-emerald-600";
+        text.innerText = "Online";
+      } else {
+        toggle.className = "w-10 h-5 bg-slate-300 rounded-full transition-colors relative p-0.5";
+        knob.className = "w-4 h-4 bg-white rounded-full shadow-xs transform translate-x-0 transition-transform";
+        text.className = "text-xs font-bold text-slate-500";
+        text.innerText = "Offline";
+      }
+    }
+
+    function submitTraining() {
+      const newPromptText = document.getElementById('new-prompt').value;
+      if (!newPromptText.trim()) {
+        showToast('Cảnh báo', 'Vui lòng nhập prompt mới trước khi huấn luyện', 'amber');
+        return;
+      }
+
+      showToast('Huấn luyện thành công', 'Agent đã cập nhật câu lệnh Prompt mới', 'emerald');
+      document.getElementById('current-prompt').value = newPromptText;
+      document.getElementById('new-prompt').value = '';
+
+      const historyBody = document.getElementById('history-table-body');
+      if (historyBody) {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td class="py-2 px-3 font-mono">${new Date().toISOString().slice(0, 19).replace('T', ' ')}</td>
+          <td class="py-2 px-3 font-semibold text-cloudx-main">Prompt Update</td>
+          <td class="py-2 px-3">Phan Thanh Nam</td>
+          <td class="py-2 px-3">${newPromptText.slice(0, 50)}...</td>
+        `;
+        historyBody.prepend(tr);
+      }
+    }
+
+    function solveTodoTask(rowId, subjectName) {
+      const row = document.getElementById(rowId);
+      if (row) {
+        row.style.opacity = '0';
+        row.style.transition = 'all 0.3s ease';
+        setTimeout(() => {
+          row.remove();
+          showToast('Hoàn tất công việc', `Đã xử lý xong công việc ${subjectName}`, 'emerald');
+        }, 300);
+      }
+    }
+
+    function openTicketDetail(title) {
+      const heading = document.getElementById('detail-ticket-heading');
+      const tabTitle = document.getElementById('tab-ticket-title');
+      if (heading) heading.innerText = title;
+      if (tabTitle) tabTitle.innerText = title.slice(0, 12) + '...';
+      switchView('ticket-detail');
+    }
+
+    function openContactDetail(name) {
+      const nameEl = document.getElementById('contact-detail-name');
+      if (nameEl) nameEl.innerText = name;
+      switchView('contact-detail');
+    }
+
+    function toggleTranscriptionModal(show) {
+      const modal = document.getElementById('modal-transcription');
+      if (modal) {
+        if (show) modal.classList.remove('hidden');
+        else modal.classList.add('hidden');
+      }
+    }
+
+    function copyTranscript() {
+      showToast('Đã sao chép', 'Nội dung gỡ băng đã lưu vào clipboard', 'blue');
+    }
+
+    function openAddContactModal() {
+      const modal = document.getElementById('modal-add-contact');
+      if (modal) modal.classList.remove('hidden');
+    }
+    function closeAddContactModal() {
+      const modal = document.getElementById('modal-add-contact');
+      if (modal) modal.classList.add('hidden');
+    }
+
+    function openAddCompanyModal() {
+      const modal = document.getElementById('modal-add-company');
+      if (modal) modal.classList.remove('hidden');
+    }
+    function closeAddCompanyModal() {
+      const modal = document.getElementById('modal-add-company');
+      if (modal) modal.classList.add('hidden');
+    }
+
+    function toggleAudio() {
+      const icon = document.getElementById('audio-play-icon');
+      if (icon) {
+        if (icon.classList.contains('ph-play-fill')) {
+          icon.className = "ph ph-pause-fill text-xs";
+        } else {
+          icon.className = "ph ph-play-fill text-xs";
+        }
+      }
+    }
+
+    function showToast(title, msg, color = 'emerald') {
+      const toast = document.getElementById('toast');
+      const toastTitle = document.getElementById('toast-title');
+      const toastMsg = document.getElementById('toast-msg');
+      if (!toast) return;
+
+      toastTitle.innerText = title;
+      toastMsg.innerText = msg;
+      toast.classList.remove('hidden');
+
+      setTimeout(() => {
+        toast.classList.add('hidden');
+      }, 3000);
+    }
+  </script>
+</body>
+</html>
