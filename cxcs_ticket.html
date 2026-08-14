@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi" class="h-full bg-slate-100">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,233 +7,224 @@
   
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Phosphor Icons CDN -->
-  <script src="https://unpkg.com/@phosphor-icons/web"></script>
-  <!-- Inter Font -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  
   <script>
     tailwind.config = {
       theme: {
         extend: {
-          fontFamily: {
-            sans: ['Inter', 'sans-serif'],
-          },
           colors: {
             cloudx: {
-              main: '#EF5330',     /* CloudX CS Signature Orange */
-              hover: '#D94322',
-              dark: '#0B132B',     /* Dark Sidebar Background */
-              sidebar: '#0F172A',
-              accent: '#3B82F6',
-              bg: '#F8FAFC'
+              main: '#EE5A36',
+              hover: '#D94927',
+              dark: '#0C1829',
+              sidebar: '#0A121E',
+              navActive: '#EE5A36',
+              bgLight: '#F4F6F9',
+              border: '#E2E8F0'
             }
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
           }
         }
       }
     }
   </script>
-
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Phosphor Icons -->
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  
+  <!-- Custom Styling Tokens & Visual Adjustments -->
   <style>
-    body {
-      font-family: 'Inter', sans-serif;
-      background-color: #F8FAFC;
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #f1f5f9; }
+    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    .bg-conic-topics {
+      background: conic-gradient(#3b82f6 0% 32.4%, #f43f5e 32.4% 47.6%, #f59e0b 47.6% 59%, #10b981 59% 70.4%, #8b5cf6 70.4% 100%);
     }
-    ::-webkit-scrollbar {
-      width: 6px;
-      height: 6px;
-    }
-    ::-webkit-scrollbar-track {
-      background: #F1F5F9;
-    }
-    ::-webkit-scrollbar-thumb {
-      background: #CBD5E1;
-      border-radius: 4px;
-    }
-    ::-webkit-scrollbar-thumb:hover {
-      background: #94A3B8;
+    .clip-arrow {
+      clip-path: polygon(0% 0%, 85% 0%, 100% 50%, 85% 100%, 0% 100%, 15% 50%);
     }
   </style>
 </head>
-<body class="text-slate-800 bg-slate-50 min-h-screen flex flex-col antialiased selection:bg-orange-100 selection:text-cloudx-main">
+<body class="h-full text-slate-800 font-sans antialiased overflow-x-hidden bg-slate-100">
 
-  <!-- TOP APP HEADER -->
-  <header class="bg-white border-b border-slate-200 sticky top-0 z-30 h-12 flex items-center justify-between px-4">
-    <div class="flex items-center gap-3">
-      <!-- Sidebar Collapse Toggle Button -->
-      <button onclick="toggleSidebar()" class="text-slate-500 hover:text-slate-800 p-1 rounded hover:bg-slate-100 transition">
-        <i class="ph ph-list text-lg"></i>
-      </button>
-      
-      <!-- Interactive Navigation Tabs Container -->
-      <div id="top-tabs-container" class="flex items-center gap-1 overflow-x-auto py-1 max-w-full">
-        <button id="tab-dashboard" onclick="switchView('dashboard')" class="flex items-center gap-1.5 px-3 py-1 rounded text-xs font-medium bg-orange-50 text-cloudx-main border border-orange-200">
-          <span>Dashboard</span>
-          <i class="ph ph-x text-slate-400 hover:text-slate-700"></i>
-        </button>
-
-        <button id="tab-report" onclick="switchView('report')" class="hidden items-center gap-1.5 px-3 py-1 rounded text-xs font-medium bg-slate-100 text-slate-700 hover:bg-slate-200 transition">
-          <span>Report</span>
-          <i class="ph ph-x text-slate-400 hover:text-slate-700"></i>
-        </button>
-
-        <button id="tab-leads" onclick="switchView('leads')" class="flex items-center gap-1.5 px-3 py-1 rounded text-xs font-medium bg-slate-100 text-slate-700 hover:bg-slate-200 transition">
-          <i class="ph ph-funnel-simple text-xs text-amber-500"></i>
-          <span>Leads</span>
-          <i class="ph ph-x text-slate-400 hover:text-slate-700"></i>
-        </button>
-
-        <button id="tab-ticket-list" onclick="switchView('ticket-list')" class="flex items-center gap-1.5 px-3 py-1 rounded text-xs font-medium bg-slate-100 text-slate-700 hover:bg-slate-200 transition">
-          <span>Tickets</span>
-          <i class="ph ph-x text-slate-400 hover:text-slate-700"></i>
-        </button>
-
-        <button id="tab-contacts-list" onclick="switchView('contacts-list')" class="flex items-center gap-1.5 px-3 py-1 rounded text-xs font-medium bg-slate-100 text-slate-700 hover:bg-slate-200 transition">
-          <span>Contacts</span>
-          <i class="ph ph-x text-slate-400 hover:text-slate-700"></i>
-        </button>
-
-        <button id="tab-company-detail" onclick="switchView('company-detail')" class="hidden items-center gap-1.5 px-3 py-1 rounded text-xs font-medium bg-slate-100 text-slate-700 hover:bg-slate-200 transition">
-          <span>#DNTG</span>
-          <i class="ph ph-x text-slate-400 hover:text-slate-700"></i>
-        </button>
-
-        <button id="tab-ticket-detail" onclick="switchView('ticket-detail')" class="hidden items-center gap-1.5 px-3 py-1 rounded text-xs font-medium bg-slate-100 text-slate-700 hover:bg-slate-200 transition">
-          <span id="tab-ticket-title">#1411 OUT...</span>
-          <i class="ph ph-x text-slate-400 hover:text-slate-700"></i>
-        </button>
-
-        <button class="p-1 text-slate-400 hover:text-slate-600 rounded">
-          <i class="ph ph-plus text-xs"></i>
-        </button>
-      </div>
-    </div>
-
-    <!-- Header Right Controls -->
-    <div class="flex items-center gap-3 shrink-0">
-      <!-- Notification Icon -->
-      <div class="relative cursor-pointer" onclick="showToast('Thông báo', 'Bạn có 10 công việc/vé chưa xử lý', 'blue')">
-        <i class="ph ph-bell text-slate-600 text-lg"></i>
-        <span class="absolute -top-1 -right-1.5 bg-rose-500 text-white text-[10px] font-bold px-1 rounded-full min-w-[16px] text-center">10</span>
-      </div>
-
-      <!-- Language Switcher Pill (VN <-> EN) -->
-      <button onclick="toggleLanguage()" class="flex items-center bg-slate-800 hover:bg-slate-700 text-white text-[11px] font-bold px-2.5 py-1 rounded-full cursor-pointer transition border border-slate-700 shadow-xs gap-1">
-        <i class="ph ph-globe text-xs text-orange-400"></i>
-        <span id="lang-label">EN</span>
-      </button>
-
-      <!-- User Profile Avatar -->
-      <div class="flex items-center gap-2 border-l border-slate-200 pl-3">
-        <div class="w-7 h-7 rounded-full bg-orange-100 border border-orange-300 text-cloudx-main flex items-center justify-center font-bold text-xs">
-          PT
-        </div>
-      </div>
-    </div>
-  </header>
-
-  <!-- MAIN APP WRAPPER -->
-  <div class="flex flex-1 overflow-hidden">
+  <div class="min-h-screen flex flex-col md:flex-row bg-slate-100">
 
     <!-- SIDEBAR NAVIGATION -->
-    <aside id="app-sidebar" class="w-56 bg-slate-900 text-slate-300 flex flex-col shrink-0 transition-all duration-300 z-20">
-      <!-- Brand Header -->
-      <div class="h-12 px-4 flex items-center gap-2.5 border-b border-slate-800/80">
-        <div class="w-6 h-6 rounded bg-cloudx-main flex items-center justify-center font-bold text-white text-xs shadow-xs">
-          C
-        </div>
-        <span class="font-bold text-white text-xs tracking-tight">CloudXCS Ticket System</span>
-      </div>
-
-      <!-- Navigation Menu -->
-      <nav class="p-3 space-y-1 text-xs font-medium flex-1 overflow-y-auto">
-        <button id="nav-dashboard" onclick="switchView('dashboard')" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-white bg-cloudx-main font-semibold shadow-xs transition-all">
-          <i class="ph ph-squares-four text-base"></i>
-          <span data-i18n="dashboard">Dashboard</span>
-        </button>
-
-        <button id="nav-report" onclick="switchView('report')" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/60 transition-all">
-          <i class="ph ph-chart-bar text-base"></i>
-          <span data-i18n="report">Report</span>
-        </button>
-
-        <!-- Leads Menu for Sales Opportunities -->
-        <button id="nav-leads" onclick="switchView('leads')" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/60 transition-all">
-          <i class="ph ph-funnel-simple text-base text-amber-400"></i>
-          <span data-i18n="leads">Leads</span>
-        </button>
-
-        <button id="nav-tickets" onclick="switchView('ticket-list')" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/60 transition-all">
-          <i class="ph ph-ticket text-base"></i>
-          <span data-i18n="tickets">Tickets</span>
-        </button>
-
-        <button id="nav-contacts" onclick="switchView('contacts-list')" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/60 transition-all">
-          <i class="ph ph-users text-base"></i>
-          <span data-i18n="contacts">Contacts</span>
-        </button>
-
-        <button id="nav-companies" onclick="switchView('company-detail')" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/60 transition-all">
-          <i class="ph ph-buildings text-base"></i>
-          <span data-i18n="companies">Companies</span>
-        </button>
-
-        <div class="pt-4 pb-1">
-          <p class="px-3 text-[10px] uppercase font-bold text-slate-500 tracking-wider">AI Integration</p>
-        </div>
-
-        <!-- CloudXCS Agents Sub-menu (Positioned above Setting) -->
-        <div class="space-y-0.5">
-          <button onclick="toggleAgentsMenu()" class="w-full flex items-center justify-between px-3.5 py-2.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800/60 transition-all">
-            <div class="flex items-center gap-3">
-              <i class="ph ph-robot text-base text-orange-400"></i>
-              <span class="font-semibold">CloudXCS Agents</span>
-            </div>
-            <i id="agents-chevron" class="ph ph-caret-down text-xs text-slate-400 transition-transform"></i>
-          </button>
-
-          <!-- Submenu List (Sales Agent first, then Service Agent, then QA Agent) -->
-          <div id="agents-submenu" class="pl-9 pr-2 space-y-1 py-1">
-            <button id="subnav-sales" onclick="switchAgent('sales')" class="w-full text-left px-3 py-1.5 rounded text-xs text-slate-400 hover:text-white hover:bg-slate-800/80 transition flex items-center justify-between">
-              <span>Sales Agent</span>
-              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
-            </button>
-            <button id="subnav-service" onclick="switchAgent('service')" class="w-full text-left px-3 py-1.5 rounded text-xs text-slate-400 hover:text-white hover:bg-slate-800/80 transition flex items-center justify-between">
-              <span>Service Agent</span>
-              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
-            </button>
-            <button id="subnav-qa" onclick="switchAgent('qa')" class="w-full text-left px-3 py-1.5 rounded text-xs text-slate-400 hover:text-white hover:bg-slate-800/80 transition flex items-center justify-between">
-              <span>QA Agent</span>
-              <span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
-            </button>
+    <aside class="w-full md:w-60 bg-cloudx-sidebar text-slate-300 flex-shrink-0 flex flex-col justify-between select-none">
+      <div>
+        <!-- Brand Logo Header -->
+        <div class="h-14 flex items-center px-5 bg-slate-950/60 border-b border-slate-800/80 gap-3">
+          <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-cloudx-main to-orange-400 flex items-center justify-center text-white shadow-md shadow-cloudx-main/30 font-black text-base tracking-wider">
+            CX
+          </div>
+          <div class="flex flex-col">
+            <span class="font-bold text-white tracking-wide text-sm leading-tight">CloudXCS</span>
+            <span class="text-[10px] text-slate-400 uppercase tracking-widest font-semibold">Ticket System</span>
           </div>
         </div>
 
-        <button id="nav-setting" onclick="showToast('Setting', 'Trang Cấu hình hệ thống', 'blue')" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/60 transition-all">
-          <i class="ph ph-gear text-base"></i>
-          <span>Setting</span>
-        </button>
-      </nav>
+        <!-- Navigation Menu -->
+        <nav class="p-3 space-y-1 text-xs font-medium">
+          <button id="nav-dashboard" onclick="switchView('dashboard')" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-white bg-slate-800/80 font-semibold transition-all">
+            <i class="ph ph-squares-four text-base text-cloudx-main"></i>
+            <span>Dashboard</span>
+          </button>
+          
+          <button id="nav-report" onclick="switchView('report')" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/60 transition-all">
+            <i class="ph ph-chart-bar text-base"></i>
+            <span>Report</span>
+          </button>
 
-      <!-- Sidebar Footprint -->
-      <div class="p-3 border-t border-slate-800 text-[11px] text-slate-500 text-center">
-        CloudXCS v2.4 • 2026
+          <button id="nav-leads-list" onclick="switchView('leads-list')" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/60 transition-all">
+            <i class="ph ph-funnel-simple text-base text-amber-400"></i>
+            <span>Leads</span>
+          </button>
+
+          <button id="nav-ticket-list" onclick="switchView('ticket-list')" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/60 transition-all">
+            <i class="ph ph-ticket text-base"></i>
+            <span>Tickets</span>
+          </button>
+          
+          <button id="nav-contacts-list" onclick="switchView('contacts-list')" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/60 transition-all">
+            <i class="ph ph-address-book text-base"></i>
+            <span>Contacts</span>
+          </button>
+          
+          <button id="nav-company-detail" onclick="switchView('company-detail')" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/60 transition-all">
+            <i class="ph ph-buildings text-base"></i>
+            <span>Companies</span>
+          </button>
+
+          <!-- CloryAI Agents Submenu Header -->
+          <div class="pt-2 border-t border-slate-800/60 mt-2">
+            <button id="agents-menu-btn" onclick="toggleSubmenu()" class="w-full flex items-center justify-between px-3.5 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/60 font-medium transition-all">
+              <div class="flex items-center gap-3">
+                <i class="ph ph-robot text-base text-orange-400"></i>
+                <span>CloryAI Agents</span>
+              </div>
+              <i id="menu-arrow" class="ph ph-caret-down text-xs transition-transform duration-200"></i>
+            </button>
+
+            <!-- Agents List with Live Badges -->
+            <div id="agents-submenu" class="mt-1 pl-4 space-y-1">
+              <button id="nav-agent-sales" onclick="switchAgent('sales')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-md text-slate-400 hover:text-slate-200 hover:bg-slate-800/40 text-xs transition-all">
+                <i class="ph ph-currency-dollar text-sm text-amber-400"></i>
+                <span>Sales Agent</span>
+                <span id="badge-agent-sales" class="ml-auto text-[9px] px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-400 font-semibold">Online</span>
+              </button>
+              <button id="nav-agent-service" onclick="switchAgent('service')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-md text-slate-400 hover:text-slate-200 hover:bg-slate-800/40 text-xs transition-all">
+                <i class="ph ph-headset text-sm text-cloudx-main"></i>
+                <span>Service Agent</span>
+                <span id="badge-agent-service" class="ml-auto text-[9px] px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-400 font-semibold">Online</span>
+              </button>
+              <button id="nav-agent-qa" onclick="switchAgent('qa')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-md text-slate-400 hover:text-slate-200 hover:bg-slate-800/40 text-xs transition-all">
+                <i class="ph ph-shield-check text-sm text-purple-400"></i>
+                <span>QA Agent</span>
+                <span id="badge-agent-qa" class="ml-auto text-[9px] px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-400 font-semibold">Online</span>
+              </button>
+            </div>
+          </div>
+          
+          <button class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/60 transition-all mt-1">
+            <i class="ph ph-gear text-base"></i>
+            <span>Setting</span>
+          </button>
+        </nav>
+      </div>
+
+      <!-- User Profile Footer -->
+      <div class="p-3 border-t border-slate-800/80 bg-slate-950/40 flex items-center gap-3">
+        <div class="w-7 h-7 rounded-full bg-orange-600 text-white flex items-center justify-center font-bold text-xs shadow-inner">
+          TN
+        </div>
+        <div class="flex flex-col text-xs truncate">
+          <span class="text-slate-200 font-medium truncate">Phan Thanh Nam</span>
+          <span class="text-slate-400 text-[10px]">Administrator</span>
+        </div>
       </div>
     </aside>
 
-    <!-- CONTENT DISPLAY CONTAINER -->
-    <div class="flex-1 overflow-y-auto bg-slate-100/70 relative">
+    <!-- MAIN CONTENT CONTAINER -->
+    <div class="flex-1 flex flex-col min-w-0 overflow-y-auto">
 
-      <!-- ================= VIEW 1: DASHBOARDS ================= -->
+      <!-- TOP TABS NAVBAR -->
+      <header class="h-11 bg-white border-b border-slate-200 flex items-center justify-between px-3 sticky top-0 z-30 shadow-xs">
+        <div id="top-tabs-container" class="flex items-center gap-1 overflow-x-auto py-1 max-w-full">
+          <button id="tab-dashboard" onclick="switchView('dashboard')" class="flex items-center gap-1.5 px-3 py-1 rounded text-xs font-semibold bg-orange-50 text-cloudx-main border border-orange-200 transition">
+            <span>Dashboard</span>
+            <i class="ph ph-x text-slate-400 hover:text-slate-700"></i>
+          </button>
+          <button id="tab-report" onclick="switchView('report')" class="hidden items-center gap-1.5 px-3 py-1 rounded text-xs font-medium bg-slate-100 text-slate-700 hover:bg-slate-200 transition">
+            <span>Report</span>
+            <i class="ph ph-x text-slate-400 hover:text-slate-700"></i>
+          </button>
+          <button id="tab-leads-list" onclick="switchView('leads-list')" class="hidden items-center gap-1.5 px-3 py-1 rounded text-xs font-medium bg-slate-100 text-slate-700 hover:bg-slate-200 transition">
+            <span>Leads</span>
+            <i class="ph ph-x text-slate-400 hover:text-slate-700"></i>
+          </button>
+          <button id="tab-lead-detail" onclick="switchView('lead-detail')" class="hidden items-center gap-1.5 px-3 py-1 rounded text-xs font-medium bg-slate-100 text-slate-700 hover:bg-slate-200 transition">
+            <i class="ph ph-funnel-simple text-amber-500"></i>
+            <span>#1328 Lead...</span>
+            <i class="ph ph-x text-slate-400 hover:text-slate-700"></i>
+          </button>
+          <button id="tab-ticket-list" onclick="switchView('ticket-list')" class="hidden items-center gap-1.5 px-3 py-1 rounded text-xs font-medium bg-slate-100 text-slate-700 hover:bg-slate-200 transition">
+            <span>Tickets</span>
+            <i class="ph ph-x text-slate-400 hover:text-slate-700"></i>
+          </button>
+          <button id="tab-ticket-detail" onclick="switchView('ticket-detail')" class="hidden items-center gap-1.5 px-3 py-1 rounded text-xs font-medium bg-slate-100 text-slate-700 hover:bg-slate-200 transition">
+            <i class="ph ph-phone-call text-xs"></i>
+            <span>#1411 Ticket...</span>
+            <i class="ph ph-x text-slate-400 hover:text-slate-700"></i>
+          </button>
+          <button id="tab-contacts-list" onclick="switchView('contacts-list')" class="hidden items-center gap-1.5 px-3 py-1 rounded text-xs font-medium bg-slate-100 text-slate-700 hover:bg-slate-200 transition">
+            <span>Contacts</span>
+            <i class="ph ph-x text-slate-400 hover:text-slate-700"></i>
+          </button>
+          <button id="tab-company-detail" onclick="switchView('company-detail')" class="hidden items-center gap-1.5 px-3 py-1 rounded text-xs font-medium bg-slate-100 text-slate-700 hover:bg-slate-200 transition">
+            <span>#DNTG</span>
+            <i class="ph ph-x text-slate-400 hover:text-slate-700"></i>
+          </button>
+          <button id="tab-agent-config" onclick="switchView('agent-config')" class="hidden items-center gap-1.5 px-3 py-1 rounded text-xs font-medium bg-slate-100 text-slate-700 hover:bg-slate-200 transition">
+            <i class="ph ph-robot text-xs text-cloudx-main"></i>
+            <span id="tab-agent-name-title">Agent Config</span>
+            <i class="ph ph-x text-slate-400 hover:text-slate-700"></i>
+          </button>
+        </div>
+
+        <!-- Top Right Controls -->
+        <div class="flex items-center gap-2.5 flex-shrink-0">
+          <div class="relative cursor-pointer">
+            <div class="w-6 h-6 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 hover:bg-slate-200 transition">
+              <i class="ph ph-bell text-xs"></i>
+            </div>
+            <span class="absolute -top-1 -right-1 bg-cloudx-main text-white text-[9px] font-bold w-3.5 h-3.5 rounded-full flex items-center justify-center">10</span>
+          </div>
+
+          <!-- Language Switcher -->
+          <div class="flex items-center bg-slate-100 rounded-full p-0.5 border border-slate-200 text-[10px]">
+            <button id="lang-vi" onclick="setLanguage('vi')" class="px-2 py-0.5 rounded-full font-bold bg-white text-slate-800 shadow-xs">VI</button>
+            <button id="lang-en" onclick="setLanguage('en')" class="px-2 py-0.5 rounded-full font-medium text-slate-500 hover:text-slate-800">EN</button>
+          </div>
+
+          <div class="w-6 h-6 rounded-full bg-orange-100 border border-orange-300 flex items-center justify-center text-cloudx-main font-bold text-[10px]">
+            TN
+          </div>
+        </div>
+      </header>
+
+      <!-- ================= VIEW 1: DASHBOARD ================= -->
       <main id="view-dashboard" class="p-4 space-y-4 max-w-[1600px] w-full mx-auto">
-        <!-- Dashboard Top Switcher Bar -->
-        <div class="flex items-center justify-between pb-1">
-          <h1 id="dashboard-title" class="text-sm font-bold text-slate-800">Service Agent Dashboard</h1>
-          
-          <!-- Droplist for switching Agent Dashboards -->
+        <div class="flex flex-wrap items-center justify-between gap-3 pb-1">
+          <h1 id="dashboard-main-title" class="text-sm font-bold text-slate-800">Service Agent Dashboard</h1>
+
           <div class="flex items-center gap-2">
-            <span class="text-xs font-medium text-slate-500" data-i18n="db_mode">Chế độ Dashboard:</span>
-            <select id="dashboard-agent-select" onchange="changeDashboardType(this.value)" class="text-xs font-semibold text-slate-700 bg-white border border-slate-300 rounded-md px-3 py-1.5 shadow-xs focus:outline-none focus:border-cloudx-main">
+            <label class="text-xs font-semibold text-slate-600">Chế độ Dashboard:</label>
+            <select id="dashboard-select" onchange="switchDashboard(this.value)" class="text-xs px-3 py-1.5 border border-slate-300 rounded-lg bg-white font-bold text-slate-800 shadow-xs focus:outline-none focus:border-cloudx-main cursor-pointer">
               <option value="service" selected>Service Agent Dashboard</option>
               <option value="sales">Sales Agent Dashboard</option>
               <option value="qa">QA Agent Dashboard</option>
@@ -241,1425 +232,1189 @@
           </div>
         </div>
 
-        <!-- 1.1 SERVICE AGENT DASHBOARD CONTAINER -->
-        <div id="db-container-service" class="space-y-4">
-          <!-- Top Analytics Grid -->
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <!-- Ticket Completion Rate & Priority Card -->
-            <div class="bg-white p-4 rounded-lg border border-slate-200 shadow-xs space-y-4">
-              <div class="flex items-center justify-between border-b border-slate-100 pb-2">
-                <span class="text-xs font-bold text-slate-700 uppercase tracking-wider">Ticket completion rate</span>
+        <!-- 1. SERVICE AGENT DASHBOARD -->
+        <div id="dashboard-service" class="space-y-4">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
+            <div class="lg:col-span-4 bg-white p-4 rounded-xl border border-slate-200 shadow-xs space-y-4">
+              <h4 class="text-xs font-bold text-slate-700 uppercase tracking-wider">TICKET COMPLETION RATE</h4>
+              <div class="relative w-32 h-32 mx-auto flex items-center justify-center rounded-full border-8 border-slate-100 border-t-emerald-500">
+                <span class="text-2xl font-extrabold text-slate-800">3%</span>
               </div>
-              <div class="flex items-center justify-center py-2">
-                <div class="relative w-28 h-28 flex items-center justify-center border-8 border-slate-100 border-t-emerald-500 rounded-full">
-                  <span class="text-xl font-bold text-slate-800">3%</span>
-                </div>
-              </div>
-              <div class="pt-2 border-t border-slate-100 text-xs flex justify-between text-slate-600 font-medium">
+              <div class="pt-2 border-t border-slate-100 flex justify-between text-xs text-slate-600 font-medium">
                 <span>Priority of ticket</span>
-                <span class="font-bold text-slate-800">Low: 64 | 100%</span>
+                <span class="font-bold text-slate-900">Low: 64 | 100%</span>
               </div>
             </div>
 
-            <!-- Ticket Overdue Rate & Type Ticket Card -->
-            <div class="bg-white p-4 rounded-lg border border-slate-200 shadow-xs space-y-4">
-              <div class="flex items-center justify-between border-b border-slate-100 pb-2">
-                <span class="text-xs font-bold text-slate-700 uppercase tracking-wider">Ticket overdue rate</span>
+            <div class="lg:col-span-4 bg-white p-4 rounded-xl border border-slate-200 shadow-xs space-y-4">
+              <h4 class="text-xs font-bold text-slate-700 uppercase tracking-wider">TICKET OVERDUE RATE</h4>
+              <div class="relative w-32 h-32 mx-auto flex items-center justify-center rounded-full border-8 border-slate-100">
+                <span class="text-2xl font-extrabold text-slate-800">0%</span>
               </div>
-              <div class="flex items-center justify-center py-2">
-                <div class="relative w-28 h-28 flex items-center justify-center border-8 border-slate-100 rounded-full">
-                  <span class="text-xl font-bold text-slate-800">0%</span>
-                </div>
-              </div>
-              <div class="pt-2 border-t border-slate-100 text-xs flex justify-between text-slate-600 font-medium">
+              <div class="pt-2 border-t border-slate-100 flex justify-between text-xs text-slate-600 font-medium">
                 <span>Type ticket</span>
-                <span class="font-bold text-slate-800">Other (60+)</span>
+                <span class="font-bold text-slate-900">Other (60+)</span>
               </div>
             </div>
 
-            <!-- Distribution by Date Chart Card -->
-            <div class="bg-white p-4 rounded-lg border border-slate-200 shadow-xs flex flex-col justify-between">
-              <div class="flex items-center justify-between border-b border-slate-100 pb-2">
-                <span class="text-xs font-bold text-slate-700 uppercase tracking-wider">Distribution by date</span>
-                <div class="flex items-center gap-2 text-[11px] font-bold">
-                  <span class="px-2 py-0.5 bg-slate-100 rounded text-slate-700">Total: 64</span>
-                  <span class="px-2 py-0.5 bg-emerald-50 text-emerald-700 rounded">Open: 61</span>
+            <div class="lg:col-span-4 bg-white p-4 rounded-xl border border-slate-200 shadow-xs space-y-3">
+              <div class="flex items-center justify-between">
+                <h4 class="text-xs font-bold text-slate-700 uppercase tracking-wider">DISTRIBUTION BY DATE</h4>
+                <div class="flex items-center gap-2 text-xs">
+                  <span class="px-2 py-0.5 bg-slate-100 rounded font-bold">Total: 64</span>
+                  <span class="px-2 py-0.5 bg-emerald-50 text-emerald-700 font-bold">Open: 61</span>
                 </div>
               </div>
-              <!-- Simulated Line Graph -->
-              <div class="h-32 w-full flex items-end justify-between gap-1 pt-4 px-2">
-                <div class="bg-emerald-400 w-2 h-4 rounded-t"></div>
-                <div class="bg-emerald-400 w-2 h-8 rounded-t"></div>
-                <div class="bg-emerald-400 w-2 h-2 rounded-t"></div>
-                <div class="bg-emerald-400 w-2 h-16 rounded-t"></div>
-                <div class="bg-emerald-500 w-2 h-28 rounded-t"></div>
-                <div class="bg-emerald-500 w-2 h-32 rounded-t"></div>
-                <div class="bg-emerald-400 w-2 h-6 rounded-t"></div>
-                <div class="bg-emerald-400 w-2 h-14 rounded-t"></div>
-                <div class="bg-emerald-400 w-2 h-18 rounded-t"></div>
-              </div>
-              <div class="flex justify-between text-[10px] text-slate-400 font-mono pt-2 border-t border-slate-100">
-                <span>07-17</span>
-                <span>07-27</span>
-                <span>07-29</span>
-                <span>08-04</span>
-                <span>08-06</span>
+              <div class="h-32 w-full bg-slate-50 rounded border border-slate-100 p-2 flex items-end justify-between gap-1 text-[9px] font-mono">
+                <div class="flex flex-col items-center flex-1"><div class="w-2 bg-emerald-500 h-[20%] rounded-t"></div><span class="mt-1 text-slate-400">07-17</span></div>
+                <div class="flex flex-col items-center flex-1"><div class="w-2 bg-emerald-500 h-[35%] rounded-t"></div><span class="mt-1 text-slate-400">07-27</span></div>
+                <div class="flex flex-col items-center flex-1"><div class="w-2 bg-emerald-500 h-[80%] rounded-t"></div><span class="mt-1 text-slate-400">07-29</span></div>
+                <div class="flex flex-col items-center flex-1"><div class="w-2 bg-emerald-500 h-[95%] rounded-t"></div><span class="mt-1 text-slate-400">08-04</span></div>
+                <div class="flex flex-col items-center flex-1"><div class="w-2 bg-emerald-500 h-[50%] rounded-t"></div><span class="mt-1 text-slate-400">08-06</span></div>
               </div>
             </div>
           </div>
 
-          <!-- Bottom SLA & Sources Grid -->
-          <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <!-- SLA Violations -->
-            <div class="bg-white p-4 rounded-lg border border-slate-200 shadow-xs space-y-3">
-              <span class="text-xs font-bold text-slate-700 uppercase tracking-wider">SLA violations</span>
-              <div class="space-y-2 text-xs">
-                <div>
-                  <div class="flex justify-between text-[11px] font-bold text-rose-600 mb-1">
-                    <span>URGENT</span>
-                    <span>0%</span>
-                  </div>
-                  <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
-                    <div class="bg-rose-500 h-full w-0"></div>
-                  </div>
-                </div>
-                <div>
-                  <div class="flex justify-between text-[11px] font-bold text-amber-500 mb-1">
-                    <span>HIGH</span>
-                    <span>0%</span>
-                  </div>
-                  <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
-                    <div class="bg-amber-400 h-full w-0"></div>
-                  </div>
-                </div>
-                <div>
-                  <div class="flex justify-between text-[11px] font-bold text-sky-600 mb-1">
-                    <span>NORMAL</span>
-                    <span>0%</span>
-                  </div>
-                  <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
-                    <div class="bg-sky-400 h-full w-0"></div>
-                  </div>
-                </div>
-                <div>
-                  <div class="flex justify-between text-[11px] font-bold text-emerald-600 mb-1">
-                    <span>LOW</span>
-                    <span>100%</span>
-                  </div>
-                  <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
-                    <div class="bg-emerald-500 h-full w-full"></div>
-                  </div>
-                </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-xs space-y-2">
+              <h4 class="text-xs font-bold text-slate-700 uppercase">SLA VIOLATIONS</h4>
+              <div class="space-y-1 text-xs">
+                <div class="flex justify-between text-rose-600 font-bold"><span>URGENT</span><span>0%</span></div>
+                <div class="flex justify-between text-amber-500 font-bold"><span>HIGH</span><span>0%</span></div>
+                <div class="flex justify-between text-sky-600 font-bold"><span>NORMAL</span><span>0%</span></div>
+                <div class="flex justify-between text-emerald-600 font-bold"><span>LOW</span><span>100%</span></div>
+                <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden"><div class="bg-emerald-500 h-full w-full"></div></div>
               </div>
             </div>
 
-            <!-- SLA Counters -->
-            <div class="bg-white p-4 rounded-lg border border-slate-200 shadow-xs flex flex-col justify-between text-center">
-              <div>
-                <span class="text-xs font-bold text-slate-500 block uppercase">SLA breach ticket</span>
-                <span class="text-2xl font-bold text-rose-600 mt-1 block">64</span>
-              </div>
-              <div class="border-t border-slate-100 pt-2">
-                <span class="text-xs font-bold text-slate-500 block uppercase">AVG first response</span>
-                <span class="text-lg font-bold text-emerald-600 mt-0.5 block font-mono">00:00:00</span>
+            <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-xs text-center flex flex-col justify-center">
+              <span class="text-xs text-slate-500 font-bold uppercase">SLA BREACH TICKET</span>
+              <span class="text-3xl font-extrabold text-rose-600 font-mono mt-1">64</span>
+              <span class="text-[11px] text-slate-500 mt-2 font-semibold">AVG FIRST RESPONSE: <b class="text-emerald-600 font-mono">00:00:00</b></span>
+            </div>
+
+            <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-xs text-center flex flex-col justify-center">
+              <span class="text-xs text-slate-500 font-bold uppercase">TICKET RATE</span>
+              <div class="w-20 h-20 mx-auto rounded-full border-4 border-emerald-500 flex items-center justify-center font-bold text-xs text-emerald-700 my-1">
+                95.31% Open
               </div>
             </div>
 
-            <!-- Ticket Rate Pie -->
-            <div class="bg-white p-4 rounded-lg border border-slate-200 shadow-xs flex flex-col items-center justify-center text-center">
-              <span class="text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Ticket Rate</span>
-              <div class="w-20 h-20 rounded-full border-4 border-emerald-500 border-t-amber-400 bg-emerald-50 my-1 flex items-center justify-center">
-                <span class="text-[10px] font-bold text-emerald-700">95.31% Open</span>
-              </div>
-            </div>
-
-            <!-- Source Ticket Bar -->
-            <div class="bg-white p-4 rounded-lg border border-slate-200 shadow-xs space-y-2">
-              <span class="text-xs font-bold text-slate-700 uppercase tracking-wider">Source ticket</span>
-              <div class="space-y-1.5 text-xs pt-1">
-                <div class="flex items-center gap-2">
-                  <span class="w-12 text-[11px] text-slate-500">Phone</span>
-                  <div class="flex-1 bg-sky-500 h-3 rounded-xs text-[9px] text-white font-bold px-1 flex items-center">64</div>
-                </div>
-                <div class="flex items-center gap-2">
-                  <span class="w-12 text-[11px] text-slate-500">Website</span>
-                  <div class="flex-1 bg-slate-100 h-3 rounded-xs"></div>
-                </div>
-                <div class="flex items-center gap-2">
-                  <span class="w-12 text-[11px] text-slate-500">Zalo</span>
-                  <div class="flex-1 bg-slate-100 h-3 rounded-xs"></div>
-                </div>
+            <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-xs space-y-2">
+              <h4 class="text-xs font-bold text-slate-700 uppercase">SOURCE TICKET</h4>
+              <div class="space-y-1.5 text-xs">
+                <div class="flex justify-between text-slate-600"><span>Phone</span><span class="font-bold text-sky-600">64</span></div>
+                <div class="w-full bg-sky-500 h-2 rounded-full"></div>
+                <div class="flex justify-between text-slate-400 text-[10px]"><span>Website / Zalo</span><span>0</span></div>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- 1.2 SALES AGENT DASHBOARD CONTAINER -->
-        <div id="db-container-sales" class="hidden space-y-4">
-          <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-            <!-- Left Card: Sales Performance -->
-            <div class="bg-white p-4 rounded-lg border border-slate-200 shadow-xs flex flex-col justify-between">
-              <div>
-                <div class="flex items-center justify-between border-b border-slate-100 pb-2">
-                  <span class="text-xs font-bold text-slate-800">Sales Performance</span>
-                  <i class="ph ph-info text-slate-400"></i>
+        <!-- 2. SALES AGENT DASHBOARD -->
+        <div id="dashboard-sales" class="hidden space-y-4">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
+            <div class="lg:col-span-5 bg-white rounded-xl border border-slate-200 p-4 shadow-xs space-y-3">
+              <div class="flex items-center justify-between border-b border-slate-100 pb-2">
+                <h3 class="text-xs font-bold text-slate-900 tracking-wide uppercase">Sales Performance</h3>
+                <i class="ph ph-info text-slate-400 text-sm"></i>
+              </div>
+              <div class="grid grid-cols-2 gap-4 pt-2">
+                <div class="p-3 bg-slate-50 rounded-lg">
+                  <span class="text-xs font-semibold text-slate-500 block">Total New</span>
+                  <span class="text-3xl font-extrabold text-slate-900 font-mono">78</span>
                 </div>
-
-                <div class="grid grid-cols-2 gap-6 my-4 px-2">
-                  <div>
-                    <span class="text-xs font-bold text-slate-600 block">Total New</span>
-                    <span class="text-4xl font-extrabold text-slate-900 mt-1 block">78</span>
-                  </div>
-                  <div>
-                    <span class="text-xs font-bold text-slate-600 block">Total Overdue</span>
-                    <div class="flex items-baseline gap-1 mt-1">
-                      <span class="text-4xl font-extrabold text-rose-600">18</span>
-                      <span class="text-sm font-bold text-rose-600">(23%)</span>
-                    </div>
-                  </div>
-                  <div>
-                    <span class="text-xs font-bold text-slate-600 block">Total Closed-Won</span>
-                    <div class="flex items-baseline gap-1 mt-1">
-                      <span class="text-4xl font-extrabold text-emerald-600">2</span>
-                      <span class="text-sm font-bold text-emerald-600">(5%)</span>
-                    </div>
-                  </div>
-                  <div>
-                    <span class="text-xs font-bold text-slate-600 block">Total Loss</span>
-                    <div class="flex items-baseline gap-1 mt-1">
-                      <span class="text-4xl font-extrabold text-rose-600">4</span>
-                      <span class="text-sm font-bold text-rose-600">(5%)</span>
-                    </div>
-                  </div>
+                <div class="p-3 bg-rose-50/60 rounded-lg">
+                  <span class="text-xs font-semibold text-slate-500 block">Total Overdue</span>
+                  <span class="text-3xl font-extrabold text-rose-600 font-mono">18 <span class="text-xs font-bold">(23%)</span></span>
+                </div>
+                <div class="p-3 bg-emerald-50/60 rounded-lg">
+                  <span class="text-xs font-semibold text-slate-500 block">Total Closed-Won</span>
+                  <span class="text-3xl font-extrabold text-emerald-600 font-mono">2 <span class="text-xs font-bold">(5%)</span></span>
+                </div>
+                <div class="p-3 bg-rose-50/60 rounded-lg">
+                  <span class="text-xs font-semibold text-slate-500 block">Total Loss</span>
+                  <span class="text-3xl font-extrabold text-rose-600 font-mono">4 <span class="text-xs font-bold">(5%)</span></span>
                 </div>
               </div>
-
-              <!-- CloryAI Recommendation Banner -->
-              <div class="mt-2 bg-orange-50 border border-dashed border-orange-300 rounded-lg p-3 flex items-start gap-2.5">
-                <i class="ph ph-sparkle text-orange-500 text-lg shrink-0 mt-0.5"></i>
-                <p class="text-xs font-bold text-orange-900 leading-snug">
-                  "Tôi nhận thấy bạn cần xử lý ngay 18 cơ hội đang bị quá hạn (chiếm đến 23%) trước khi để mất thêm khách hàng mới vào tay đối thủ"
-                </p>
+              <div class="bg-amber-50/80 border border-amber-200 rounded-lg p-3 flex items-start gap-2 text-xs text-rose-700 font-medium">
+                <i class="ph ph-sparkle text-amber-500 text-base flex-shrink-0 mt-0.5"></i>
+                <span>"Tôi nhận thấy bạn cần xử lý ngay <strong>18 cơ hội đang bị quá hạn (chiếm đến 23%)</strong> trước khi để mất thêm khách hàng mới vào tay đối thủ"</span>
               </div>
             </div>
 
-            <!-- Right Card: Sales Pipeline & Sales Trend -->
-            <div class="bg-white p-4 rounded-lg border border-slate-200 shadow-xs space-y-4">
+            <div class="lg:col-span-7 bg-white rounded-xl border border-slate-200 p-4 shadow-xs space-y-4">
               <div class="flex items-center justify-between border-b border-slate-100 pb-2">
-                <span class="text-xs font-bold text-slate-800">Sales Pipeline</span>
-                <i class="ph ph-info text-slate-400"></i>
+                <h3 class="text-xs font-bold text-slate-900 tracking-wide uppercase">Sales Pipeline</h3>
+                <i class="ph ph-info text-slate-400 text-sm"></i>
               </div>
-
-              <!-- Arrow Chevron Pipeline -->
-              <div class="grid grid-cols-5 gap-1 text-center font-bold text-white text-[11px]">
-                <div class="bg-sky-600 py-2 rounded-l relative">
-                  <div>New</div>
-                  <div class="text-amber-300 font-black">78</div>
-                </div>
-                <div class="bg-blue-600 py-2">
-                  <div>Interested</div>
-                  <div class="text-amber-300 font-black">34 <span class="text-[9px] font-normal">(50%)</span></div>
-                </div>
-                <div class="bg-indigo-600 py-2">
-                  <div>Quoted</div>
-                  <div class="text-amber-300 font-black">15 <span class="text-[9px] font-normal">(44%)</span></div>
-                </div>
-                <div class="bg-purple-600 py-2">
-                  <div>Potential</div>
-                  <div class="text-amber-300 font-black">7 <span class="text-[9px] font-normal">(46%)</span></div>
-                </div>
-                <div class="bg-emerald-600 py-2 rounded-r">
-                  <div>Close-Won</div>
-                  <div class="text-amber-300 font-black">2 <span class="text-[9px] font-normal">(28%)</span></div>
-                </div>
+              <div class="grid grid-cols-5 gap-1 text-center text-xs">
+                <div class="bg-sky-600 text-white p-2 font-bold clip-arrow"><div>New</div><div class="text-base font-mono">78</div></div>
+                <div class="bg-sky-600 text-white p-2 font-bold clip-arrow"><div>Interested</div><div class="text-xs font-mono">34 (50%)</div></div>
+                <div class="bg-indigo-600 text-white p-2 font-bold clip-arrow"><div>Quoted</div><div class="text-xs font-mono">15 (44%)</div></div>
+                <div class="bg-purple-600 text-white p-2 font-bold clip-arrow"><div>Potential</div><div class="text-xs font-mono">7 (46%)</div></div>
+                <div class="bg-emerald-600 text-white p-2 font-bold rounded-r"><div>Close-Won</div><div class="text-xs font-mono">2 (28%)</div></div>
               </div>
-
-              <div class="pt-2">
-                <span class="text-xs font-bold text-slate-800 block mb-2">Sales Trend</span>
-                <div class="h-28 w-full border-b border-slate-200 flex items-end justify-between px-2 pt-2">
-                  <div class="bg-emerald-500 w-1.5 h-8"></div>
-                  <div class="bg-emerald-500 w-1.5 h-24"></div>
-                  <div class="bg-emerald-500 w-1.5 h-8"></div>
-                  <div class="bg-emerald-500 w-1.5 h-16"></div>
-                  <div class="bg-emerald-500 w-1.5 h-12"></div>
-                  <div class="bg-emerald-500 w-1.5 h-4"></div>
-                  <div class="bg-emerald-500 w-1.5 h-8"></div>
-                  <div class="bg-emerald-500 w-1.5 h-8"></div>
-                  <div class="bg-emerald-500 w-1.5 h-16"></div>
-                </div>
-                <div class="flex justify-between text-[9px] text-slate-400 font-mono mt-1">
-                  <span>2026-05-21</span>
-                  <span>2026-05-27</span>
-                  <span>2026-06-03</span>
-                  <span>2026-06-17</span>
+              <div>
+                <h4 class="text-xs font-bold text-slate-800 mb-2">Sales Trend</h4>
+                <div class="h-28 w-full bg-slate-50 rounded border border-slate-100 p-2 flex items-end justify-between gap-1 text-[9px] font-mono">
+                  <div class="flex flex-col items-center flex-1"><div class="w-2 bg-emerald-500 h-[30%] rounded-t"></div><span class="mt-1 text-slate-400">05-21</span></div>
+                  <div class="flex flex-col items-center flex-1"><div class="w-2 bg-emerald-500 h-[80%] rounded-t"></div><span class="mt-1 text-slate-400">05-27</span></div>
+                  <div class="flex flex-col items-center flex-1"><div class="w-2 bg-emerald-500 h-[40%] rounded-t"></div><span class="mt-1 text-slate-400">06-03</span></div>
+                  <div class="flex flex-col items-center flex-1"><div class="w-2 bg-emerald-500 h-[65%] rounded-t"></div><span class="mt-1 text-slate-400">06-17</span></div>
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- Bottom Row: Leads Breakdown & To-do List -->
-          <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-            <!-- Leads by Topics & Sources -->
-            <div class="bg-white p-4 rounded-lg border border-slate-200 shadow-xs space-y-3">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
+            <div class="lg:col-span-5 bg-white rounded-xl border border-slate-200 p-4 shadow-xs space-y-3">
               <div class="grid grid-cols-2 gap-4">
                 <div>
-                  <span class="text-xs font-bold text-slate-800 block mb-2">Leads by Topics</span>
-                  <div class="w-24 h-24 rounded-full border-8 border-rose-500 border-t-sky-500 border-r-amber-400 border-l-emerald-500 mx-auto my-2"></div>
-                  <div class="text-[10px] text-slate-500 text-center font-medium">Services 32.4% • IT 15.2%</div>
+                  <h4 class="text-xs font-bold text-slate-900 mb-2">Leads by Topics</h4>
+                  <div class="w-24 h-24 mx-auto rounded-full bg-conic-topics flex items-center justify-center">
+                    <div class="w-14 h-14 bg-white rounded-full"></div>
+                  </div>
+                  <p class="text-[10px] text-slate-500 text-center mt-2 font-semibold">Services 32.4% • IT 15.2%</p>
                 </div>
                 <div>
-                  <span class="text-xs font-bold text-slate-800 block mb-2">Leads by Sources</span>
-                  <div class="space-y-1 text-[11px] pt-1">
-                    <div class="flex items-center gap-1">
-                      <span class="w-12 text-slate-500">Phone</span>
-                      <div class="flex-1 bg-sky-500 h-2.5 rounded-xs"></div>
-                    </div>
-                    <div class="flex items-center gap-1">
-                      <span class="w-12 text-slate-500">Website</span>
-                      <div class="w-8 bg-slate-300 h-2.5 rounded-xs"></div>
-                    </div>
-                    <div class="flex items-center gap-1">
-                      <span class="w-12 text-slate-500">Zalo</span>
-                      <div class="w-4 bg-slate-300 h-2.5 rounded-xs"></div>
-                    </div>
+                  <h4 class="text-xs font-bold text-slate-900 mb-2">Leads by Sources</h4>
+                  <div class="space-y-2 text-[10px]">
+                    <div><span>Phone</span><div class="w-full bg-sky-500 h-2 rounded-full"></div></div>
+                    <div><span>Website</span><div class="w-full bg-slate-300 h-2 rounded-full w-[30%]"></div></div>
+                    <div><span>Zalo</span><div class="w-full bg-slate-300 h-2 rounded-full w-[20%]"></div></div>
                   </div>
                 </div>
               </div>
             </div>
 
-            <!-- To-do List ✨ -->
-            <div class="bg-white p-4 rounded-lg border border-slate-200 shadow-xs space-y-3">
+            <!-- To-do-list Table -->
+            <div class="lg:col-span-7 bg-white rounded-xl border border-slate-200 p-4 shadow-xs space-y-3">
               <div class="flex items-center justify-between border-b border-slate-100 pb-2">
-                <div class="flex items-center gap-1.5">
-                  <span class="text-xs font-bold text-slate-800">To-do-list</span>
-                  <i class="ph ph-sparkle text-orange-500 text-xs"></i>
-                </div>
-                <i class="ph ph-info text-slate-400"></i>
+                <h3 class="text-xs font-bold text-slate-900 tracking-wide uppercase flex items-center gap-1.5">
+                  To-do-list <i class="ph ph-sparkle text-amber-500"></i>
+                </h3>
+                <i class="ph ph-info text-slate-400 text-sm"></i>
               </div>
-
-              <!-- Actionable Table -->
               <div class="overflow-x-auto">
-                <table class="w-full text-left border-collapse text-xs">
+                <table class="w-full text-left border-collapse text-[11px]">
                   <thead>
-                    <tr class="bg-slate-50 border-b border-slate-200 text-slate-700 font-bold text-[11px]">
-                      <th class="py-2 px-2 border border-slate-200">Subject</th>
-                      <th class="py-2 px-2 border border-slate-200">Contact</th>
-                      <th class="py-2 px-2 border border-slate-200">Created on</th>
-                      <th class="py-2 px-2 border border-slate-200">Assigned to</th>
-                      <th class="py-2 px-2 border border-slate-200">Status</th>
-                      <th class="py-2 px-2 border border-slate-200">Actions Required</th>
-                      <th class="py-2 px-2 border border-slate-200 text-center">Button*</th>
+                    <tr class="bg-slate-50 border-b border-slate-200 text-slate-700 font-bold uppercase text-[10px]">
+                      <th class="py-2 px-2">Subject</th>
+                      <th class="py-2 px-2">Contact</th>
+                      <th class="py-2 px-2">Created on</th>
+                      <th class="py-2 px-2">Assigned to</th>
+                      <th class="py-2 px-2">Status</th>
+                      <th class="py-2 px-2">Actions Required</th>
+                      <th class="py-2 px-2 text-center">Button*</th>
                     </tr>
                   </thead>
-                  <tbody class="divide-y divide-slate-200 text-slate-800 font-medium">
-                    <tr id="todo-row-1328" class="hover:bg-slate-50 transition">
-                      <td class="py-2 px-2 border border-slate-200 font-bold">#1328 INBOUND ...</td>
-                      <td class="py-2 px-2 border border-slate-200 text-slate-600">Unknown 0913 xxxxxx</td>
-                      <td class="py-2 px-2 border border-slate-200 font-mono text-[11px]">08/01/2026</td>
-                      <td class="py-2 px-2 border border-slate-200">Nguyễn Ngọc Liên</td>
-                      <td class="py-2 px-2 border border-slate-200"><span class="px-1.5 py-0.5 bg-blue-50 text-blue-700 rounded font-semibold text-[10px]">New</span></td>
-                      <td class="py-2 px-2 border border-slate-200 text-rose-600 font-bold">Gửi báo giá dịch vụ AI cho khách hàng trong hôm nay</td>
-                      <td class="py-2 px-2 border border-slate-200 text-center">
-                        <button onclick="solveTodoTask('todo-row-1328', '#1328 INBOUND')" class="px-2 py-1 bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs rounded transition shadow-xs">
-                          [Solve]
-                        </button>
+                  <tbody class="divide-y divide-slate-100 text-slate-700 font-medium">
+                    <tr id="todo-row-1328">
+                      <td class="py-2 px-2 font-bold text-slate-900 hover:text-cloudx-main cursor-pointer" onclick="switchView('lead-detail')">#1328 INBOUND...</td>
+                      <td class="py-2 px-2">Unknown 0913 xxxxxx</td>
+                      <td class="py-2 px-2 font-mono text-[10px]">08/01/2026</td>
+                      <td class="py-2 px-2">Nguyễn Ngọc Liên</td>
+                      <td class="py-2 px-2"><span class="px-2 py-0.5 bg-blue-50 text-blue-700 rounded text-[10px]">New</span></td>
+                      <td class="py-2 px-2 font-semibold text-rose-600">Gửi báo giá dịch vụ AI cho khách hàng trong hôm nay</td>
+                      <td class="py-2 px-2 text-center">
+                        <button onclick="solveTodoTask('todo-row-1328', '#1328')" class="px-2.5 py-1 bg-rose-600 hover:bg-rose-700 text-white font-bold text-[10px] rounded shadow-xs transition">[Solve]</button>
                       </td>
                     </tr>
-
-                    <tr id="todo-row-1332" class="hover:bg-slate-50 transition">
-                      <td class="py-2 px-2 border border-slate-200 font-bold">#1332 INBOUND ...</td>
-                      <td class="py-2 px-2 border border-slate-200 text-slate-600">Unknown 0918 xxxxxx</td>
-                      <td class="py-2 px-2 border border-slate-200 font-mono text-[11px]">06/01/2026</td>
-                      <td class="py-2 px-2 border border-slate-200">Lê Đào Tuyết Anh</td>
-                      <td class="py-2 px-2 border border-slate-200"><span class="px-1.5 py-0.5 bg-purple-50 text-purple-700 rounded font-semibold text-[10px]">Potential</span></td>
-                      <td class="py-2 px-2 border border-slate-200 text-rose-600 font-bold">Soạn hợp đồng nháp và gửi cho khách hàng sớm nhất có thể</td>
-                      <td class="py-2 px-2 border border-slate-200 text-center">
-                        <button onclick="solveTodoTask('todo-row-1332', '#1332 INBOUND')" class="px-2 py-1 bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs rounded transition shadow-xs">
-                          [Solve]
-                        </button>
-                      </td>
-                    </tr>
-
-                    <tr id="todo-row-1330" class="hover:bg-slate-50 transition">
-                      <td class="py-2 px-2 border border-slate-200 font-bold">#1330 INBOUND ...</td>
-                      <td class="py-2 px-2 border border-slate-200 text-slate-600">Unknown 0122 xxxxxx</td>
-                      <td class="py-2 px-2 border border-slate-200 font-mono text-[11px]">05/01/2026</td>
-                      <td class="py-2 px-2 border border-slate-200">Lê Đào Tuyết Anh</td>
-                      <td class="py-2 px-2 border border-slate-200"><span class="px-1.5 py-0.5 bg-blue-50 text-blue-700 rounded font-semibold text-[10px]">New</span></td>
-                      <td class="py-2 px-2 border border-slate-200 text-rose-600 font-bold">Gửi tài liệu giải pháp và báo giá sơ bộ cho khách hàng</td>
-                      <td class="py-2 px-2 border border-slate-200 text-center">
-                        <button onclick="solveTodoTask('todo-row-1330', '#1330 INBOUND')" class="px-2 py-1 bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs rounded transition shadow-xs">
-                          [Solve]
-                        </button>
+                    <tr id="todo-row-1332">
+                      <td class="py-2 px-2 font-bold text-slate-900 hover:text-cloudx-main cursor-pointer" onclick="switchView('lead-detail')">#1332 INBOUND...</td>
+                      <td class="py-2 px-2">Unknown 0918 xxxxxx</td>
+                      <td class="py-2 px-2 font-mono text-[10px]">06/01/2026</td>
+                      <td class="py-2 px-2">Lê Đào Tuyết Anh</td>
+                      <td class="py-2 px-2"><span class="px-2 py-0.5 bg-purple-50 text-purple-700 rounded text-[10px]">Potential</span></td>
+                      <td class="py-2 px-2 font-semibold text-rose-600">Soạn hợp đồng nháp và gửi cho khách hàng sớm nhất có thể</td>
+                      <td class="py-2 px-2 text-center">
+                        <button onclick="solveTodoTask('todo-row-1332', '#1332')" class="px-2.5 py-1 bg-rose-600 hover:bg-rose-700 text-white font-bold text-[10px] rounded shadow-xs transition">[Solve]</button>
                       </td>
                     </tr>
                   </tbody>
                 </table>
               </div>
-
-              <!-- Instruction Footnote -->
-              <p class="text-[11px] text-slate-500 font-medium italic pt-1">
-                Lưu ý: *Sau khi thực hiện xong, nhân viên bấm [Solve] sẽ ẩn công việc trên danh sách.
-              </p>
+              <p class="text-[10px] text-slate-500 italic">Lưu ý: *Sau khi thực hiện xong, nhân viên bấm [Solve] sẽ ẩn công việc trên danh sách.</p>
             </div>
           </div>
         </div>
 
-        <!-- 1.3 QA AGENT DASHBOARD CONTAINER -->
-        <div id="db-container-qa" class="hidden space-y-4">
-          <!-- Top QA Metrics Row -->
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div class="bg-white p-4 rounded-lg border border-slate-200 shadow-xs flex items-center justify-between">
-              <div>
-                <span class="text-xs font-bold text-slate-500 block">Average Score (30 Days)</span>
-                <span class="text-3xl font-extrabold text-blue-600 mt-1 block">73.23</span>
+        <!-- 3. QA AGENT DASHBOARD -->
+        <div id="dashboard-qa" class="hidden space-y-4">
+          <div class="grid grid-cols-1 md:grid-cols-12 gap-4">
+            <div class="md:col-span-3 bg-white p-4 rounded-xl border border-slate-200 shadow-xs space-y-2">
+              <span class="text-xs text-slate-500 font-bold block">Average Score (30 Days)</span>
+              <div class="flex items-baseline gap-2">
+                <span class="text-3xl font-extrabold text-sky-600 font-mono">73.23</span>
+                <span class="px-2 py-0.5 rounded bg-rose-500 text-white text-[10px] font-bold">Target ≥ 90</span>
               </div>
-              <span class="px-2 py-1 bg-rose-500 text-white text-[10px] font-bold rounded">Target ≥ 90</span>
             </div>
-
-            <div class="bg-white p-4 rounded-lg border border-slate-200 shadow-xs flex items-center justify-between">
-              <div>
-                <span class="text-xs font-bold text-slate-500 block">Total Evaluated Cases</span>
-                <span class="text-3xl font-extrabold text-slate-800 mt-1 block">26</span>
-              </div>
-              <span class="text-xs font-bold text-rose-600">Critical Fails: 4 Case</span>
+            <div class="md:col-span-3 bg-white p-4 rounded-xl border border-slate-200 shadow-xs space-y-2">
+              <span class="text-xs text-slate-500 font-bold block">Total Evaluated Cases:</span>
+              <span class="text-3xl font-extrabold text-sky-600 font-mono">26</span>
+              <span class="text-[11px] text-rose-600 font-bold block">Critical Fails: 4 Case</span>
             </div>
-
-            <div class="bg-white p-4 rounded-lg border border-slate-200 shadow-xs space-y-2">
-              <span class="text-xs font-bold text-slate-500 block">Sentiment</span>
+            <div class="md:col-span-6 bg-white p-4 rounded-xl border border-slate-200 shadow-xs space-y-2">
+              <span class="text-xs text-slate-500 font-bold block">Sentiment</span>
               <div class="w-full bg-slate-100 h-3 rounded-full overflow-hidden flex">
                 <div class="bg-sky-500 h-full w-[69.23%]"></div>
                 <div class="bg-emerald-500 h-full w-[30.77%]"></div>
               </div>
-              <p class="text-[10px] text-rose-600 font-semibold">Most customers have a neutral sentiment.</p>
+              <p class="text-[11px] text-rose-500 font-medium italic">Most customers have a neutral sentiment.</p>
             </div>
           </div>
 
-          <!-- Score Trend & Sentiment Line Chart -->
-          <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-            <div class="bg-white p-4 rounded-lg border border-slate-200 shadow-xs space-y-2">
-              <span class="text-xs font-bold text-slate-800 block">Score Trend</span>
-              <div class="h-32 w-full flex items-end justify-around border-b border-slate-200 pt-4">
-                <div class="bg-orange-500 w-8 h-20 rounded-t"></div>
-                <div class="bg-orange-500 w-8 h-28 rounded-t"></div>
-                <div class="bg-orange-500 w-8 h-32 rounded-t"></div>
-              </div>
-              <div class="flex justify-around text-[10px] text-slate-500 font-mono">
-                <span>26/05</span>
-                <span>01/06</span>
-                <span>09/06</span>
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+            <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-xs space-y-2">
+              <h4 class="text-xs font-bold text-slate-800">Score Trend</h4>
+              <div class="h-32 flex items-end justify-around border-b border-slate-200 pb-2">
+                <div class="w-8 bg-orange-500 h-20 rounded-t"></div>
+                <div class="w-8 bg-orange-500 h-28 rounded-t"></div>
+                <div class="w-8 bg-orange-500 h-32 rounded-t"></div>
               </div>
             </div>
-
-            <div class="bg-white p-4 rounded-lg border border-slate-200 shadow-xs space-y-2">
-              <span class="text-xs font-bold text-slate-800 block">Sentiment Distribution</span>
-              <div class="h-32 w-full flex items-center justify-center border-b border-slate-200">
-                <span class="text-xs text-slate-400 font-medium">Bình thường: 69.23% • Hài lòng: 30.77%</span>
+            <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-xs space-y-2">
+              <h4 class="text-xs font-bold text-slate-800">Skills Assessment</h4>
+              <div class="w-28 h-28 mx-auto rounded-full border-4 border-rose-300 flex items-center justify-center text-[10px] font-bold text-rose-700 text-center">
+                Chào hỏi<br>Khai thác<br>Giải pháp
               </div>
-              <div class="flex justify-between text-[10px] text-slate-500 font-mono">
-                <span>26/05</span>
-                <span>01/06</span>
-                <span>09/06</span>
-              </div>
+            </div>
+            <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-xs space-y-2">
+              <h4 class="text-xs font-bold text-slate-800">Top Agents Requiring Coaching</h4>
+              <table class="w-full text-left text-xs">
+                <thead><tr class="bg-slate-50 font-bold"><th class="py-1 px-2">Agent</th><th class="py-1 px-2">Average Score</th><th class="py-1 px-2">Action</th></tr></thead>
+                <tbody><tr><td class="py-1.5 px-2 font-medium">cb_02</td><td class="py-1.5 px-2 font-mono text-rose-600 font-bold">66.12</td><td class="py-1.5 px-2"><button class="px-2 py-0.5 border border-sky-400 text-sky-600 rounded text-[10px]">Detail</button></td></tr></tbody>
+              </table>
             </div>
           </div>
         </div>
       </main>
 
-      <!-- ================= VIEW 1.5: REPORT VIEW ================= -->
+      <!-- ================= VIEW 2: REPORT ================= -->
       <main id="view-report" class="hidden p-4 space-y-4 max-w-[1600px] w-full mx-auto">
-        <div class="flex items-center justify-between pb-1">
-          <h1 class="text-sm font-bold text-slate-800">Report</h1>
-        </div>
-
-        <!-- Filter Bar -->
-        <div class="bg-white p-3 rounded-lg border border-slate-200 shadow-xs flex flex-wrap items-center gap-4 text-xs font-medium">
-          <div class="flex flex-col gap-1">
-            <label class="text-slate-500">Create date range</label>
-            <div class="flex items-center bg-white border border-slate-300 rounded px-2.5 py-1 text-slate-700 gap-2">
-              <span>2026-07-01</span>
-              <span class="text-slate-400">→</span>
-              <span>2026-07-31</span>
-              <i class="ph ph-calendar text-slate-400"></i>
+        <h1 class="text-sm font-bold text-slate-800">Report</h1>
+        <div class="bg-white rounded-xl border border-slate-200 p-4 shadow-xs space-y-4">
+          <div class="flex flex-wrap items-end justify-between gap-3 text-xs">
+            <div class="flex flex-wrap items-end gap-3">
+              <div>
+                <label class="block text-slate-600 font-medium mb-1">Create date range</label>
+                <input type="text" value="2026-07-01  →  2026-07-31" readonly class="px-3 py-1.5 text-xs bg-slate-50 border border-slate-300 rounded font-mono text-slate-700 w-52">
+              </div>
+              <div>
+                <label class="block text-slate-600 font-medium mb-1">Quick Select</label>
+                <select class="px-3 py-1.5 text-xs border border-slate-300 rounded bg-white font-medium text-slate-700 w-36"><option selected>Last month</option></select>
+              </div>
+              <div>
+                <label class="block text-slate-600 font-medium mb-1">Report Type</label>
+                <select class="px-3 py-1.5 text-xs border border-slate-300 rounded bg-white font-medium text-slate-700 w-36"><option selected>Ticket</option></select>
+              </div>
+              <button class="px-5 py-1.5 bg-cloudx-main text-white text-xs font-semibold rounded shadow-xs">Apply</button>
             </div>
+            <button class="px-4 py-1.5 bg-white border border-slate-300 text-slate-700 text-xs font-medium rounded">Filter</button>
           </div>
 
-          <div class="flex flex-col gap-1">
-            <label class="text-slate-500">Quick Select</label>
-            <select class="border border-slate-300 rounded px-3 py-1 bg-white text-slate-700">
-              <option>Last month</option>
-              <option>This month</option>
-            </select>
-          </div>
-
-          <div class="flex flex-col gap-1">
-            <label class="text-slate-500">Report Type</label>
-            <select class="border border-slate-300 rounded px-3 py-1 bg-white text-slate-700">
-              <option>Ticket</option>
-              <option>Agent</option>
-            </select>
-          </div>
-
-          <button class="mt-4 px-4 py-1.5 bg-cloudx-main hover:bg-cloudx-hover text-white font-bold rounded shadow-xs transition">
-            Apply
-          </button>
-
-          <button class="mt-4 ml-auto px-3.5 py-1.5 border border-slate-300 hover:bg-slate-50 text-slate-700 rounded transition">
-            Filter
-          </button>
-        </div>
-
-        <!-- Top Metric Summary Cards -->
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <div class="bg-white p-3.5 rounded-lg border border-slate-200 shadow-xs text-center">
-            <span class="text-xs font-bold text-slate-500 uppercase">Total New Ticket</span>
-            <span class="text-2xl font-black text-slate-800 block mt-1">62</span>
-          </div>
-          <div class="bg-white p-3.5 rounded-lg border border-slate-200 shadow-xs text-center">
-            <span class="text-xs font-bold text-slate-500 uppercase">Total Resovled Ticket</span>
-            <span class="text-2xl font-black text-slate-800 block mt-1">1</span>
-          </div>
-          <div class="bg-white p-3.5 rounded-lg border border-slate-200 shadow-xs text-center">
-            <span class="text-xs font-bold text-slate-500 uppercase">First Response Due</span>
-            <span class="text-2xl font-black text-slate-800 block mt-1">63</span>
-          </div>
-          <div class="bg-white p-3.5 rounded-lg border border-slate-200 shadow-xs text-center">
-            <span class="text-xs font-bold text-slate-500 uppercase">Overdue</span>
-            <span class="text-2xl font-black text-slate-800 block mt-1">63</span>
+          <div class="pt-4 border-t border-slate-100 grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+            <div><span class="block text-xs font-semibold text-slate-500">Total New Ticket</span><span class="text-xl font-bold text-slate-800 font-mono">62</span></div>
+            <div><span class="block text-xs font-semibold text-slate-500">Total Resovled Ticket</span><span class="text-xl font-bold text-slate-800 font-mono">1</span></div>
+            <div><span class="block text-xs font-semibold text-slate-500">First Response Due</span><span class="text-xl font-bold text-slate-800 font-mono">63</span></div>
+            <div><span class="block text-xs font-semibold text-slate-500">Overdue</span><span class="text-xl font-bold text-slate-800 font-mono">63</span></div>
           </div>
         </div>
 
-        <!-- Ticket List Table in Report -->
-        <div class="bg-white rounded-lg border border-slate-200 shadow-xs overflow-hidden">
+        <div class="bg-white rounded-xl border border-slate-200 shadow-xs overflow-hidden">
           <div class="p-3 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
-            <span class="text-xs font-bold text-slate-800">Ticket List</span>
-            <div class="flex items-center gap-2">
-              <input type="text" placeholder="Search by..." class="px-3 py-1 bg-white border border-slate-300 rounded text-xs w-48">
-              <button class="px-3 py-1 bg-white border border-slate-300 rounded text-xs font-medium">Reset</button>
-              <button class="px-3 py-1 bg-slate-800 text-white rounded text-xs font-semibold">Export CSV</button>
-            </div>
+            <h3 class="text-xs font-bold text-slate-800">Ticket List</h3>
+            <button class="px-3.5 py-1.5 bg-white border border-slate-300 text-slate-700 text-xs font-medium rounded flex items-center gap-1">
+              <i class="ph ph-download-simple"></i><span>Export CSV</span>
+            </button>
           </div>
-
           <table class="w-full text-left border-collapse text-xs">
             <thead>
-              <tr class="bg-slate-100/70 border-b border-slate-200 text-slate-600 font-bold uppercase tracking-wider text-[11px]">
+              <tr class="bg-slate-100/80 border-b border-slate-200 text-slate-600 font-bold uppercase text-[11px]">
                 <th class="py-2.5 px-3">Subject</th>
                 <th class="py-2.5 px-3">Group</th>
                 <th class="py-2.5 px-3">Agent</th>
                 <th class="py-2.5 px-3">Create Date</th>
-                <th class="py-2.5 px-3">Priority</th>
-                <th class="py-2.5 px-3">Status</th>
+                <th class="py-2.5 px-3 text-center">Priority</th>
+                <th class="py-2.5 px-3 text-center">Status</th>
               </tr>
             </thead>
             <tbody class="divide-y divide-slate-100 text-slate-700">
-              <tr class="hover:bg-slate-50 cursor-pointer" onclick="openTicketDetail('#1399 OUTBOUND CALL 1...')">
-                <td class="py-2.5 px-3">
-                  <span class="font-bold text-slate-900">#1399 OUTBOUND CALL 1...</span>
-                  <span class="ml-2 px-1.5 py-0.2 text-[10px] bg-rose-50 text-rose-600 rounded border border-rose-200 font-semibold">Overdue</span>
-                </td>
+              <tr class="hover:bg-slate-50 cursor-pointer" onclick="switchView('ticket-detail')">
+                <td class="py-2.5 px-3 font-bold text-slate-900">#1399 OUTBOUND CALL 1...</td>
                 <td class="py-2.5 px-3">Technical Support</td>
                 <td class="py-2.5 px-3">Phan Thanh Nam</td>
-                <td class="py-2.5 px-3 font-mono text-[11px]">31-07-2026</td>
-                <td class="py-2.5 px-3"><span class="px-2 py-0.5 bg-emerald-50 text-emerald-700 rounded border border-emerald-200 font-bold">Low</span></td>
-                <td class="py-2.5 px-3"><span class="px-2 py-0.5 bg-orange-50 text-orange-700 rounded border border-orange-200 font-bold">Solved</span></td>
-              </tr>
-              <tr class="hover:bg-slate-50 cursor-pointer" onclick="openTicketDetail('#1398 OUTBOUND CALL 1...')">
-                <td class="py-2.5 px-3">
-                  <span class="font-bold text-slate-900">#1398 OUTBOUND CALL 1...</span>
-                  <span class="ml-2 px-1.5 py-0.2 text-[10px] bg-rose-50 text-rose-600 rounded border border-rose-200 font-semibold">Overdue</span>
-                </td>
-                <td class="py-2.5 px-3">Technical Support</td>
-                <td class="py-2.5 px-3">Phan Thanh Nam</td>
-                <td class="py-2.5 px-3 font-mono text-[11px]">31-07-2026</td>
-                <td class="py-2.5 px-3"><span class="px-2 py-0.5 bg-emerald-50 text-emerald-700 rounded border border-emerald-200 font-bold">Low</span></td>
-                <td class="py-2.5 px-3"><span class="px-2 py-0.5 bg-emerald-50 text-emerald-700 rounded border border-emerald-200 font-bold">Open</span></td>
+                <td class="py-2.5 px-3 font-mono">31-07-2026</td>
+                <td class="py-2.5 px-3 text-center"><span class="px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 font-semibold text-[10px]">Low</span></td>
+                <td class="py-2.5 px-3 text-center"><span class="px-2 py-0.5 rounded bg-amber-50 text-amber-700 font-semibold text-[10px]">Solved</span></td>
               </tr>
             </tbody>
           </table>
         </div>
       </main>
 
-      <!-- ================= VIEW 1.8: LEADS LIST ================= -->
-      <main id="view-leads" class="hidden p-4 space-y-4 max-w-[1600px] w-full mx-auto">
-        <div class="flex items-center justify-between pb-1">
-          <h1 class="text-sm font-bold text-slate-800">Leads Management</h1>
-        </div>
-
-        <div class="bg-white rounded-lg border border-slate-200 shadow-xs overflow-hidden">
-          <!-- Toolbar Bar -->
-          <div class="p-3 bg-slate-50 border-b border-slate-200 flex flex-wrap items-center justify-between gap-3">
-            <button onclick="showToast('Thêm Lead', 'Khởi tạo Lead bán hàng mới...', 'blue')" class="px-3.5 py-1.5 bg-cloudx-main hover:bg-cloudx-hover text-white text-xs font-semibold rounded shadow-xs transition flex items-center gap-1.5">
-              <i class="ph ph-plus-bold"></i>
-              <span>Add New</span>
-            </button>
-
-            <div class="flex items-center gap-2">
-              <div class="relative">
-                <input type="text" placeholder="Search by lead ID, subject..." class="pl-3 pr-8 py-1.5 text-xs bg-white border border-slate-300 rounded-md w-64 focus:outline-none focus:border-cloudx-main">
-                <i class="ph ph-magnifying-glass absolute right-2.5 top-2 text-slate-400 text-xs"></i>
-              </div>
-              <button class="px-3 py-1.5 bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 text-xs font-medium rounded transition">Reset</button>
-              <button class="px-3.5 py-1.5 bg-cloudx-main hover:bg-cloudx-hover text-white text-xs font-semibold rounded transition flex items-center gap-1">
-                <i class="ph ph-funnel"></i>
-                <span>Filter</span>
-              </button>
-            </div>
-          </div>
-
-          <!-- Table Container -->
-          <div class="overflow-x-auto">
-            <table class="w-full text-left border-collapse text-xs">
-              <thead>
-                <tr class="bg-slate-100/80 border-b border-slate-200 text-slate-600 font-bold uppercase tracking-wider text-[11px]">
-                  <th class="py-2.5 px-3">#ID</th>
-                  <th class="py-2.5 px-3">Contact</th>
-                  <th class="py-2.5 px-3">Type</th>
-                  <th class="py-2.5 px-3">Created on</th>
-                  <th class="py-2.5 px-3">Assigned to</th>
-                  <th class="py-2.5 px-3">Priority</th>
-                  <th class="py-2.5 px-3">Status</th>
-                </tr>
-              </thead>
-              <tbody class="divide-y divide-slate-100 text-slate-700">
-                <!-- Row 1: Hot Lead -->
-                <tr class="hover:bg-slate-50 transition cursor-pointer" onclick="openTicketDetail('#1328 INBOUND CALL')">
-                  <td class="py-2.5 px-3">
-                    <div class="font-bold text-slate-900">#1328 INBOUND ...</div>
-                    <span class="inline-flex items-center gap-1 mt-0.5 text-[10px] font-bold text-amber-600 bg-amber-50 px-1.5 py-0.2 rounded border border-amber-200">
-                      🔥 Hot
-                    </span>
-                  </td>
-                  <td class="py-2.5 px-3 text-slate-700 font-medium">A Minh 0913 xxxxxx</td>
-                  <td class="py-2.5 px-3">Quote</td>
-                  <td class="py-2.5 px-3 font-mono text-[11px] text-slate-500">12/01/2026</td>
-                  <td class="py-2.5 px-3 font-medium text-slate-800">Nguyễn Ngọc Liên</td>
-                  <td class="py-2.5 px-3"><span class="font-bold text-rose-600">Urgent</span></td>
-                  <td class="py-2.5 px-3"><span class="font-bold text-emerald-600">Open</span></td>
-                </tr>
-
-                <!-- Row 2: Cold Lead -->
-                <tr class="hover:bg-slate-50 transition cursor-pointer" onclick="openTicketDetail('#1332 INBOUND CALL')">
-                  <td class="py-2.5 px-3">
-                    <div class="font-bold text-slate-900">#1332 INBOUND ...</div>
-                    <span class="inline-flex items-center gap-1 mt-0.5 text-[10px] font-bold text-sky-600 bg-sky-50 px-1.5 py-0.2 rounded border border-sky-200">
-                      ❄️ Cold
-                    </span>
-                  </td>
-                  <td class="py-2.5 px-3 text-slate-700 font-medium">A Trung 0918 xxxxxx</td>
-                  <td class="py-2.5 px-3">Unknown</td>
-                  <td class="py-2.5 px-3 font-mono text-[11px] text-slate-500">10/01/2026</td>
-                  <td class="py-2.5 px-3 font-medium text-slate-800">Lê Đào Tuyết Anh</td>
-                  <td class="py-2.5 px-3"><span class="font-bold text-slate-400">Low</span></td>
-                  <td class="py-2.5 px-3"><span class="font-bold text-emerald-500/70">Closed</span></td>
-                </tr>
-
-                <!-- Row 3: Warm Lead -->
-                <tr class="hover:bg-slate-50 transition cursor-pointer" onclick="openTicketDetail('#1330 INBOUND CALL')">
-                  <td class="py-2.5 px-3">
-                    <div class="font-bold text-slate-900">#1330 INBOUND ...</div>
-                    <span class="inline-flex items-center gap-1 mt-0.5 text-[10px] font-bold text-amber-500 bg-amber-50 px-1.5 py-0.2 rounded border border-amber-200">
-                      ⚡ Warm
-                    </span>
-                  </td>
-                  <td class="py-2.5 px-3 text-slate-700 font-medium">Unknown 0122 xxxxxx</td>
-                  <td class="py-2.5 px-3">Support</td>
-                  <td class="py-2.5 px-3 font-mono text-[11px] text-slate-500">10/01/2026</td>
-                  <td class="py-2.5 px-3 font-medium text-slate-800">Lê Đào Tuyết Anh</td>
-                  <td class="py-2.5 px-3"><span class="font-bold text-sky-600">Normal</span></td>
-                  <td class="py-2.5 px-3"><span class="font-bold text-rose-600">Pending</span></td>
-                </tr>
-
-                <!-- Row 4: Unqualified Lead -->
-                <tr class="hover:bg-slate-50 transition cursor-pointer">
-                  <td class="py-2.5 px-3">
-                    <div class="font-bold text-slate-900">#1328 INBOUND ...</div>
-                    <span class="inline-flex items-center gap-1 mt-0.5 text-[10px] font-bold text-rose-600 bg-rose-50 px-1.5 py-0.2 rounded border border-rose-200">
-                      ❌ Unqualified
-                    </span>
-                  </td>
-                  <td class="py-2.5 px-3 text-slate-700 font-medium">c Trâm 0122 xxxxxx</td>
-                  <td class="py-2.5 px-3">Quote</td>
-                  <td class="py-2.5 px-3 font-mono text-[11px] text-slate-500">08/01/2026</td>
-                  <td class="py-2.5 px-3 font-medium text-slate-800">Lê Nguyễn Ngọc Ngân</td>
-                  <td class="py-2.5 px-3"><span class="font-bold text-amber-500">Hight</span></td>
-                  <td class="py-2.5 px-3">
-                    <select class="text-xs font-bold text-blue-600 bg-blue-50 border border-blue-200 rounded px-1.5 py-0.5 focus:outline-none cursor-pointer">
-                      <option selected>Solved</option>
-                      <option>Open</option>
-                      <option>Closed</option>
-                    </select>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
-          <!-- Pagination Footer -->
-          <div class="p-3 bg-slate-50 border-t border-slate-200 flex items-center justify-between text-xs text-slate-500">
-            <span>Showing 1 to 10 of 1,370 entries</span>
-            <div class="flex items-center gap-2">
-              <div class="flex items-center gap-1 font-mono">
-                <button class="px-2 py-0.5 border border-slate-300 rounded bg-white text-slate-600 hover:bg-slate-100">&lt;</button>
-                <button class="px-2 py-0.5 border border-cloudx-main rounded bg-cloudx-main text-white font-bold">1</button>
-                <button class="px-2 py-0.5 border border-slate-300 rounded bg-white text-slate-600 hover:bg-slate-100">2</button>
-                <button class="px-2 py-0.5 border border-slate-300 rounded bg-white text-slate-600 hover:bg-slate-100">3</button>
-                <span>...</span>
-                <button class="px-2 py-0.5 border border-slate-300 rounded bg-white text-slate-600 hover:bg-slate-100">137</button>
-                <button class="px-2 py-0.5 border border-slate-300 rounded bg-white text-slate-600 hover:bg-slate-100">&gt;</button>
-              </div>
-              <select class="px-2 py-0.5 border border-slate-300 rounded bg-white text-xs">
-                <option>10 / page</option>
-                <option>25 / page</option>
-              </select>
-            </div>
-          </div>
-        </div>
-      </main>
-
-      <!-- ================= VIEW 2: TICKET LIST ================= -->
-      <main id="view-ticket-list" class="hidden p-4 space-y-4 max-w-[1600px] w-full mx-auto">
-        <div class="flex items-center justify-between pb-1">
-          <h1 class="text-sm font-bold text-slate-800">Tickets</h1>
-        </div>
-
-        <div class="bg-white rounded-lg border border-slate-200 shadow-xs overflow-hidden">
-          <!-- Toolbar -->
-          <div class="p-3 bg-slate-50 border-b border-slate-200 flex flex-wrap items-center justify-between gap-3">
-            <button onclick="switchView('create-ticket')" class="px-3.5 py-1.5 bg-cloudx-main hover:bg-cloudx-hover text-white text-xs font-semibold rounded shadow-xs transition flex items-center gap-1.5">
-              <i class="ph ph-plus-bold"></i>
-              <span>Add New</span>
-            </button>
-
-            <div class="flex items-center gap-2">
-              <div class="relative">
-                <input type="text" placeholder="Search by ticket ID, subject..." class="pl-3 pr-8 py-1.5 text-xs bg-white border border-slate-300 rounded-md w-64 focus:outline-none focus:border-cloudx-main">
-                <i class="ph ph-magnifying-glass absolute right-2.5 top-2 text-slate-400 text-xs"></i>
-              </div>
-              <button class="px-3 py-1.5 bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 text-xs font-medium rounded transition">Reset</button>
-              <button class="px-3.5 py-1.5 bg-cloudx-main hover:bg-cloudx-hover text-white text-xs font-semibold rounded transition flex items-center gap-1">
-                <i class="ph ph-funnel"></i>
-                <span>Filter</span>
-              </button>
-            </div>
-          </div>
-
-          <!-- Table -->
-          <div class="overflow-x-auto">
-            <table class="w-full text-left border-collapse text-xs">
-              <thead>
-                <tr class="bg-slate-100/70 border-b border-slate-200 text-slate-600 font-bold uppercase tracking-wider text-[11px]">
-                  <th class="py-2.5 px-3">Subject</th>
-                  <th class="py-2.5 px-3">Contact</th>
-                  <th class="py-2.5 px-3">Group</th>
-                  <th class="py-2.5 px-3">Type</th>
-                  <th class="py-2.5 px-3">Created on</th>
-                  <th class="py-2.5 px-3">Assigned to</th>
-                  <th class="py-2.5 px-3">Priority</th>
-                  <th class="py-2.5 px-3">Status</th>
-                </tr>
-              </thead>
-              <tbody class="divide-y divide-slate-100 text-slate-700">
-                <tr class="hover:bg-slate-50 transition cursor-pointer" onclick="openTicketDetail('#1411 OUTBOUND CALL 1...')">
-                  <td class="py-2.5 px-3">
-                    <div class="font-bold text-slate-900">#1411 OUTBOUND CALL 1...</div>
-                    <div class="flex items-center gap-1 mt-0.5">
-                      <span class="text-[10px] text-rose-600 bg-rose-50 px-1.5 py-0.2 rounded border border-rose-200 font-semibold">First response due Overdue</span>
-                    </div>
-                  </td>
-                  <td class="py-2.5 px-3 text-slate-600">Unknown 19000119 (19000119)</td>
-                  <td class="py-2.5 px-3">Technical Support</td>
-                  <td class="py-2.5 px-3">Other</td>
-                  <td class="py-2.5 px-3 font-mono text-[11px]">06-08-2026 11:31:59</td>
-                  <td class="py-2.5 px-3 font-medium">Phan Thanh Nam</td>
-                  <td class="py-2.5 px-3"><span class="px-2 py-0.5 bg-slate-100 text-slate-600 rounded font-bold border border-slate-200">Low</span></td>
-                  <td class="py-2.5 px-3"><span class="px-2 py-0.5 bg-slate-100 text-slate-600 rounded font-bold border border-slate-200">Closed</span></td>
-                </tr>
-
-                <tr class="hover:bg-slate-50 transition cursor-pointer" onclick="openTicketDetail('#1410 OUTBOUND CALL 1...')">
-                  <td class="py-2.5 px-3">
-                    <div class="font-bold text-slate-900">#1410 OUTBOUND CALL 1...</div>
-                    <div class="flex items-center gap-1 mt-0.5">
-                      <span class="text-[10px] text-rose-600 bg-rose-50 px-1.5 py-0.2 rounded border border-rose-200 font-semibold">First response due Overdue</span>
-                    </div>
-                  </td>
-                  <td class="py-2.5 px-3 text-slate-600">Unknown 19000119 (19000119)</td>
-                  <td class="py-2.5 px-3">Technical Support</td>
-                  <td class="py-2.5 px-3">Other</td>
-                  <td class="py-2.5 px-3 font-mono text-[11px]">05-08-2026 10:44:42</td>
-                  <td class="py-2.5 px-3 font-medium">Phan Thanh Nam</td>
-                  <td class="py-2.5 px-3"><span class="px-2 py-0.5 bg-slate-100 text-slate-600 rounded font-bold border border-slate-200">Low</span></td>
-                  <td class="py-2.5 px-3"><span class="px-2 py-0.5 bg-orange-50 text-orange-600 rounded font-bold border border-orange-200">Solved</span></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </main>
-
-      <!-- ================= VIEW 2.1: CREATE TICKET ================= -->
-      <main id="view-create-ticket" class="hidden p-4 space-y-4 max-w-[1200px] w-full mx-auto">
-        <div class="flex items-center justify-between pb-1">
-          <div class="flex items-center gap-2 text-xs text-slate-500">
-            <span>Ticket</span>
-            <span>/</span>
-            <span>Create</span>
-            <span>/</span>
-            <span class="font-bold text-slate-800">New</span>
-          </div>
-          <button onclick="showToast('Tạo vé thành công', 'Ticket mới đã được lưu', 'emerald')" class="px-5 py-1.5 bg-cloudx-main hover:bg-cloudx-hover text-white text-xs font-bold rounded shadow-xs transition">
-            Accept
-          </button>
-        </div>
-
-        <div class="bg-white p-6 rounded-lg border border-slate-200 shadow-xs grid grid-cols-1 md:grid-cols-2 gap-6 text-xs">
-          <!-- Left Column -->
-          <div class="space-y-4">
-            <div>
-              <div class="flex justify-between items-center mb-1">
-                <label class="font-bold text-slate-700">* Contact</label>
-                <button onclick="openAddContactModal()" class="text-xs font-semibold text-sky-600 hover:underline">Add New Contact</button>
-              </div>
-              <select class="w-full border border-slate-300 rounded px-3 py-2 bg-white text-slate-700">
-                <option value="">Select Contact</option>
-                <option value="19000119">Unknown 19000119</option>
-              </select>
-            </div>
-
-            <div>
-              <label class="font-bold text-slate-700 block mb-1">Type</label>
-              <select class="w-full border border-slate-300 rounded px-3 py-2 bg-white text-slate-700">
-                <option>Other</option>
-                <option>Quote</option>
-                <option>Support</option>
-              </select>
-            </div>
-
-            <div>
-              <label class="font-bold text-slate-700 block mb-1">Source</label>
-              <select class="w-full border border-slate-300 rounded px-3 py-2 bg-white text-slate-700">
-                <option>Phone</option>
-                <option>Website</option>
-                <option>Zalo</option>
-              </select>
-            </div>
-
-            <div>
-              <label class="font-bold text-slate-700 block mb-1">Status</label>
-              <select class="w-full border border-slate-300 rounded px-3 py-2 bg-white text-slate-700">
-                <option>Open</option>
-                <option>Pending</option>
-                <option>Solved</option>
-              </select>
-            </div>
-
-            <div>
-              <label class="font-bold text-slate-700 block mb-1">Priority</label>
-              <select class="w-full border border-slate-300 rounded px-3 py-2 bg-white text-slate-700">
-                <option>Low</option>
-                <option>Normal</option>
-                <option>High</option>
-              </select>
-            </div>
-
-            <div>
-              <label class="font-bold text-slate-700 block mb-1">* Department</label>
-              <select class="w-full border border-slate-300 rounded px-3 py-2 bg-white text-slate-700">
-                <option>Select Department</option>
-                <option selected>Đồng Nhất</option>
-              </select>
-            </div>
-
-            <div>
-              <label class="font-bold text-slate-700 block mb-1">* Group</label>
-              <select class="w-full border border-slate-300 rounded px-3 py-2 bg-white text-slate-700">
-                <option>Select Group</option>
-                <option selected>Technical Support</option>
-              </select>
-            </div>
-
-            <div>
-              <label class="font-bold text-slate-700 block mb-1">Assigned To</label>
-              <select class="w-full border border-slate-300 rounded px-3 py-2 bg-white text-slate-700">
-                <option>Select an agent</option>
-                <option selected>Phan Thanh Nam</option>
-              </select>
-            </div>
-          </div>
-
-          <!-- Right Column -->
-          <div class="space-y-4">
-            <div>
-              <div class="flex justify-between items-center mb-1">
-                <label class="font-bold text-slate-700">* Subject</label>
-                <span class="text-[10px] text-slate-400">0/50</span>
-              </div>
-              <input type="text" placeholder="Enter subject..." class="w-full border border-slate-300 rounded px-3 py-2 text-xs focus:outline-none focus:border-cloudx-main">
-            </div>
-
-            <div>
-              <label class="font-bold text-slate-700 block mb-1">* Description</label>
-              <textarea rows="14" placeholder="Enter detailed ticket description..." class="w-full border border-slate-300 rounded p-3 text-xs focus:outline-none focus:border-cloudx-main"></textarea>
-            </div>
-          </div>
-        </div>
-      </main>
-
-      <!-- ================= VIEW 3: CONTACTS LIST ================= -->
-      <main id="view-contacts-list" class="hidden p-4 space-y-4 max-w-[1600px] w-full mx-auto">
-        <div class="flex items-center justify-between pb-1">
-          <h1 class="text-sm font-bold text-slate-800">Contacts</h1>
-        </div>
-
-        <div class="bg-white rounded-lg border border-slate-200 shadow-xs overflow-hidden">
+      <!-- ================= VIEW 3A: LEADS LIST ================= -->
+      <main id="view-leads-list" class="hidden p-4 space-y-4 max-w-[1600px] w-full mx-auto">
+        <h1 class="text-sm font-bold text-slate-800">Leads & Opportunities</h1>
+        <div class="bg-white rounded-xl border border-slate-200 shadow-xs overflow-hidden">
           <div class="p-3 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
-            <button onclick="openAddContactModal()" class="px-3.5 py-1.5 bg-cloudx-main hover:bg-cloudx-hover text-white text-xs font-semibold rounded shadow-xs transition flex items-center gap-1">
-              <i class="ph ph-plus-bold"></i>
-              <span>Add New</span>
-            </button>
-
+            <button class="px-3.5 py-1.5 bg-cloudx-main text-white text-xs font-semibold rounded shadow-xs">+ Add New Lead</button>
             <div class="flex items-center gap-2">
-              <input type="text" placeholder="Search by contact name, co..." class="px-3 py-1.5 bg-white border border-slate-300 rounded text-xs w-64">
-              <button class="px-3 py-1.5 bg-white border border-slate-300 rounded text-xs">Reset</button>
+              <input type="text" placeholder="Search leads..." class="px-3 py-1.5 text-xs border border-slate-300 rounded w-60">
+              <button class="px-3 py-1.5 bg-cloudx-main text-white text-xs font-semibold rounded">Filter</button>
+            </div>
+          </div>
+          <table class="w-full text-left border-collapse text-xs">
+            <thead>
+              <tr class="bg-slate-100/80 border-b border-slate-200 text-slate-600 font-bold uppercase text-[11px]">
+                <th class="py-2.5 px-3">#ID & Subject</th>
+                <th class="py-2.5 px-3">Contact</th>
+                <th class="py-2.5 px-3">Type</th>
+                <th class="py-2.5 px-3">Created on</th>
+                <th class="py-2.5 px-3">Assigned to</th>
+                <th class="py-2.5 px-3 text-center">Priority</th>
+                <th class="py-2.5 px-3 text-center">Status</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100 text-slate-700">
+              <tr class="hover:bg-slate-50 cursor-pointer" onclick="switchView('lead-detail')">
+                <td class="py-2.5 px-3 font-bold text-slate-900">#1328 INBOUND - AI Solution Consultation <span class="text-rose-500 font-bold ml-1">🔥 Hot</span></td>
+                <td class="py-2.5 px-3">A Minh 0913 xxxxxx</td>
+                <td class="py-2.5 px-3 font-semibold text-amber-600">Enterprise Quote</td>
+                <td class="py-2.5 px-3 font-mono">12/01/2026</td>
+                <td class="py-2.5 px-3">Nguyễn Ngọc Liên</td>
+                <td class="py-2.5 px-3 text-center"><span class="text-rose-600 font-bold">Urgent</span></td>
+                <td class="py-2.5 px-3 text-center"><span class="px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 font-semibold text-[10px]">Open</span></td>
+              </tr>
+              <tr class="hover:bg-slate-50 cursor-pointer" onclick="switchView('lead-detail')">
+                <td class="py-2.5 px-3 font-bold text-slate-900">#1332 INBOUND - Software Upgrade <span class="text-sky-500 font-bold ml-1">❄️ Cold</span></td>
+                <td class="py-2.5 px-3">A Trung 0918 xxxxxx</td>
+                <td class="py-2.5 px-3 text-slate-500">Standard License</td>
+                <td class="py-2.5 px-3 font-mono">10/01/2026</td>
+                <td class="py-2.5 px-3">Lê Đào Tuyết Anh</td>
+                <td class="py-2.5 px-3 text-center"><span class="text-slate-500 font-bold">Low</span></td>
+                <td class="py-2.5 px-3 text-center"><span class="px-2 py-0.5 rounded bg-slate-100 text-slate-600 font-semibold text-[10px]">Closed</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </main>
+
+      <!-- ================= VIEW 3B: LEAD / SALES OPPORTUNITY DETAIL ================= -->
+      <main id="view-lead-detail" class="hidden p-4 space-y-4 max-w-[1600px] w-full mx-auto">
+        <!-- Lead Header Badges -->
+        <div class="flex items-center justify-between bg-white p-3 rounded-xl border border-slate-200 shadow-xs">
+          <div class="flex items-center gap-2">
+            <span class="px-2.5 py-1 bg-amber-50 text-amber-600 font-bold text-xs rounded-md border border-amber-200">Sales Lead</span>
+            <span class="px-2.5 py-1 bg-rose-50 text-rose-600 font-bold text-xs rounded-md border border-rose-200">🔥 Hot Opportunity</span>
+            <span class="px-2.5 py-1 bg-blue-50 text-blue-600 font-semibold text-xs rounded-md">Quote Pending</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="px-2.5 py-1 bg-emerald-100 text-emerald-800 font-bold text-xs rounded">High Value</span>
+            <span class="px-2.5 py-1 bg-amber-100 text-amber-800 font-bold text-xs rounded">In Pipeline</span>
+          </div>
+        </div>
+
+        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-xs">
+          <h1 class="text-lg font-bold text-slate-900">#1328 INBOUND CALL - Tư vấn giải pháp AI Agent & Ticket System</h1>
+          <p class="text-xs text-slate-500 mt-0.5">Created by <span class="font-semibold text-slate-700">Nguyễn Ngọc Liên</span> at 2 hours ago</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
+          <!-- Left Column: Audio Player + AI Sales Summary + Speech to Text -->
+          <div class="lg:col-span-8 space-y-4">
+            <!-- Audio Widget -->
+            <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-xs flex flex-wrap items-center justify-between gap-3">
+              <div class="flex items-center gap-3">
+                <button class="w-10 h-10 rounded-full bg-amber-500 hover:bg-amber-600 text-white flex items-center justify-center font-bold shadow-md">
+                  <i class="ph ph-play-fill text-lg"></i>
+                </button>
+                <div class="flex items-center gap-2 text-xs font-mono text-slate-600">
+                  <span>0:00</span>
+                  <span>/</span>
+                  <span>1:45</span>
+                  <div class="w-48 bg-slate-200 h-2 rounded-full overflow-hidden ml-2">
+                    <div class="bg-amber-500 h-full w-[35%]"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="flex items-center gap-2">
+                <button class="px-3 py-1.5 bg-amber-500 text-white rounded-lg text-xs font-bold hover:bg-amber-600 transition flex items-center gap-1.5">
+                  <i class="ph ph-plus"></i> Add Sales Note
+                </button>
+                <button class="px-3 py-1.5 bg-slate-900 text-white rounded-lg text-xs font-bold hover:bg-slate-800 transition flex items-center gap-1.5">
+                  <i class="ph ph-sparkle text-amber-400"></i> AI Sales Analysis
+                </button>
+              </div>
+            </div>
+
+            <!-- AI Sales Summary Box -->
+            <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-xs space-y-3">
+              <div class="flex items-center justify-between border-b border-slate-100 pb-2">
+                <div class="flex items-center gap-2">
+                  <i class="ph ph-sparkle text-amber-500 text-lg"></i>
+                  <h3 class="text-xs font-bold uppercase tracking-wider text-slate-800">TÓM TẮT CƠ HỘI BÁN HÀNG (AI SALES SUMMARY)</h3>
+                </div>
+                <span class="px-2 py-0.5 rounded bg-amber-50 text-amber-700 font-bold text-[10px]">CloryAI Sales Agent</span>
+              </div>
+
+              <div class="space-y-2 text-xs text-slate-700">
+                <div class="flex items-start gap-2">
+                  <i class="ph ph-target text-amber-500 flex-shrink-0 mt-0.5"></i>
+                  <p><strong>Nhu cầu chính:</strong> Khách hàng tìm hiểu giải pháp CloudXCS Enterprise kết hợp CloryAI Agent cho chuỗi 50 điểm bán lẻ.</p>
+                </div>
+                <div class="flex items-start gap-2">
+                  <i class="ph ph-chat-circle-dots text-sky-500 flex-shrink-0 mt-0.5"></i>
+                  <p><strong>Nội dung trao đổi:</strong> Nhân viên tư vấn (Nguyễn Ngọc Liên) đã giới thiệu tính năng tự động phân loại Lead, điều phối ticket và báo giá sơ bộ gói Enterprise $15,000/năm.</p>
+                </div>
+                <div class="flex items-start gap-2">
+                  <i class="ph ph-check-circle text-emerald-500 flex-shrink-0 mt-0.5"></i>
+                  <p><strong>Kết quả & Bước tiếp theo:</strong> Khách hàng rất hài lòng với Demo trực quan, yêu cầu gửi hợp đồng mẫu và đặt lịch làm việc trực tiếp cùng Trưởng phòng Kinh doanh vào 10:00 AM Thứ Hai.</p>
+                </div>
+              </div>
+
+              <div class="pt-2 border-t border-slate-100 flex flex-wrap gap-4 text-[11px] text-slate-500 font-medium">
+                <span>Mức độ quan tâm: <b class="text-emerald-600">Rất cao / Tiềm năng lớn</b></span>
+                <span>Thời lượng cuộc gọi: <b class="text-slate-800 font-mono">1 phút 45 giây</b></span>
+                <span>Sản phẩm quan tâm: <b class="text-amber-600">CloudXCS Enterprise + AI Agent</b></span>
+              </div>
+            </div>
+
+            <!-- Full Transcript Dark Box -->
+            <div class="bg-slate-900 text-slate-200 p-4 rounded-xl shadow-lg space-y-3 font-sans text-xs">
+              <div class="flex items-center justify-between border-b border-slate-800 pb-2">
+                <div class="flex items-center gap-2">
+                  <i class="ph ph-waveform text-amber-400"></i>
+                  <span class="font-bold text-xs uppercase text-slate-100">VĂN BẢN GHI ÂM TƯ VẤN BÁN HÀNG (SPEECH-TO-TEXT)</span>
+                </div>
+                <button onclick="showToast('Sao chép', 'Đã chép toàn bộ văn bản ghi âm cuộc gọi tư vấn', 'emerald')" class="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded text-[10px] font-medium flex items-center gap-1 border border-slate-700">
+                  <i class="ph ph-copy"></i> Sao chép
+                </button>
+              </div>
+
+              <div class="space-y-3 pt-1 font-sans text-xs">
+                <div>
+                  <span class="text-amber-400 font-bold block mb-0.5">Sales Agent (Nguyễn Ngọc Liên) <span class="text-[10px] font-mono text-slate-500">00:02</span></span>
+                  <p class="text-slate-300 italic pl-3 border-l-2 border-amber-500/50">"Dạ CloudXCS xin nghe, em Liên có thể hỗ trợ thông tin báo giá giải pháp AI Agent cho anh Minh ạ?"</p>
+                </div>
+                <div>
+                  <span class="text-sky-400 font-bold block mb-0.5">Khách hàng (A Minh 0913 xxxxxx) <span class="text-[10px] font-mono text-slate-500">00:10</span></span>
+                  <p class="text-slate-300 italic pl-3 border-l-2 border-sky-500/50">"Chào em, bên anh đang mở rộng chuỗi 50 cửa hàng retail. Anh cần tư vấn giải pháp tự động nhận lead và hỗ trợ ticket chăm sóc khách hàng tự động."</p>
+                </div>
+                <div>
+                  <span class="text-amber-400 font-bold block mb-0.5">Sales Agent (Nguyễn Ngọc Liên) <span class="text-[10px] font-mono text-slate-500">00:35</span></span>
+                  <p class="text-slate-300 italic pl-3 border-l-2 border-amber-500/50">"Dạ tuyệt vời quá anh Minh! Gói CloudXCS Enterprise hoàn toàn đáp ứng nhu cầu này của bên anh. Em sẽ tạo báo giá chi tiết gửi qua Email kèm hợp đồng nháp nhé!"</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Column: Opportunity Properties & Contact Detail -->
+          <div class="lg:col-span-4 space-y-4">
+            <!-- Estimated Value Card -->
+            <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-xs space-y-2">
+              <span class="text-xs font-bold text-slate-500 uppercase">GIÁ TRỊ CƠ HỘI DỰ KIẾN</span>
+              <div class="text-3xl font-extrabold text-amber-600 font-mono">$15,000 / năm</div>
+              <p class="text-[11px] text-slate-500">Dự kiến chốt: <strong class="text-slate-800 font-mono">15/08/2026</strong></p>
+            </div>
+
+            <!-- Properties Form Card -->
+            <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-xs space-y-3 text-xs">
+              <h4 class="font-bold text-slate-800 uppercase tracking-wider">PROPERTIES</h4>
+
+              <div class="space-y-2.5">
+                <div>
+                  <label class="block text-slate-600 font-medium mb-1">Giai đoạn (Stage)</label>
+                  <select class="w-full text-xs p-2 border border-slate-300 rounded-lg bg-white font-medium">
+                    <option>Interested</option>
+                    <option selected>Quoted (Đã báo giá)</option>
+                    <option>Potential</option>
+                    <option>Close-Won</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label class="block text-slate-600 font-medium mb-1">Nguồn Lead (Source)</label>
+                  <select class="w-full text-xs p-2 border border-slate-300 rounded-lg bg-white font-medium">
+                    <option selected>Inbound Call</option>
+                    <option>Website Form</option>
+                    <option>Zalo Offical Account</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label class="block text-slate-600 font-medium mb-1">Độ ưu tiên</label>
+                  <select class="w-full text-xs p-2 border border-slate-300 rounded-lg bg-white font-bold text-rose-600">
+                    <option selected>Urgent / Hot 🔥</option>
+                    <option>Normal</option>
+                    <option>Low</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label class="block text-slate-600 font-medium mb-1">Nhân viên phụ trách</label>
+                  <input type="text" value="Nguyễn Ngọc Liên" class="w-full text-xs p-2 border border-slate-300 rounded-lg bg-slate-50 font-semibold">
+                </div>
+              </div>
+
+              <button onclick="showToast('Cập nhật thành công', 'Đã lưu thuộc tính Cơ hội bán hàng #1328', 'emerald')" class="w-full py-2.5 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-lg shadow-sm transition mt-2">
+                Update Opportunity
+              </button>
+            </div>
+
+            <!-- Contact Detail Card -->
+            <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-xs space-y-3">
+              <h4 class="text-xs font-bold text-slate-800 uppercase">CONTACT DETAIL</h4>
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-full bg-amber-100 text-amber-700 flex items-center justify-center font-bold">
+                  AM
+                </div>
+                <div>
+                  <h5 class="font-bold text-xs text-slate-900">A Minh (Retail Director)</h5>
+                  <p class="text-[11px] text-slate-500 font-mono">Phone: 0913 xxxxxx</p>
+                </div>
+              </div>
+              <button onclick="switchView('company-detail')" class="text-[11px] text-cloudx-main font-bold hover:underline block pt-1">
+                View Company Info (#DNTG) →
+              </button>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <!-- ================= VIEW 4A: TICKET LIST ================= -->
+      <main id="view-ticket-list" class="hidden p-4 space-y-4 max-w-[1600px] w-full mx-auto">
+        <h1 class="text-sm font-bold text-slate-800">Tickets</h1>
+        <div class="bg-white rounded-xl border border-slate-200 shadow-xs overflow-hidden">
+          <div class="p-3 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
+            <button class="px-3.5 py-1.5 bg-cloudx-main text-white text-xs font-semibold rounded shadow-xs">Add New Ticket</button>
+            <input type="text" placeholder="Search by ticket ID, subject..." class="px-3 py-1.5 text-xs border border-slate-300 rounded w-64">
+          </div>
+          <table class="w-full text-left border-collapse text-xs">
+            <thead>
+              <tr class="bg-slate-100/80 border-b border-slate-200 text-slate-600 font-bold uppercase text-[11px]">
+                <th class="py-2.5 px-3">Subject</th>
+                <th class="py-2.5 px-3">Contact</th>
+                <th class="py-2.5 px-3">Group</th>
+                <th class="py-2.5 px-3">Created on</th>
+                <th class="py-2.5 px-3 text-center">Status</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100 text-slate-700">
+              <tr class="hover:bg-slate-50 cursor-pointer" onclick="switchView('ticket-detail')">
+                <td class="py-2.5 px-3 font-bold text-slate-900">#1411 OUTBOUND CALL 19000119</td>
+                <td class="py-2.5 px-3">Unknown 19000119</td>
+                <td class="py-2.5 px-3">Technical Support</td>
+                <td class="py-2.5 px-3 font-mono">06-08-2026 11:31:59</td>
+                <td class="py-2.5 px-3 text-center"><span class="px-2 py-0.5 bg-slate-100 text-slate-600 rounded text-[10px]">Closed</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </main>
+
+      <!-- ================= VIEW 4B: TICKET DETAIL (MATCHING IMAGE 23b31c.jpg) ================= -->
+      <main id="view-ticket-detail" class="hidden p-4 space-y-4 max-w-[1600px] w-full mx-auto">
+        <!-- Top Status Bar -->
+        <div class="flex items-center justify-between bg-white p-3 rounded-xl border border-slate-200 shadow-xs">
+          <div class="flex items-center gap-2">
+            <span class="px-2.5 py-1 bg-rose-50 text-rose-600 font-bold text-xs rounded-md border border-rose-200">Ticket Detail</span>
+            <span class="px-2.5 py-1 bg-rose-50 text-rose-600 font-medium text-xs rounded-md">First response due</span>
+            <span class="px-2.5 py-1 bg-rose-50 text-rose-600 font-medium text-xs rounded-md">Overdue</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="px-2.5 py-1 bg-emerald-50 text-emerald-700 font-bold text-xs rounded">Low</span>
+            <span class="px-2.5 py-1 bg-slate-100 text-slate-600 font-bold text-xs rounded">Closed</span>
+          </div>
+        </div>
+
+        <!-- Ticket Title Header -->
+        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-xs">
+          <h1 class="text-lg font-bold text-slate-900">#1411 OUTBOUND CALL 19000119</h1>
+          <p class="text-xs text-slate-500 mt-0.5">Created by <span class="font-semibold text-slate-700">Phan Thanh Nam</span> at 4 hour ago</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
+          <!-- Left Column: Audio + AI Summary + Transcript -->
+          <div class="lg:col-span-8 space-y-4">
+            <!-- Audio Player Bar -->
+            <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-xs space-y-3">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                  <div class="w-8 h-8 rounded-full bg-emerald-600 text-white flex items-center justify-center font-bold text-xs">P</div>
+                  <div>
+                    <span class="font-bold text-xs text-slate-900 block">Phan Thanh Nam</span>
+                    <span class="text-[10px] text-slate-400">Created on 4 hour ago</span>
+                  </div>
+                </div>
+                <div class="relative w-48">
+                  <input type="text" placeholder="Search in note" class="w-full text-xs px-3 py-1 bg-slate-50 border border-slate-200 rounded-lg pr-7">
+                  <i class="ph ph-magnifying-glass absolute right-2.5 top-2 text-slate-400 text-xs"></i>
+                </div>
+              </div>
+
+              <div class="flex items-center gap-3 bg-slate-50 p-2.5 rounded-xl border border-slate-200">
+                <button class="w-8 h-8 rounded-full bg-cloudx-main text-white flex items-center justify-center font-bold shadow-xs">
+                  <i class="ph ph-play-fill text-xs"></i>
+                </button>
+                <div class="flex items-center gap-2 text-xs font-mono text-slate-600">
+                  <span>0:00</span>
+                  <span>/</span>
+                  <span>0:56</span>
+                  <div class="w-56 bg-slate-200 h-1.5 rounded-full overflow-hidden ml-2">
+                    <div class="bg-cloudx-main h-full w-[25%]"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="flex items-center gap-2">
+                <button class="px-3 py-1.5 bg-cloudx-main hover:bg-cloudx-hover text-white rounded-lg text-xs font-bold transition flex items-center gap-1">
+                  <i class="ph ph-plus"></i> Add Note
+                </button>
+                <button class="px-3 py-1.5 bg-slate-900 text-white rounded-lg text-xs font-bold transition flex items-center gap-1">
+                  <i class="ph ph-[#EE5A36] ph-sparkle text-orange-400"></i> Full Transcription AI
+                </button>
+              </div>
+            </div>
+
+            <!-- AI Call Summary Box -->
+            <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-xs space-y-3">
+              <div class="flex items-center justify-between border-b border-slate-100 pb-2">
+                <div class="flex items-center gap-2">
+                  <i class="ph ph-sparkle text-amber-500 text-base"></i>
+                  <h3 class="text-xs font-bold uppercase tracking-wider text-slate-800">TÓM TẮT CUỘC GỌI (AI CALL SUMMARY)</h3>
+                </div>
+                <span class="px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 font-bold text-[10px]">CloudXCS Agent</span>
+              </div>
+
+              <div class="space-y-2 text-xs text-slate-700">
+                <div class="flex items-start gap-2">
+                  <i class="ph ph-target text-rose-500 flex-shrink-0 mt-0.5"></i>
+                  <p><strong>Mục đích cuộc gọi:</strong> Khách hàng phản ánh sự cố kết nối API không nhận được Webhook callback tự động khi tạo Ticket.</p>
+                </div>
+                <div class="flex items-start gap-2">
+                  <i class="ph ph-chat-circle-dots text-sky-500 flex-shrink-0 mt-0.5"></i>
+                  <p><strong>Nội dung trao đổi chính:</strong> Nhân viên hỗ trợ (Phan Thanh Nam) đã kiểm tra log hệ thống, phát hiện IP server của khách hàng bị chặn tạm thời do vượt ngưỡng tần suất request. Nhân viên đã tiến hành whitelist IP và hướng dẫn khách hàng cấu hình lại token xác thực.</p>
+                </div>
+                <div class="flex items-start gap-2">
+                  <i class="ph ph-check-circle text-emerald-500 flex-shrink-0 mt-0.5"></i>
+                  <p><strong>Kết quả & Hướng xử lý:</strong> Sự cố đã được khắc phục tại chỗ. Khách hàng đã test gửi lại webhook thành công và đồng ý đóng ticket này.</p>
+                </div>
+              </div>
+
+              <div class="pt-2 border-t border-slate-100 flex flex-wrap gap-4 text-[11px] text-slate-500 font-medium">
+                <span>Thái độ: <b class="text-emerald-600">Tích cực / Hài lòng</b></span>
+                <span>Thời lượng: <b class="text-slate-800 font-mono">56 giây</b></span>
+                <span>Phân loại: <b class="text-sky-600">Technical Support</b></span>
+              </div>
+            </div>
+
+            <!-- Full Transcript Dark Box -->
+            <div class="bg-slate-900 text-slate-200 p-4 rounded-xl shadow-lg space-y-3 font-sans text-xs">
+              <div class="flex items-center justify-between border-b border-slate-800 pb-2">
+                <div class="flex items-center gap-2">
+                  <i class="ph ph-waveform text-cloudx-main"></i>
+                  <span class="font-bold text-xs uppercase text-slate-100">VĂN BẢN GHI ÂM ĐẦY ĐỦ (SPEECH-TO-TEXT)</span>
+                </div>
+                <button onclick="showToast('Sao chép', 'Đã chép toàn bộ nội dung văn bản ghi âm', 'emerald')" class="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded text-[10px] font-medium flex items-center gap-1 border border-slate-700">
+                  <i class="ph ph-copy"></i> Sao chép
+                </button>
+              </div>
+
+              <div class="space-y-3 pt-1 font-sans text-xs">
+                <div>
+                  <span class="text-emerald-400 font-bold block mb-0.5">Agent (Phan Thanh Nam) <span class="text-[10px] font-mono text-slate-500">00:02</span></span>
+                  <p class="text-slate-300 italic pl-3 border-l-2 border-emerald-500/50">"Dạ CloudXCS xin nghe, em Thanh Nam có thể hỗ trợ gì cho anh chị ạ?"</p>
+                </div>
+                <div>
+                  <span class="text-amber-400 font-bold block mb-0.5">Khách hàng (19000119) <span class="text-[10px] font-mono text-slate-500">00:08</span></span>
+                  <p class="text-slate-300 italic pl-3 border-l-2 border-amber-500/50">"Chào em, bên anh đang kết nối API để tự động tạo ticket mà từ sáng tới giờ hệ thống báo lỗi không nhận được webhook callback."</p>
+                </div>
+                <div>
+                  <span class="text-emerald-400 font-bold block mb-0.5">Agent (Phan Thanh Nam) <span class="text-[10px] font-mono text-slate-500">00:20</span></span>
+                  <p class="text-slate-300 italic pl-3 border-l-2 border-emerald-500/50">"Dạ em kiểm tra trên hệ thống thì thấy địa chỉ IP server bên anh bị khóa tạm thời do gửi vượt ngưỡng quy định. Em đã hỗ trợ whitelist IP cho bên mình rồi ạ."</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Column: SLAs, Properties, Contact, 5 Recent -->
+          <div class="lg:col-span-4 space-y-4">
+            <!-- Due Times Card -->
+            <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-xs space-y-3 text-xs">
+              <div>
+                <label class="block text-slate-500 font-medium mb-1">First response due time</label>
+                <input type="text" value="2026-08-06 11:46:59" readonly class="w-full text-xs p-2 bg-slate-50 border border-slate-200 rounded font-mono text-slate-700">
+              </div>
+              <div>
+                <label class="block text-slate-500 font-medium mb-1">* Resolution due time</label>
+                <input type="text" value="2026-08-06 12:01:59" readonly class="w-full text-xs p-2 bg-slate-50 border border-slate-200 rounded font-mono text-slate-700">
+              </div>
+            </div>
+
+            <!-- Properties Card -->
+            <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-xs space-y-3 text-xs">
+              <h4 class="font-bold text-slate-800 uppercase tracking-wider">PROPERTIES</h4>
+
+              <div class="space-y-2.5">
+                <div>
+                  <label class="block text-slate-600 font-medium mb-1">Type</label>
+                  <select class="w-full text-xs p-2 border border-slate-300 rounded-lg bg-white font-medium">
+                    <option selected>Other</option>
+                    <option>Technical Issue</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label class="block text-slate-600 font-medium mb-1">Source</label>
+                  <select class="w-full text-xs p-2 border border-slate-300 rounded-lg bg-white font-medium">
+                    <option selected>Phone</option>
+                    <option>Zalo / Web</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label class="block text-slate-600 font-medium mb-1">Status</label>
+                  <select class="w-full text-xs p-2 border border-slate-300 rounded-lg bg-white font-medium">
+                    <option selected>Closed</option>
+                    <option>Open</option>
+                    <option>Solved</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label class="block text-slate-600 font-medium mb-1">Priority</label>
+                  <select class="w-full text-xs p-2 border border-slate-300 rounded-lg bg-white font-medium">
+                    <option selected>Low</option>
+                    <option>High</option>
+                    <option>Urgent</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label class="block text-slate-600 font-medium mb-1">* Department</label>
+                  <select class="w-full text-xs p-2 border border-slate-300 rounded-lg bg-white font-medium">
+                    <option selected>Đồng Nhất</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label class="block text-slate-600 font-medium mb-1">* Group</label>
+                  <select class="w-full text-xs p-2 border border-slate-300 rounded-lg bg-white font-medium">
+                    <option selected>Technical Support</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label class="block text-slate-600 font-medium mb-1">Assigned To</label>
+                  <input type="text" value="Phan Thanh Nam" class="w-full text-xs p-2 border border-slate-300 rounded-lg bg-slate-50 font-semibold">
+                </div>
+              </div>
+
+              <button onclick="showToast('Cập nhật thành công', 'Đã lưu thông tin Ticket #1411', 'emerald')" class="w-full py-2.5 bg-cloudx-main hover:bg-cloudx-hover text-white font-bold rounded-lg shadow-sm transition mt-2">
+                Update
+              </button>
+            </div>
+
+            <!-- Contact Detail Card -->
+            <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-xs space-y-3">
+              <h4 class="text-xs font-bold text-slate-800 uppercase">CONTACT DETAIL</h4>
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-full bg-orange-100 text-cloudx-main flex items-center justify-center font-bold">
+                  U
+                </div>
+                <div>
+                  <h5 class="font-bold text-xs text-slate-900">Unknown 19000119</h5>
+                  <p class="text-[11px] text-slate-500 font-mono">Phone: 19000119</p>
+                </div>
+              </div>
+              <button onclick="switchView('contacts-list')" class="text-[11px] text-cloudx-main font-bold hover:underline block pt-1">
+                View more info →
+              </button>
+            </div>
+
+            <!-- 5 Most Recent Tickets Widget -->
+            <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-xs space-y-3">
+              <h4 class="text-xs font-bold text-slate-800 uppercase">5 MOST RECENT TICKETS</h4>
+              <div class="space-y-2.5 text-xs">
+                <div class="p-2 bg-slate-50 rounded border-l-2 border-cloudx-main">
+                  <span class="font-bold text-slate-900 block">#1411 OUTBOUND CALL 19000119</span>
+                  <span class="text-[10px] text-slate-400 font-mono">06-08-2026 11:31:59 | Closed</span>
+                </div>
+                <div class="p-2 bg-slate-50 rounded">
+                  <span class="font-bold text-slate-800 block">#1410 OUTBOUND CALL 19000119</span>
+                  <span class="text-[10px] text-slate-400 font-mono">05-08-2026 10:44:42 | Solved</span>
+                </div>
+                <div class="p-2 bg-slate-50 rounded">
+                  <span class="font-bold text-slate-800 block">#1409 OUTBOUND CALL 19000119</span>
+                  <span class="text-[10px] text-slate-400 font-mono">05-08-2026 10:18:55 | Open</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <!-- ================= VIEW 5: CONTACTS LIST ================= -->
+      <main id="view-contacts-list" class="hidden p-4 space-y-4 max-w-[1600px] w-full mx-auto">
+        <h1 class="text-sm font-bold text-slate-800">Contacts</h1>
+        <div class="bg-white rounded-xl border border-slate-200 shadow-xs overflow-hidden">
+          <div class="p-3 bg-slate-50 border-b border-slate-200 flex items-center justify-between flex-wrap gap-2">
+            <button class="px-3.5 py-1.5 bg-cloudx-main text-white text-xs font-semibold rounded shadow-xs">Add New ▾</button>
+            <div class="flex items-center gap-2">
+              <input type="text" placeholder="Search by contact name, co..." class="px-3 py-1.5 text-xs border border-slate-300 rounded w-64">
+              <button class="px-3 py-1.5 bg-slate-100 text-slate-700 text-xs font-medium rounded border border-slate-300">Reset</button>
               <button class="px-3.5 py-1.5 bg-cloudx-main text-white text-xs font-semibold rounded">Filter</button>
             </div>
           </div>
-
           <table class="w-full text-left border-collapse text-xs">
             <thead>
-              <tr class="bg-slate-100/70 border-b border-slate-200 text-slate-600 font-bold uppercase text-[11px]">
-                <th class="py-2.5 px-3">Name</th>
-                <th class="py-2.5 px-3">Gender</th>
-                <th class="py-2.5 px-3">Company</th>
-                <th class="py-2.5 px-3">Phone</th>
-                <th class="py-2.5 px-3">Work Phone</th>
-                <th class="py-2.5 px-3">Email</th>
+              <tr class="bg-slate-100/80 border-b border-slate-200 text-slate-600 font-bold uppercase text-[11px]">
+                <th class="py-2.5 px-3">NAME</th>
+                <th class="py-2.5 px-3">GENDER</th>
+                <th class="py-2.5 px-3">COMPANY</th>
+                <th class="py-2.5 px-3">PHONE</th>
+                <th class="py-2.5 px-3">WORK PHONE</th>
+                <th class="py-2.5 px-3">EMAIL</th>
               </tr>
             </thead>
             <tbody class="divide-y divide-slate-100 text-slate-700">
-              <tr class="hover:bg-slate-50 cursor-pointer" onclick="openContactDetail('Unknown 0017472022766')">
+              <tr class="hover:bg-slate-50 cursor-pointer">
                 <td class="py-2.5 px-3 font-bold text-slate-900">Unknown 0017472022766</td>
-                <td class="py-2.5 px-3">Other</td>
-                <td class="py-2.5 px-3">--</td>
+                <td class="py-2.5 px-3 text-slate-500">Other</td>
+                <td class="py-2.5 px-3 text-slate-400">---</td>
                 <td class="py-2.5 px-3 font-mono">0017472022766</td>
-                <td class="py-2.5 px-3 font-mono">--</td>
-                <td class="py-2.5 px-3">--</td>
+                <td class="py-2.5 px-3 text-slate-400">---</td>
+                <td class="py-2.5 px-3 text-slate-400">---</td>
+              </tr>
+              <tr class="hover:bg-slate-50 cursor-pointer">
+                <td class="py-2.5 px-3 font-bold text-slate-900">New contact 00639175811296</td>
+                <td class="py-2.5 px-3 text-slate-500">Other</td>
+                <td class="py-2.5 px-3 text-slate-400">---</td>
+                <td class="py-2.5 px-3 font-mono">00639175811296</td>
+                <td class="py-2.5 px-3 text-slate-400">---</td>
+                <td class="py-2.5 px-3 text-slate-400">---</td>
+              </tr>
+              <tr class="hover:bg-slate-50 cursor-pointer">
+                <td class="py-2.5 px-3 font-bold text-slate-900">Anh Long</td>
+                <td class="py-2.5 px-3 text-slate-500">Other</td>
+                <td class="py-2.5 px-3 font-bold text-cloudx-main hover:underline" onclick="event.stopPropagation(); switchView('company-detail')">DNTG</td>
+                <td class="py-2.5 px-3 font-mono">0902993440</td>
+                <td class="py-2.5 px-3 text-slate-400">---</td>
+                <td class="py-2.5 px-3 text-slate-400">---</td>
               </tr>
             </tbody>
           </table>
-        </div>
-      </main>
-
-      <!-- ================= VIEW 3.1: CONTACT DETAIL ================= -->
-      <main id="view-contact-detail" class="hidden p-4 space-y-4 max-w-[1600px] w-full mx-auto">
-        <div class="flex items-center justify-between pb-1">
-          <h1 class="text-sm font-bold text-slate-800">Contact Detail</h1>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <!-- Left Personal Info Sidebar -->
-          <div class="bg-white p-4 rounded-lg border border-slate-200 shadow-xs space-y-4">
-            <div class="flex items-center gap-3 border-b border-slate-100 pb-3">
-              <div class="w-12 h-12 rounded-full bg-purple-100 text-purple-600 font-bold text-lg flex items-center justify-center">
-                <i class="ph ph-user"></i>
-              </div>
-              <div>
-                <h3 id="contact-detail-name" class="font-bold text-slate-900 text-sm">Unknown 0017472022766</h3>
-                <span class="text-xs text-slate-500 font-mono">0017472022766</span>
-              </div>
-            </div>
-
-            <div class="space-y-2 text-xs">
-              <span class="font-bold text-slate-800 block text-[11px] uppercase tracking-wider">Personal Information</span>
-              <div class="flex justify-between py-1 border-b border-slate-50"><span class="text-slate-500">Gender:</span><span class="font-medium">Other</span></div>
-              <div class="flex justify-between py-1 border-b border-slate-50"><span class="text-slate-500">Phone:</span><span class="font-mono font-medium">0017472022766</span></div>
-              <div class="flex justify-between py-1 border-b border-slate-50"><span class="text-slate-500">Company:</span><span class="font-medium">--</span></div>
-            </div>
-
-            <button onclick="switchView('contacts-list')" class="w-full py-1.5 border border-slate-300 hover:bg-slate-50 rounded text-xs font-semibold text-slate-700">
-              Back
-            </button>
-          </div>
-
-          <!-- Right Activity Timeline -->
-          <div class="md:col-span-2 bg-white p-4 rounded-lg border border-slate-200 shadow-xs space-y-4">
-            <h3 class="font-bold text-slate-800 text-xs uppercase tracking-wider border-b border-slate-100 pb-2">Activity Timeline</h3>
-            <div class="bg-slate-50 p-3 rounded border border-slate-200 space-y-2">
-              <div class="flex justify-between items-center text-xs">
-                <span class="font-mono text-slate-500">17-03-2026 16:54</span>
-                <span class="px-2 py-0.5 bg-emerald-50 text-emerald-700 rounded font-bold">Phone</span>
-              </div>
-              <p class="font-bold text-slate-900 text-xs">#1189 - INCOMING CALL 0017472022766</p>
-              <audio controls class="w-full h-8 mt-2"></audio>
+          <div class="p-3 bg-slate-50 border-t border-slate-200 text-xs text-slate-500 flex items-center justify-between">
+            <span>Showing 1 to 10 of 740 entries</span>
+            <div class="flex gap-1 font-mono text-[11px]">
+              <button class="px-2 py-0.5 border rounded">&lt;</button>
+              <button class="px-2 py-0.5 bg-cloudx-main text-white font-bold rounded">1</button>
+              <button class="px-2 py-0.5 border rounded">2</button>
+              <button class="px-2 py-0.5 border rounded">3</button>
+              <span class="px-1">...</span>
+              <button class="px-2 py-0.5 border rounded">74</button>
+              <button class="px-2 py-0.5 border rounded">&gt;</button>
             </div>
           </div>
         </div>
       </main>
 
-      <!-- ================= VIEW 4: COMPANY DETAIL (#DNTG) ================= -->
+      <!-- ================= VIEW 6: COMPANY DETAIL (#DNTG) ================= -->
       <main id="view-company-detail" class="hidden p-4 space-y-4 max-w-[1600px] w-full mx-auto">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <!-- Left Company Info Sidebar -->
-          <div class="bg-white p-4 rounded-lg border border-slate-200 shadow-xs space-y-4">
-            <div class="flex items-center gap-3 border-b border-slate-100 pb-3">
-              <div class="w-12 h-12 rounded-full bg-orange-100 text-cloudx-main font-bold text-lg flex items-center justify-center">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
+          <div class="lg:col-span-4 bg-white p-5 rounded-xl border border-slate-200 shadow-xs space-y-4">
+            <div class="flex items-center gap-3">
+              <div class="w-12 h-12 rounded-full bg-orange-100 text-cloudx-main flex items-center justify-center font-bold text-xl">
                 <i class="ph ph-buildings"></i>
               </div>
               <div>
-                <h3 class="font-bold text-slate-900 text-base">DNTG</h3>
-                <span class="text-xs text-slate-500 font-medium">DONGNHAT TECHNOLOGY GROUP</span>
+                <h3 class="font-extrabold text-lg text-slate-900">DNTG</h3>
+                <p class="text-xs text-slate-500 font-medium">DONGNHAT TECHNOLOGY GROUP</p>
               </div>
             </div>
-
-            <div class="space-y-2 text-xs">
-              <div class="flex justify-between py-1 border-b border-slate-50"><span class="text-slate-500">Tax Number:</span><span class="font-mono font-medium">--</span></div>
-              <div class="flex justify-between py-1 border-b border-slate-50"><span class="text-slate-500">Industry:</span><span class="font-medium">Technology</span></div>
+            <div class="space-y-2 text-xs border-t border-slate-100 pt-3">
+              <div class="flex justify-between"><span class="text-slate-500">Tax Number:</span><span class="text-slate-400">--</span></div>
+              <div class="flex justify-between"><span class="text-slate-500">Industry:</span><span class="font-semibold text-slate-800">Technology</span></div>
             </div>
-
-            <button onclick="openAddCompanyModal()" class="w-full py-1.5 bg-cloudx-main hover:bg-cloudx-hover text-white rounded text-xs font-semibold">
-              Edit Company
-            </button>
+            <button class="w-full py-2 bg-cloudx-main hover:bg-cloudx-hover text-white text-xs font-bold rounded-lg transition">Edit Company</button>
           </div>
 
-          <!-- Right Associated Contact List -->
-          <div class="md:col-span-2 bg-white p-4 rounded-lg border border-slate-200 shadow-xs space-y-4">
-            <h3 class="font-bold text-slate-800 text-xs uppercase tracking-wider border-b border-slate-100 pb-2">Contact List</h3>
+          <div class="lg:col-span-8 bg-white p-5 rounded-xl border border-slate-200 shadow-xs space-y-4">
+            <h3 class="font-bold text-xs text-slate-800 uppercase tracking-wider">CONTACT LIST</h3>
             <table class="w-full text-left border-collapse text-xs">
               <thead>
-                <tr class="bg-slate-50 border-b border-slate-200 text-slate-600 font-bold">
+                <tr class="bg-slate-50 border-b border-slate-200 text-slate-600 font-bold uppercase text-[11px]">
                   <th class="py-2 px-3">Name</th>
                   <th class="py-2 px-3">Gender</th>
                   <th class="py-2 px-3">Phone</th>
                 </tr>
               </thead>
-              <tbody class="divide-y divide-slate-100">
-                <tr>
-                  <td class="py-2 px-3 font-medium">Anh Long</td>
-                  <td class="py-2 px-3">Other</td>
-                  <td class="py-2 px-3 font-mono">0902993440</td>
-                </tr>
-                <tr>
-                  <td class="py-2 px-3 font-medium">PhươngTL</td>
-                  <td class="py-2 px-3">Female</td>
-                  <td class="py-2 px-3 font-mono">0908442308</td>
-                </tr>
+              <tbody class="divide-y divide-slate-100 text-slate-700">
+                <tr><td class="py-2.5 px-3 font-bold text-slate-900">Anh Long</td><td class="py-2.5 px-3 text-slate-500">Other</td><td class="py-2.5 px-3 font-mono">0902993440</td></tr>
+                <tr><td class="py-2.5 px-3 font-bold text-slate-900">PhươngTL</td><td class="py-2.5 px-3 text-slate-500">Female</td><td class="py-2.5 px-3 font-mono">0908442308</td></tr>
               </tbody>
             </table>
           </div>
         </div>
       </main>
 
-      <!-- ================= VIEW 5: TICKET DETAIL ================= -->
-      <main id="view-ticket-detail" class="hidden p-4 space-y-4 max-w-[1600px] w-full mx-auto">
-        <!-- Top SLA Banner -->
-        <div class="bg-rose-50 border border-rose-200 p-3 rounded-lg flex items-center justify-between text-xs text-rose-800 font-medium">
-          <div class="flex items-center gap-2">
-            <i class="ph ph-warning-circle text-rose-600 text-base"></i>
-            <span>Ticket SLA Status: <strong>First response due Overdue</strong></span>
-          </div>
-          <span class="font-mono text-rose-700">Due: 2026-08-06 11:46:59</span>
-        </div>
-
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
-          <!-- Left Column: Audio + Call Summary + Full Transcription -->
-          <div class="lg:col-span-2 space-y-4">
-            <!-- Audio Card -->
-            <div class="bg-white p-4 rounded-lg border border-slate-200 shadow-xs space-y-3">
-              <div class="flex items-center justify-between border-b border-slate-100 pb-2">
-                <h2 id="detail-ticket-heading" class="font-bold text-slate-900 text-sm">#1411 OUTBOUND CALL 1...</h2>
-                <div class="flex items-center gap-2">
-                  <span class="px-2 py-0.5 bg-slate-100 text-slate-600 rounded text-xs font-bold">Low</span>
-                  <span class="px-2 py-0.5 bg-slate-100 text-slate-600 rounded text-xs font-bold">Closed</span>
-                </div>
-              </div>
-
-              <!-- Audio Player -->
-              <div class="bg-slate-50 p-3 rounded-lg border border-slate-200 flex items-center gap-3">
-                <button onclick="toggleAudio()" class="w-8 h-8 rounded-full bg-cloudx-main text-white flex items-center justify-center shrink-0">
-                  <i id="audio-play-icon" class="ph ph-play-fill text-xs"></i>
-                </button>
-                <div class="flex-1">
-                  <div class="w-full bg-slate-200 h-1.5 rounded-full overflow-hidden">
-                    <div id="audio-progress" class="bg-cloudx-main h-full w-1/4"></div>
-                  </div>
-                  <div class="flex justify-between text-[10px] text-slate-500 font-mono mt-1">
-                    <span>0:14</span>
-                    <span>0:56</span>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Action Toolbar: Full Transcription & Add Note -->
-              <div class="flex items-center gap-2 pt-1">
-                <!-- Full Transcription Button -->
-                <button onclick="toggleTranscriptionModal(true)" class="px-3.5 py-2 bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold rounded-lg shadow-xs transition flex items-center gap-1.5">
-                  <i class="ph ph-article-ny-times text-orange-400 text-sm"></i>
-                  <span>Full Transcription</span>
-                  <span class="px-1.5 py-0.2 bg-orange-500/20 text-orange-300 text-[9px] rounded uppercase font-bold">AI</span>
-                </button>
-
-                <button onclick="openAddNoteModal()" class="px-3.5 py-2 bg-cloudx-main hover:bg-cloudx-hover text-white text-xs font-bold rounded-lg shadow-xs transition">
-                  Add Note
-                </button>
-              </div>
-
-              <!-- Call Summary Card (Tóm tắt nội dung cuộc gọi) -->
-              <div class="mt-4 bg-orange-50/70 border border-orange-200 rounded-lg p-4 space-y-3">
-                <div class="flex items-center justify-between border-b border-orange-200/80 pb-2">
-                  <div class="flex items-center gap-2">
-                    <i class="ph ph-sparkle text-cloudx-main text-base"></i>
-                    <h3 class="font-bold text-slate-900 text-xs uppercase tracking-wider">Tóm tắt cuộc gọi (AI Call Summary)</h3>
-                  </div>
-                  <span class="text-[10px] bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full font-bold">Thành công</span>
-                </div>
-
-                <div class="space-y-2 text-xs text-slate-700">
-                  <p><strong>• Mục đích cuộc gọi:</strong> Khách hàng gọi lên liên quan đến báo giá thiết bị tổng đài CloudXCS.</p>
-                  <p><strong>• Nội dung trao đổi chính:</strong> Nhân viên tư vấn cấu hình gói 50 Agent, giải đáp chính sách bảo hành 24/7 và hỗ trợ tích hợp CRM sẵn có.</p>
-                  <p><strong>• Kết quả & Hướng xử lý:</strong> Đã chốt phương án gửi báo giá chính thức qua Zalo trong chiều nay.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Right Column: Ticket Properties & Contact Summary -->
-          <div class="space-y-4">
-            <div class="bg-white p-4 rounded-lg border border-slate-200 shadow-xs space-y-3 text-xs">
-              <h3 class="font-bold text-slate-800 uppercase tracking-wider border-b border-slate-100 pb-2">Properties</h3>
-              
-              <div>
-                <label class="text-slate-500 font-medium block mb-1">Status</label>
-                <select class="w-full border border-slate-300 rounded px-2.5 py-1.5 bg-white font-bold text-slate-700">
-                  <option selected>Closed</option>
-                  <option>Open</option>
-                  <option>Solved</option>
-                </select>
-              </div>
-
-              <div>
-                <label class="text-slate-500 font-medium block mb-1">Priority</label>
-                <select class="w-full border border-slate-300 rounded px-2.5 py-1.5 bg-white font-bold text-slate-700">
-                  <option selected>Low</option>
-                  <option>Normal</option>
-                  <option>High</option>
-                </select>
-              </div>
-
-              <button onclick="showToast('Cập nhật thành công', 'Thông tin vé đã được lưu', 'emerald')" class="w-full py-2 bg-cloudx-main hover:bg-cloudx-hover text-white font-bold rounded shadow-xs transition mt-2">
-                Update Ticket
-              </button>
-            </div>
-          </div>
-        </div>
-      </main>
-
-      <!-- ================= VIEW 6: CLOUDXCS AGENTS CONFIG ================= -->
-      <main id="view-agent-config" class="hidden p-4 space-y-4 max-w-[1600px] w-full mx-auto">
-        <!-- Header -->
-        <div class="flex items-center justify-between border-b border-slate-200 pb-3">
+      <!-- ================= VIEW 7: DEDICATED AGENT CONFIGURATION (MATCHING IMAGE 23aefa.jpg) ================= -->
+      <main id="view-agent-config" class="hidden p-4 md:p-6 space-y-6 max-w-[1600px] w-full mx-auto">
+        <!-- Breadcrumbs & Page Header -->
+        <div class="flex items-center justify-between flex-wrap gap-3">
           <div>
-            <span class="text-xs text-slate-500">CloudXCS Agents / Configuration</span>
-            <h1 id="agent-config-title" class="text-base font-bold text-slate-900 mt-0.5">Service Agent</h1>
+            <nav id="config-breadcrumbs" class="text-xs text-slate-500 mb-1">CloryAI Agents &gt; Service Agent Config</nav>
+            <h1 id="config-page-title" class="text-xl font-bold text-slate-900">Quản lý Service Agent <span class="text-xs px-2 py-0.5 rounded bg-slate-200 font-normal">v2.4</span></h1>
           </div>
 
-          <!-- Clean Online/Offline Status Switch Pill -->
-          <div class="flex items-center gap-3 bg-white px-3.5 py-1.5 rounded-full border border-slate-200 shadow-xs">
-            <span class="text-xs font-bold text-slate-600">Trạng thái Agent:</span>
-            <div class="flex items-center gap-2">
-              <button id="agent-status-toggle" onclick="toggleAgentStatus()" class="w-10 h-5 bg-emerald-500 rounded-full transition-colors relative p-0.5">
-                <div id="agent-status-knob" class="w-4 h-4 bg-white rounded-full shadow-xs transform translate-x-5 transition-transform"></div>
-              </button>
-              <span id="agent-status-text" class="text-xs font-bold text-emerald-600">Online</span>
+          <!-- Real-Time Status Toggle Badge -->
+          <div class="bg-white p-2.5 px-4 rounded-xl border border-slate-200 shadow-xs flex items-center gap-3">
+            <span class="text-xs text-slate-500 font-medium">Trạng thái Agent:</span>
+            <div id="status-indicator" class="flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+              <span id="status-ping" class="w-2 h-2 rounded-full bg-emerald-500"></span>
+              <span id="status-text">Online</span>
             </div>
-          </div>
-        </div>
-
-        <!-- Section 1: Agent Management Info -->
-        <div class="bg-white p-5 rounded-lg border border-slate-200 shadow-xs space-y-4">
-          <h2 class="text-xs font-bold text-slate-800 uppercase tracking-wider border-b border-slate-100 pb-2">1. Quản lý thông tin Agent</h2>
-          
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
-            <div>
-              <label class="font-bold text-slate-700 block mb-1">Tên Agent</label>
-              <input id="agent-input-name" type="text" value="Clory Service Agent #1" class="w-full border border-slate-300 rounded px-3 py-2 font-medium focus:outline-none focus:border-cloudx-main">
-            </div>
-
-            <div>
-              <label class="font-bold text-slate-700 block mb-1">Vị trí</label>
-              <input id="agent-input-pos" type="text" value="Customer Support Line 1" class="w-full border border-slate-300 rounded px-3 py-2 font-medium focus:outline-none focus:border-cloudx-main">
-            </div>
-
-            <div class="md:col-span-2">
-              <label class="font-bold text-slate-700 block mb-1">Mô tả</label>
-              <textarea id="agent-input-desc" rows="2" class="w-full border border-slate-300 rounded p-3 text-xs focus:outline-none focus:border-cloudx-main">Agent dedicated to tier 1 general inquiries and initial ticket triaging.</textarea>
-            </div>
+            <label class="relative inline-flex items-center cursor-pointer ml-2">
+              <input type="checkbox" id="status-toggle" class="sr-only peer" checked onchange="handleStatusToggle(this)">
+              <div class="w-10 h-5 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-emerald-500"></div>
+            </label>
           </div>
         </div>
 
-        <!-- Section 2: Prompts Training with Enlarged Height -->
-        <div class="bg-white p-5 rounded-lg border border-slate-200 shadow-xs space-y-4">
-          <h2 class="text-xs font-bold text-slate-800 uppercase tracking-wider border-b border-slate-100 pb-2">2. Huấn luyện (Prompts)</h2>
-
-          <!-- 2 Text Areas Side-by-Side -->
+        <!-- Section 1: Thông tin Agent -->
+        <section class="bg-white rounded-xl border border-slate-200 p-5 shadow-xs space-y-4">
+          <div class="flex items-center gap-2 border-b border-slate-100 pb-3">
+            <i class="ph ph-identification-card text-cloudx-main text-lg"></i>
+            <h2 class="text-sm font-bold text-slate-800">1. Quản lý thông tin Agent</h2>
+          </div>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label class="text-xs font-bold text-slate-700 block mb-1">Prompt hiện tại</label>
-              <textarea id="current-prompt" readonly class="w-full h-80 border border-slate-200 bg-slate-50 rounded-lg p-3 text-xs font-mono text-slate-700 leading-relaxed focus:outline-none" resize="none">
-You are a helpful customer service agent for CloudXCS.
-Greet the customer professionally.
-Your goal is to gather ticket information to check all custom fields and add notes.
-Ensure clear tone and escalate urgent issues to human supervisors.
-              </textarea>
+              <label class="block text-xs font-semibold text-slate-700 mb-1">Tên Agent *</label>
+              <input type="text" id="agent-input-name" value="CloudX Service Agent #1" class="w-full text-xs px-3 py-2 rounded-lg border border-slate-300 font-medium text-slate-800">
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 mb-1">Vị trí / Phân vùng làm việc</label>
+              <input type="text" id="agent-input-pos" value="Customer Support Line 1 - Tier 1 Technical" class="w-full text-xs px-3 py-2 rounded-lg border border-slate-300 text-slate-800">
+            </div>
+            <div class="md:col-span-2">
+              <label class="block text-xs font-semibold text-slate-700 mb-1">Mô tả nhiệm vụ Agent</label>
+              <textarea id="agent-input-desc" rows="2" class="w-full text-xs px-3 py-2 rounded-lg border border-slate-300 text-slate-800">Tự động trả lời câu hỏi thường gặp của khách hàng, phân loại sự cố kỹ thuật và hỗ trợ tự động tạo Ticket trên hệ thống CloudXCS Ticket System khi phát sinh hỗ trợ chuyên sâu.</textarea>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section 2: Prompts & Knowledge Base Training -->
+        <section class="bg-white rounded-xl border border-slate-200 p-5 shadow-xs space-y-5">
+          <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+            <div class="flex items-center gap-2">
+              <i class="ph ph-brain text-cloudx-main text-lg"></i>
+              <h2 class="text-sm font-bold text-slate-800">2. Huấn luyện Agent (Prompts & Knowledge Base)</h2>
+            </div>
+            <button onclick="insertTemplate()" class="text-xs text-cloudx-main font-bold hover:underline flex items-center gap-1">
+              <i class="ph ph-magic-wand"></i> Chèn mẫu Prompt chuẩn
+            </button>
+          </div>
+
+          <!-- Dual Prompts Grid -->
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+            <div>
+              <div class="flex items-center justify-between mb-1.5">
+                <label class="text-xs font-bold text-slate-700">Prompt hiện tại (Current Prompt)</label>
+                <button onclick="copyPrompt()" class="text-[11px] text-slate-500 hover:text-slate-800 flex items-center gap-1 font-semibold">
+                  <i class="ph ph-copy"></i> Copy
+                </button>
+              </div>
+              <textarea id="current-prompt" readonly rows="10" class="w-full text-xs p-3 bg-slate-50 border border-slate-300 rounded-lg font-mono text-slate-800 leading-relaxed"></textarea>
             </div>
 
             <div>
-              <label class="text-xs font-bold text-slate-700 block mb-1">Prompt mới</label>
-              <textarea id="new-prompt" placeholder="Nhập câu lệnh prompt huấn luyện mới..." class="w-full h-80 border border-slate-300 rounded-lg p-3 text-xs font-mono text-slate-800 leading-relaxed focus:outline-none focus:border-cloudx-main shadow-inner" resize="none"></textarea>
+              <div class="flex items-center justify-between mb-1.5">
+                <label class="text-xs font-bold text-slate-900">Prompt mới (New Prompt Update)</label>
+                <span class="text-[10px] text-slate-400">Nhập chỉ dẫn huấn luyện mới...</span>
+              </div>
+              <textarea id="new-prompt" rows="10" placeholder="Nhập Prompt huấn luyện mới cho AI Agent tại đây..." class="w-full text-xs p-3 border border-slate-300 rounded-lg font-mono text-slate-800 leading-relaxed focus:outline-none focus:border-cloudx-main"></textarea>
             </div>
           </div>
 
-          <!-- Training Documents & Links -->
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2 text-xs">
-            <!-- Upload Documents -->
+          <!-- Documents and URLs Knowledge Links -->
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-5 pt-2">
+            <!-- Training Files Uploads -->
             <div class="space-y-2">
-              <label class="font-bold text-slate-700 block">Tài liệu đào tạo (Upload max 3 file)</label>
-              <div class="space-y-1.5">
-                <input type="file" class="block w-full text-xs text-slate-500 file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:text-xs file:font-semibold file:bg-orange-50 file:text-cloudx-main hover:file:bg-orange-100">
-                <input type="file" class="block w-full text-xs text-slate-500 file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:text-xs file:font-semibold file:bg-orange-50 file:text-cloudx-main hover:file:bg-orange-100">
-                <input type="file" class="block w-full text-xs text-slate-500 file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:text-xs file:font-semibold file:bg-orange-50 file:text-cloudx-main hover:file:bg-orange-100">
+              <label class="block text-xs font-bold text-slate-800">Tài liệu đào tạo (3 Tệp PDF/DOCX)</label>
+              <div class="space-y-2 text-xs">
+                <div class="flex items-center justify-between p-2.5 bg-slate-50 border border-slate-200 rounded-lg">
+                  <div class="flex items-center gap-2 truncate">
+                    <i class="ph ph-file-pdf text-rose-500 text-base"></i>
+                    <span id="doc-file-1" class="font-medium text-slate-700 truncate">HDSD_CloudXCS_API_v2.4.pdf</span>
+                  </div>
+                  <span class="px-2 py-0.5 bg-emerald-50 text-emerald-700 text-[10px] font-bold rounded flex-shrink-0">Đã tải lên</span>
+                </div>
+
+                <div class="flex items-center justify-between p-2.5 bg-slate-50 border border-slate-200 rounded-lg">
+                  <div class="flex items-center gap-2 truncate">
+                    <i class="ph ph-file-doc text-blue-500 text-base"></i>
+                    <span id="doc-file-2" class="font-medium text-slate-700 truncate">Kich_Ban_Xuly_SuCo_KyThuat.docx</span>
+                  </div>
+                  <span class="px-2 py-0.5 bg-emerald-50 text-emerald-700 text-[10px] font-bold rounded flex-shrink-0">Đã tải lên</span>
+                </div>
+
+                <div class="flex items-center justify-between p-2 bg-white border border-dashed border-slate-300 rounded-lg">
+                  <input type="text" placeholder="Thêm tài liệu thứ 3 (Tùy chọn)..." class="text-xs w-full border-none focus:outline-none text-slate-600 px-1">
+                  <button onclick="showToast('Tải tài liệu', 'Đã thêm tài liệu huấn luyện mới', 'emerald')" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 text-[10px] font-bold rounded flex-shrink-0">Tải lên</button>
+                </div>
               </div>
             </div>
 
-            <!-- URL Inputs -->
+            <!-- Website URLs Knowledge Base -->
             <div class="space-y-2">
-              <label class="font-bold text-slate-700 block">URL tài liệu / Website</label>
-              <div class="space-y-1.5">
-                <input type="url" placeholder="https://docs.cloudxcs.com/kb/1" class="w-full border border-slate-300 rounded px-3 py-1.5 text-xs">
-                <input type="url" placeholder="https://docs.cloudxcs.com/kb/2" class="w-full border border-slate-300 rounded px-3 py-1.5 text-xs">
-                <input type="url" placeholder="https://docs.cloudxcs.com/kb/3" class="w-full border border-slate-300 rounded px-3 py-1.5 text-xs">
+              <label class="block text-xs font-bold text-slate-800">Liên kết tài liệu / Website (3 URL)</label>
+              <div class="space-y-2 text-xs">
+                <div class="flex items-center gap-2 p-2 bg-white border border-slate-200 rounded-lg">
+                  <i class="ph ph-link text-slate-400"></i>
+                  <input type="text" id="doc-url-1" value="https://docs.cloudxcs.com/api/v2/webhook-guide" class="w-full text-xs font-mono text-slate-700 border-none focus:outline-none">
+                </div>
+
+                <div class="flex items-center gap-2 p-2 bg-white border border-slate-200 rounded-lg">
+                  <i class="ph ph-link text-slate-400"></i>
+                  <input type="text" id="doc-url-2" value="https://cloudxcs.com/knowledgebase/sla-policy" class="w-full text-xs font-mono text-slate-700 border-none focus:outline-none">
+                </div>
+
+                <div class="flex items-center gap-2 p-2 bg-white border border-slate-200 rounded-lg">
+                  <i class="ph ph-link text-slate-400"></i>
+                  <input type="text" id="doc-url-3" value="https://danh-muc-huong-dan-3..." class="w-full text-xs font-mono text-slate-700 border-none focus:outline-none">
+                </div>
               </div>
             </div>
           </div>
 
-          <!-- Action Button: Compact Submit -->
-          <div class="flex justify-end pt-3 border-t border-slate-100">
-            <button onclick="submitTraining()" class="px-5 py-2 bg-cloudx-main hover:bg-cloudx-hover text-white text-xs font-bold rounded-lg shadow-xs transition flex items-center gap-2">
-              <i class="ph ph-check-bold"></i>
-              <span>Submit Training</span>
+          <!-- Bottom Submit Training Footer -->
+          <div class="flex flex-wrap items-center justify-between border-t border-slate-100 pt-4 gap-3">
+            <span class="text-xs text-slate-500 italic">Kiểm tra thông tin trước khi áp dụng thay đổi cho AI Agent.</span>
+            <button onclick="submitTraining()" class="px-6 py-2.5 bg-cloudx-main hover:bg-cloudx-hover text-white text-xs font-bold rounded-lg shadow-md transition flex items-center gap-2">
+              <i class="ph ph-paper-plane-tilt"></i> Submit Training
             </button>
           </div>
-        </div>
-
-        <!-- Section 3: History Log -->
-        <div class="bg-white p-5 rounded-lg border border-slate-200 shadow-xs space-y-3">
-          <h2 class="text-xs font-bold text-slate-800 uppercase tracking-wider border-b border-slate-100 pb-2">3. Lịch sử thay đổi (History)</h2>
-          <table class="w-full text-left border-collapse text-xs">
-            <thead>
-              <tr class="bg-slate-50 border-b border-slate-200 text-slate-600 font-bold">
-                <th class="py-2 px-3">Ngày/Giờ</th>
-                <th class="py-2 px-3">Loại thay đổi</th>
-                <th class="py-2 px-3">Người thực hiện</th>
-                <th class="py-2 px-3">Nội dung</th>
-              </tr>
-            </thead>
-            <tbody id="history-table-body" class="divide-y divide-slate-100 text-slate-700">
-              <tr>
-                <td class="py-2 px-3 font-mono">2026-08-06 12:48:32</td>
-                <td class="py-2 px-3 font-semibold text-cloudx-main">Prompt Update</td>
-                <td class="py-2 px-3">Phan Thanh Nam</td>
-                <td class="py-2 px-3">Cập nhật quy trình phản hồi khách hàng theo chuẩn ISO.</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+        </section>
       </main>
 
-    </div>
-  </div>
-
-  <!-- MODAL: FULL TRANSCRIPTION -->
-  <div id="modal-transcription" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4">
-    <div class="bg-white rounded-xl shadow-2xl max-w-2xl w-full overflow-hidden flex flex-col max-h-[85vh]">
-      <!-- Modal Header -->
-      <div class="p-4 bg-slate-900 text-white flex items-center justify-between">
-        <div class="flex items-center gap-2">
-          <i class="ph ph-article-ny-times text-orange-400 text-lg"></i>
-          <h3 class="font-bold text-sm">Full Speech-to-Text Transcription</h3>
-        </div>
-        <button onclick="toggleTranscriptionModal(false)" class="text-slate-400 hover:text-white">
-          <i class="ph ph-x text-lg"></i>
-        </button>
-      </div>
-
-      <!-- Transcript Dialogue Body -->
-      <div class="p-5 overflow-y-auto space-y-4 text-xs font-sans">
-        <div class="p-3 bg-slate-50 border border-slate-200 rounded-lg">
-          <div class="flex justify-between font-bold text-slate-800 mb-1">
-            <span class="text-cloudx-main">Agent Phan Thanh Nam</span>
-            <span class="font-mono text-slate-400 text-[10px]">00:02</span>
-          </div>
-          <p class="text-slate-700 leading-relaxed">Dạ alo, CloudXCS xin nghe ạ. Em có thể hỗ trợ gì cho anh Minh ạ?</p>
-        </div>
-
-        <div class="p-3 bg-slate-50 border border-slate-200 rounded-lg">
-          <div class="flex justify-between font-bold text-slate-800 mb-1">
-            <span class="text-sky-600">Khách hàng Unknown 19000119</span>
-            <span class="font-mono text-slate-400 text-[10px]">00:08</span>
-          </div>
-          <p class="text-slate-700 leading-relaxed">Chào bạn, bên mình đang muốn tư vấn nâng cấp gói tổng đài AI Service Agent cho 50 nhận sự chăm sóc khách hàng.</p>
-        </div>
-
-        <div class="p-3 bg-slate-50 border border-slate-200 rounded-lg">
-          <div class="flex justify-between font-bold text-slate-800 mb-1">
-            <span class="text-cloudx-main">Agent Phan Thanh Nam</span>
-            <span class="font-mono text-slate-400 text-[10px]">00:22</span>
-          </div>
-          <p class="text-slate-700 leading-relaxed">Dạ vâng anh, hệ thống CloudXCS hiện hỗ trợ tự động bốc tách thoại, ghi nhận Ticket và phân tích cảm xúc khách hàng real-time. Em gửi báo giá qua Zalo số này cho anh nhé?</p>
-        </div>
-      </div>
-
-      <!-- Footer -->
-      <div class="p-3 bg-slate-50 border-t border-slate-200 flex justify-end gap-2">
-        <button onclick="copyTranscript()" class="px-3.5 py-1.5 border border-slate-300 hover:bg-slate-100 text-slate-700 font-bold rounded text-xs transition">
-          Sao chép
-        </button>
-        <button onclick="toggleTranscriptionModal(false)" class="px-4 py-1.5 bg-slate-900 text-white font-bold rounded text-xs">
-          Đóng
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- MODAL: ADD NEW CONTACT -->
-  <div id="modal-add-contact" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4">
-    <div class="bg-white rounded-xl shadow-2xl max-w-lg w-full p-6 space-y-4 text-xs">
-      <div class="flex justify-between items-center border-b border-slate-100 pb-3">
-        <h3 class="font-bold text-sm text-slate-900">Add New Contact</h3>
-        <button onclick="closeAddContactModal()" class="text-slate-400 hover:text-slate-600"><i class="ph ph-x text-lg"></i></button>
-      </div>
-
-      <div class="grid grid-cols-2 gap-3">
-        <div>
-          <label class="font-bold text-slate-700 block mb-1">* Name</label>
-          <input type="text" placeholder="Input name" class="w-full border border-slate-300 rounded px-2.5 py-1.5">
-        </div>
-        <div>
-          <label class="font-bold text-slate-700 block mb-1">* Phone</label>
-          <input type="text" placeholder="Input phone" class="w-full border border-slate-300 rounded px-2.5 py-1.5">
-        </div>
-      </div>
-
-      <div class="flex justify-end gap-2 pt-2">
-        <button onclick="closeAddContactModal()" class="px-4 py-1.5 border border-slate-300 rounded font-semibold text-slate-700">Cancel</button>
-        <button onclick="closeAddContactModal(); showToast('Tạo thành công', 'Liên hệ mới đã được thêm', 'emerald')" class="px-4 py-1.5 bg-cloudx-main text-white rounded font-bold">Accept</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- MODAL: ADD NEW COMPANY -->
-  <div id="modal-add-company" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4">
-    <div class="bg-white rounded-xl shadow-2xl max-w-lg w-full p-6 space-y-4 text-xs">
-      <div class="flex justify-between items-center border-b border-slate-100 pb-3">
-        <h3 class="font-bold text-sm text-slate-900">Add New Company</h3>
-        <button onclick="closeAddCompanyModal()" class="text-slate-400 hover:text-slate-600"><i class="ph ph-x text-lg"></i></button>
-      </div>
-
-      <div class="space-y-3">
-        <div>
-          <label class="font-bold text-slate-700 block mb-1">* Company Name</label>
-          <input type="text" placeholder="Input company name" class="w-full border border-slate-300 rounded px-2.5 py-1.5">
-        </div>
-        <div>
-          <label class="font-bold text-slate-700 block mb-1">Industry</label>
-          <input type="text" placeholder="Input industry" class="w-full border border-slate-300 rounded px-2.5 py-1.5">
-        </div>
-      </div>
-
-      <div class="flex justify-end gap-2 pt-2">
-        <button onclick="closeAddCompanyModal()" class="px-4 py-1.5 border border-slate-300 rounded font-semibold text-slate-700">Cancel</button>
-        <button onclick="closeAddCompanyModal(); showToast('Tạo thành công', 'Công ty mới đã được tạo', 'emerald')" class="px-4 py-1.5 bg-cloudx-main text-white rounded font-bold">Accept</button>
-      </div>
     </div>
   </div>
 
   <!-- TOAST NOTIFICATION CONTAINER -->
-  <div id="toast" class="fixed bottom-5 right-5 z-50 bg-slate-900 text-white px-4 py-3 rounded-lg shadow-xl hidden flex items-center gap-3 border border-slate-700 text-xs">
-    <i id="toast-icon" class="ph ph-check-circle text-emerald-400 text-lg"></i>
-    <div>
-      <h4 id="toast-title" class="font-bold text-white">Title</h4>
-      <p id="toast-msg" class="text-slate-300 text-[11px]">Message body</p>
+  <div id="toast" class="fixed bottom-5 right-5 z-50 flex items-center gap-3 bg-slate-900 text-white px-4 py-3 rounded-xl shadow-2xl transition-all duration-300 transform translate-y-20 opacity-0 pointer-events-none border border-slate-800">
+    <div id="toast-icon" class="w-7 h-7 rounded-full bg-emerald-500 flex items-center justify-center text-white font-bold text-sm">
+      <i class="ph ph-check"></i>
+    </div>
+    <div class="flex flex-col">
+      <span id="toast-title" class="font-bold text-xs text-white">Notification</span>
+      <span id="toast-msg" class="text-[11px] text-slate-300">Message content...</span>
     </div>
   </div>
 
-  <!-- JAVASCRIPT APP LOGIC -->
   <script>
-    // State management for Agent Configs
+    // Detailed Configuration Data for All 3 CloryAI Agents
     const agentsData = {
       sales: {
-        title: "Sales Agent",
-        name: "Clory Sales Agent #1",
-        position: "Inbound Sales Line",
-        desc: "Agent specialized in qualifying leads, presenting solution quotes, and follow-ups.",
-        prompt: "You are a sales agent for CloudXCS. Focus on discovering customer business requirements and promoting relevant product bundles."
+        key: 'sales',
+        name: "CloudX Sales Agent #1",
+        position: "Inbound Sales & Lead Qualification - Tier 1",
+        desc: "Tự động tư vấn dịch vụ, báo giá gói giải pháp CloudXCS, thu thập nhu cầu khách hàng tiềm năng và tự động khởi tạo Lead / Ticket cho phòng Kinh doanh.",
+        currentPrompt: "Bạn là CloudX Sales Agent #1, đại diện tư vấn bán hàng tự động của CloudXCS.\n\nNHIỆM VỤ CHÍNH:\n1. Tiếp cận và giới thiệu các gói tính năng Ticket System phù hợp cho quy mô doanh nghiệp.\n2. Thu thập nhu cầu của khách hàng: Số lượng nhân sự hỗ trợ, kênh tiếp nhận (Phone/Zalo/Web), ngân sách dự kiến.\n3. Báo giá sơ bộ và hẹn lịch Demo trực tiếp với Chuyên viên Kinh doanh.\n4. Tạo Lead/Ticket kinh doanh mới trên CloudXCS.",
+        newPrompt: "Bạn là CloudX Sales Agent #1 chuyên sâu, hỗ trợ chốt hợp đồng và đề xuất ưu đãi tự động.\n\nNÂNG CAO TƯ VẤN SALES:\n1. Tự động so sánh bảng giá các gói CloudXCS Standard vs Enterprise.\n2. Đề xuất chương trình khuyến mãi tháng và miễn phí trải nghiệm AI Service Agent trong 14 ngày.\n3. Chuyển giao thông tin khách hàng VIP ngay lập tức cho Trưởng phòng Kinh doanh.",
+        file1: "Bảng_Gia_CloudXCS_Enterprise_2026.pdf",
+        file2: "Kich_Ban_Chot_Sale_Truc_Tuyen.docx",
+        url1: "https://docs.cloudxcs.com/sales/pricing-matrix",
+        url2: "https://cloudxcs.com/knowledgebase/enterprise-features",
+        url3: "https://cloudxcs.com/demo-booking-schedule",
+        status: "online"
       },
       service: {
-        title: "Service Agent",
-        name: "Clory Service Agent #1",
-        position: "Customer Support Line 1",
-        desc: "Agent dedicated to tier 1 general inquiries and initial ticket triaging.",
-        prompt: "You are a helpful customer service agent for CloudXCS. Greet the customer professionally and collect ticket details."
+        key: 'service',
+        name: "CloudX Service Agent #1",
+        position: "Customer Support Line 1 - Tier 1 Technical",
+        desc: "Tự động trả lời câu hỏi thường gặp của khách hàng, phân loại sự cố kỹ thuật và hỗ trợ tự động tạo Ticket trên hệ thống CloudXCS Ticket System khi phát sinh hỗ trợ chuyên sâu.",
+        currentPrompt: "Bạn là CloudX Service Agent #1, trợ lý chăm sóc khách hàng tự động của hệ thống CloudXCS Ticket System.\n\nNHIỆM VỤ CHÍNH:\n1. Giải đáp các thắc mắc kỹ thuật phổ biến từ người dùng.\n2. Phân loại mức độ ưu tiên sự cố (Urgent/High/Low) dựa trên mô tả của khách hàng.\n3. Tự động khởi tạo Ticket hỗ trợ kỹ thuật khi vượt ngoài khả năng giải quyết trực tiếp.",
+        newPrompt: "Bạn là CloudX Service Agent #1, chuyên viên tư vấn và tự động phân loại Ticket cho hệ thống CloudXCS.\n\nHƯỚNG DẪN BỔ SUNG:\n1. Tự động tra cứu log sự cố kết nối API Callback/Webhook.\n2. Hướng dẫn khách hàng tự Whitelist IP máy chủ trên portal quản trị.",
+        file1: "HDSD_CloudXCS_API_v2.4.pdf",
+        file2: "Kich_Ban_Xuly_SuCo_KyThuat.docx",
+        url1: "https://docs.cloudxcs.com/api/v2/webhook-guide",
+        url2: "https://cloudxcs.com/knowledgebase/sla-policy",
+        url3: "https://danh-muc-huong-dan-3...",
+        status: "online"
       },
       qa: {
-        title: "QA Agent",
-        name: "Clory QA Evaluator #1",
-        position: "Call Quality Audit Line",
-        desc: "Automated quality assurance agent evaluating call compliance and agent performance.",
-        prompt: "You are a QA Auditor. Analyze speech transcripts against standard customer service criteria."
+        key: 'qa',
+        name: "CloudX QA Agent #1",
+        position: "Quality Assurance & Evaluation Support",
+        desc: "Tự động chấm điểm cuộc gọi, đánh giá mức độ tuân thủ quy trình giao tiếp CSKH và phân tích cảm xúc (Sentiment Analysis) của khách hàng.",
+        currentPrompt: "Bạn là CloudX QA Agent #1, chuyên viên kiểm định chất lượng cuộc gọi tự động.\n\nTIÊU CHÍ CHẤM ĐIỂM:\n1. Lời chào tiêu chuẩn (10 điểm).\n2. Khai thác đúng trọng tâm sự cố (30 điểm).\n3. Đưa ra giải pháp chính xác (40 điểm).\n4. Thái độ lịch sự, chuyên nghiệp (20 điểm).",
+        newPrompt: "Bạn là CloudX QA Agent #1 chuyên sâu, tự động chấm điểm và lập báo cáo xu hướng Sentiment.\n\nBỔ SUNG QUY TRÌNH QA:\n1. Cảnh báo lập tức tới Trưởng phòng khi có cuộc gọi Critical Fail (điểm < 60).\n2. Tổng hợp các lỗi giao tiếp phổ biến để đưa vào tài liệu Huấn luyện Đào tạo định kỳ.",
+        file1: "Quy_Chuan_Danh_Gia_Cuoc_Goi_QA.pdf",
+        file2: "Tieu_Chuan_Giao_Tiep_Khach_Hang.docx",
+        url1: "https://docs.cloudxcs.com/qa/evaluation-criteria",
+        url2: "https://cloudxcs.com/qa/sentiment-metrics",
+        url3: "https://cloudxcs.com/coaching-reports-2026",
+        status: "online"
       }
     };
 
     let activeAgentKey = 'service';
-    let isAgentOnline = true;
-    let currentLang = 'EN';
 
-    const translations = {
-      EN: {
-        dashboard: "Dashboard",
-        report: "Report",
-        leads: "Leads",
-        tickets: "Tickets",
-        contacts: "Contacts",
-        companies: "Companies",
-        db_mode: "Dashboard Mode:"
-      },
-      VN: {
-        dashboard: "Bảng điều khiển",
-        report: "Báo cáo",
-        leads: "Cơ hội (Leads)",
-        tickets: "Phiếu hỗ trợ (Tickets)",
-        contacts: "Danh bạ",
-        companies: "Công ty",
-        db_mode: "Chế độ Dashboard:"
+    function switchAgent(agentKey) {
+      activeAgentKey = agentKey;
+      const data = agentsData[agentKey];
+      if (!data) return;
+      
+      document.getElementById('agent-input-name').value = data.name;
+      document.getElementById('agent-input-pos').value = data.position;
+      document.getElementById('agent-input-desc').value = data.desc;
+      document.getElementById('current-prompt').value = data.currentPrompt;
+      document.getElementById('new-prompt').value = data.newPrompt;
+      
+      document.getElementById('doc-file-1').innerText = data.file1;
+      document.getElementById('doc-file-2').innerText = data.file2;
+      document.getElementById('doc-url-1').value = data.url1;
+      document.getElementById('doc-url-2').value = data.url2;
+      document.getElementById('doc-url-3').value = data.url3;
+
+      document.getElementById('config-breadcrumbs').innerText = `CloryAI Agents > ${data.name.split(' ')[1]} Agent Config`;
+      document.getElementById('config-page-title').innerHTML = `Quản lý ${data.name.split(' ')[1]} Agent <span class="text-xs px-2 py-0.5 rounded bg-slate-200 font-normal">v2.4</span>`;
+      document.getElementById('tab-agent-name-title').innerText = `${data.name.split(' ')[1]} Agent`;
+
+      const toggle = document.getElementById('status-toggle');
+      if (toggle) toggle.checked = (data.status === 'online');
+      updateStatusUI(data.status === 'online');
+
+      switchView('agent-config');
+      showToast("Cấu hình Agent", `Đã mở trang quản lý ${data.name}`, "blue");
+    }
+
+    function switchDashboard(type) {
+      const dbService = document.getElementById('dashboard-service');
+      const dbSales = document.getElementById('dashboard-sales');
+      const dbQA = document.getElementById('dashboard-qa');
+      const mainTitle = document.getElementById('dashboard-main-title');
+
+      if (dbService) dbService.classList.add('hidden');
+      if (dbSales) dbSales.classList.add('hidden');
+      if (dbQA) dbQA.classList.add('hidden');
+
+      if (type === 'sales') {
+        if (dbSales) dbSales.classList.remove('hidden');
+        if (mainTitle) mainTitle.innerText = "Sales Agent Dashboard";
+      } else if (type === 'qa') {
+        if (dbQA) dbQA.classList.remove('hidden');
+        if (mainTitle) mainTitle.innerText = "QA Agent Dashboard";
+      } else {
+        if (dbService) dbService.classList.remove('hidden');
+        if (mainTitle) mainTitle.innerText = "Service Agent Dashboard";
       }
-    };
-
-    function toggleLanguage() {
-      currentLang = currentLang === 'EN' ? 'VN' : 'EN';
-      const langLabel = document.getElementById('lang-label');
-      if (langLabel) langLabel.innerText = currentLang;
-
-      // Update internationalized text nodes
-      document.querySelectorAll('[data-i18n]').forEach(el => {
-        const key = el.getAttribute('data-i18n');
-        if (translations[currentLang] && translations[currentLang][key]) {
-          el.innerText = translations[currentLang][key];
-        }
-      });
-
-      showToast('Ngôn ngữ / Language', `Đã chuyển sang ngôn ngữ ${currentLang}`, 'blue');
     }
 
     function switchView(viewName) {
-      const views = ['dashboard', 'report', 'leads', 'ticket-list', 'create-ticket', 'contacts-list', 'contact-detail', 'company-detail', 'ticket-detail', 'agent-config'];
+      const views = ['dashboard', 'report', 'leads-list', 'lead-detail', 'ticket-list', 'ticket-detail', 'contacts-list', 'company-detail', 'agent-config'];
       
       views.forEach(v => {
         const viewEl = document.getElementById(`view-${v}`);
@@ -1673,7 +1428,7 @@ Ensure clear tone and escalate urgent issues to human supervisors.
           }
         } else {
           if (viewEl) viewEl.classList.add('hidden');
-          if (tabEl && !['dashboard', 'leads', 'ticket-list', 'contacts-list'].includes(v)) {
+          if (tabEl && !['dashboard'].includes(v)) {
             tabEl.classList.add('hidden');
           } else if (tabEl) {
             tabEl.classList.remove('bg-orange-50', 'text-cloudx-main', 'border', 'border-orange-200', 'font-semibold');
@@ -1681,188 +1436,114 @@ Ensure clear tone and escalate urgent issues to human supervisors.
           }
         }
       });
-
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    function changeDashboardType(type) {
-      const dbTypes = ['service', 'sales', 'qa'];
-      dbTypes.forEach(t => {
-        const el = document.getElementById(`db-container-${t}`);
-        if (el) {
-          if (t === type) el.classList.remove('hidden');
-          else el.classList.add('hidden');
+    function handleStatusToggle(checkbox) {
+      const isOnline = checkbox.checked;
+      agentsData[activeAgentKey].status = isOnline ? 'online' : 'offline';
+      
+      const sidebarBadge = document.getElementById(`badge-agent-${activeAgentKey}`);
+      if (sidebarBadge) {
+        if (isOnline) {
+          sidebarBadge.className = "ml-auto text-[9px] px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-400 font-semibold";
+          sidebarBadge.innerText = "Online";
+        } else {
+          sidebarBadge.className = "ml-auto text-[9px] px-1.5 py-0.5 rounded bg-slate-500/20 text-slate-400 font-semibold";
+          sidebarBadge.innerText = "Offline";
         }
-      });
-
-      const titleEl = document.getElementById('dashboard-title');
-      if (titleEl) {
-        if (type === 'sales') titleEl.innerText = "Sales Agent Dashboard";
-        else if (type === 'qa') titleEl.innerText = "QA Agent Dashboard";
-        else titleEl.innerText = "Service Agent Dashboard";
       }
+      updateStatusUI(isOnline);
+      showToast("Trạng thái Agent", `Đã cập nhật trạng thái Agent thành ${isOnline ? 'Online' : 'Offline'}`, isOnline ? "emerald" : "slate");
     }
 
-    function toggleAgentsMenu() {
-      const submenu = document.getElementById('agents-submenu');
-      const chevron = document.getElementById('agents-chevron');
-      if (submenu) submenu.classList.toggle('hidden');
-      if (chevron) chevron.classList.toggle('rotate-180');
-    }
-
-    function switchAgent(key) {
-      const data = agentsData[key];
-      if (!data) return;
-
-      activeAgentKey = key;
-      switchView('agent-config');
-
-      const titleEl = document.getElementById('agent-config-title');
-      const nameInput = document.getElementById('agent-input-name');
-      const posInput = document.getElementById('agent-input-pos');
-      const descInput = document.getElementById('agent-input-desc');
-      const currentPrompt = document.getElementById('current-prompt');
-
-      if (titleEl) titleEl.innerText = data.title;
-      if (nameInput) nameInput.value = data.name;
-      if (posInput) posInput.value = data.position;
-      if (descInput) descInput.value = data.desc;
-      if (currentPrompt) currentPrompt.value = data.prompt;
-
-      ['sales', 'service', 'qa'].forEach(k => {
-        const btn = document.getElementById(`subnav-${k}`);
-        if (btn) {
-          if (k === key) {
-            btn.classList.add('bg-slate-800', 'text-white', 'font-bold');
-          } else {
-            btn.classList.remove('bg-slate-800', 'text-white', 'font-bold');
-          }
+    function updateStatusUI(isOnline) {
+      const indicator = document.getElementById('status-indicator');
+      const text = document.getElementById('status-text');
+      if (indicator && text) {
+        if (isOnline) {
+          indicator.className = "flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200";
+          text.innerText = "Online";
+        } else {
+          indicator.className = "flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-slate-100 text-slate-600 border border-slate-300";
+          text.innerText = "Offline";
         }
-      });
-    }
-
-    function toggleAgentStatus() {
-      isAgentOnline = !isAgentOnline;
-      const knob = document.getElementById('agent-status-knob');
-      const toggle = document.getElementById('agent-status-toggle');
-      const text = document.getElementById('agent-status-text');
-
-      if (isAgentOnline) {
-        toggle.className = "w-10 h-5 bg-emerald-500 rounded-full transition-colors relative p-0.5";
-        knob.className = "w-4 h-4 bg-white rounded-full shadow-xs transform translate-x-5 transition-transform";
-        text.className = "text-xs font-bold text-emerald-600";
-        text.innerText = "Online";
-      } else {
-        toggle.className = "w-10 h-5 bg-slate-300 rounded-full transition-colors relative p-0.5";
-        knob.className = "w-4 h-4 bg-white rounded-full shadow-xs transform translate-x-0 transition-transform";
-        text.className = "text-xs font-bold text-slate-500";
-        text.innerText = "Offline";
       }
     }
 
-    function submitTraining() {
-      const newPromptText = document.getElementById('new-prompt').value;
-      if (!newPromptText.trim()) {
-        showToast('Cảnh báo', 'Vui lòng nhập prompt mới trước khi huấn luyện', 'amber');
-        return;
-      }
-
-      showToast('Huấn luyện thành công', 'Agent đã cập nhật câu lệnh Prompt mới', 'emerald');
-      document.getElementById('current-prompt').value = newPromptText;
-      document.getElementById('new-prompt').value = '';
-
-      const historyBody = document.getElementById('history-table-body');
-      if (historyBody) {
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-          <td class="py-2 px-3 font-mono">${new Date().toISOString().slice(0, 19).replace('T', ' ')}</td>
-          <td class="py-2 px-3 font-semibold text-cloudx-main">Prompt Update</td>
-          <td class="py-2 px-3">Phan Thanh Nam</td>
-          <td class="py-2 px-3">${newPromptText.slice(0, 50)}...</td>
-        `;
-        historyBody.prepend(tr);
-      }
-    }
-
-    function solveTodoTask(rowId, subjectName) {
+    function solveTodoTask(rowId, ticketCode) {
       const row = document.getElementById(rowId);
       if (row) {
-        row.style.opacity = '0';
-        row.style.transition = 'all 0.3s ease';
+        row.style.transition = "all 0.3s ease";
+        row.style.opacity = "0";
+        row.style.transform = "translateX(20px)";
         setTimeout(() => {
-          row.remove();
-          showToast('Hoàn tất công việc', `Đã xử lý xong công việc ${subjectName}`, 'emerald');
+          row.style.display = "none";
+          showToast("Hoàn thành công việc", `Đã xử lý xong tác vụ cho Ticket ${ticketCode} và ẩn khỏi danh sách.`, "emerald");
         }, 300);
       }
     }
 
-    function openTicketDetail(title) {
-      const heading = document.getElementById('detail-ticket-heading');
-      const tabTitle = document.getElementById('tab-ticket-title');
-      if (heading) heading.innerText = title;
-      if (tabTitle) tabTitle.innerText = title.slice(0, 12) + '...';
-      switchView('ticket-detail');
-    }
-
-    function openContactDetail(name) {
-      const nameEl = document.getElementById('contact-detail-name');
-      if (nameEl) nameEl.innerText = name;
-      switchView('contact-detail');
-    }
-
-    function toggleTranscriptionModal(show) {
-      const modal = document.getElementById('modal-transcription');
-      if (modal) {
-        if (show) modal.classList.remove('hidden');
-        else modal.classList.add('hidden');
+    function setLanguage(lang) {
+      const viBtn = document.getElementById('lang-vi');
+      const enBtn = document.getElementById('lang-en');
+      if (lang === 'vi') {
+        viBtn.className = "px-2 py-0.5 rounded-full font-bold bg-white text-slate-800 shadow-xs";
+        enBtn.className = "px-2 py-0.5 rounded-full font-medium text-slate-500 hover:text-slate-800";
+        showToast("Ngôn ngữ", "Đã chuyển sang Tiếng Việt", "blue");
+      } else {
+        enBtn.className = "px-2 py-0.5 rounded-full font-bold bg-white text-slate-800 shadow-xs";
+        viBtn.className = "px-2 py-0.5 rounded-full font-medium text-slate-500 hover:text-slate-800";
+        showToast("Language", "Switched to English", "blue");
       }
     }
 
-    function copyTranscript() {
-      showToast('Đã sao chép', 'Nội dung gỡ băng đã lưu vào clipboard', 'blue');
-    }
-
-    function openAddContactModal() {
-      const modal = document.getElementById('modal-add-contact');
-      if (modal) modal.classList.remove('hidden');
-    }
-    function closeAddContactModal() {
-      const modal = document.getElementById('modal-add-contact');
-      if (modal) modal.classList.add('hidden');
-    }
-
-    function openAddCompanyModal() {
-      const modal = document.getElementById('modal-add-company');
-      if (modal) modal.classList.remove('hidden');
-    }
-    function closeAddCompanyModal() {
-      const modal = document.getElementById('modal-add-company');
-      if (modal) modal.classList.add('hidden');
-    }
-
-    function toggleAudio() {
-      const icon = document.getElementById('audio-play-icon');
-      if (icon) {
-        if (icon.classList.contains('ph-play-fill')) {
-          icon.className = "ph ph-pause-fill text-xs";
-        } else {
-          icon.className = "ph ph-play-fill text-xs";
-        }
+    function insertTemplate() {
+      const newPromptEl = document.getElementById('new-prompt');
+      if (newPromptEl) {
+        newPromptEl.value = `[BẢN MẪU CHUẨN CLORYAI]
+Bạn là ${agentsData[activeAgentKey].name}.
+- Luôn giữ thái độ chuyên nghiệp, thân thiện.
+- Trả lời ngắn gọn, đi thẳng vào vấn đề.
+- Khởi tạo Ticket / Lead tự động khi nhận thông tin đầy đủ.`;
+        showToast("Chèn Mẫu Prompt", "Đã chèn mẫu Prompt chỉ dẫn chuẩn", "emerald");
       }
+    }
+
+    function copyPrompt() {
+      const currentPromptEl = document.getElementById('current-prompt');
+      if (currentPromptEl) {
+        const text = currentPromptEl.value;
+        const input = document.createElement('textarea');
+        input.value = text;
+        document.body.appendChild(input);
+        input.select();
+        document.execCommand('copy');
+        document.body.removeChild(input);
+        showToast("Sao Chép", "Đã chép nội dung Current Prompt vào Clipboard", "emerald");
+      }
+    }
+
+    function submitTraining() {
+      showToast("Huấn Luyện Thành Công!", `Agent ${agentsData[activeAgentKey].name} đã tiếp nhận prompt mới.`, "emerald");
+    }
+
+    function toggleSubmenu() {
+      const submenu = document.getElementById('agents-submenu');
+      if (submenu) submenu.classList.toggle('hidden');
     }
 
     function showToast(title, msg, color = 'emerald') {
       const toast = document.getElementById('toast');
       const toastTitle = document.getElementById('toast-title');
       const toastMsg = document.getElementById('toast-msg');
-      if (!toast) return;
+      if (!toast || !toastTitle || !toastMsg) return;
 
       toastTitle.innerText = title;
       toastMsg.innerText = msg;
-      toast.classList.remove('hidden');
-
+      toast.classList.remove('translate-y-20', 'opacity-0', 'pointer-events-none');
       setTimeout(() => {
-        toast.classList.add('hidden');
+        toast.classList.add('translate-y-20', 'opacity-0', 'pointer-events-none');
       }, 3000);
     }
   </script>
