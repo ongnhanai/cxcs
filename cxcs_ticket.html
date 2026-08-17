@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CloudXCS Ticket System</title>
+  <title>CloudXCS Omnichannel & Flow Ticket System</title>
   
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -30,13 +30,13 @@
     }
   </script>
   
+  <!-- Google Fonts & Phosphor Icons -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <!-- Phosphor Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/@phosphor-icons/web"></script>
   
-  <!-- Custom Styling Tokens & Visual Adjustments -->
+  <!-- Custom CSS for Utilities & Visual Polish -->
   <style>
     ::-webkit-scrollbar { width: 6px; height: 6px; }
     ::-webkit-scrollbar-track { background: #f1f5f9; }
@@ -55,7 +55,7 @@
   <div class="min-h-screen flex flex-col md:flex-row bg-slate-100">
 
     <!-- SIDEBAR NAVIGATION -->
-    <aside class="w-full md:w-60 bg-cloudx-sidebar text-slate-300 flex-shrink-0 flex flex-col justify-between select-none">
+    <aside class="w-full md:w-60 bg-cloudx-sidebar text-slate-300 flex-shrink-0 flex flex-col justify-between select-none border-r border-slate-800/60">
       <div>
         <!-- Brand Logo Header -->
         <div class="h-14 flex items-center px-5 bg-slate-950/60 border-b border-slate-800/80 gap-3">
@@ -64,7 +64,7 @@
           </div>
           <div class="flex flex-col">
             <span class="font-bold text-white tracking-wide text-sm leading-tight">CloudXCS</span>
-            <span class="text-[10px] text-slate-400 uppercase tracking-widest font-semibold">Ticket System</span>
+            <span class="text-[10px] text-slate-400 uppercase tracking-widest font-semibold">Omnichannel CRM</span>
           </div>
         </div>
 
@@ -75,8 +75,16 @@
             <span>Dashboard</span>
           </button>
           
+          <button id="nav-live-chat" onclick="switchView('live-chat')" class="w-full flex items-center justify-between px-3.5 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/60 transition-all group">
+            <div class="flex items-center gap-3">
+              <i class="ph ph-chat-circle-dots text-base text-sky-400 group-hover:animate-bounce"></i>
+              <span>Omnichannel Chat</span>
+            </div>
+            <span class="bg-rose-500 text-white text-[9px] font-bold px-1.5 py-0.5 rounded-full">4</span>
+          </button>
+
           <button id="nav-report" onclick="switchView('report')" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/60 transition-all">
-            <i class="ph ph-chart-bar text-base"></i>
+            <i class="ph ph-chart-bar text-base text-indigo-400"></i>
             <span>Report</span>
           </button>
 
@@ -86,17 +94,17 @@
           </button>
 
           <button id="nav-ticket-list" onclick="switchView('ticket-list')" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/60 transition-all">
-            <i class="ph ph-ticket text-base"></i>
+            <i class="ph ph-ticket text-base text-teal-400"></i>
             <span>Tickets</span>
           </button>
           
           <button id="nav-contacts-list" onclick="switchView('contacts-list')" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/60 transition-all">
-            <i class="ph ph-address-book text-base"></i>
+            <i class="ph ph-address-book text-base text-purple-400"></i>
             <span>Contacts</span>
           </button>
           
           <button id="nav-company-detail" onclick="switchView('company-detail')" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/60 transition-all">
-            <i class="ph ph-buildings text-base"></i>
+            <i class="ph ph-buildings text-base text-blue-400"></i>
             <span>Companies</span>
           </button>
 
@@ -110,7 +118,7 @@
               <i id="menu-arrow" class="ph ph-caret-down text-xs transition-transform duration-200"></i>
             </button>
 
-            <!-- Agents List with Live Badges -->
+            <!-- Agents List with Live Status Badges -->
             <div id="agents-submenu" class="mt-1 pl-4 space-y-1">
               <button id="nav-agent-sales" onclick="switchAgent('sales')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-md text-slate-400 hover:text-slate-200 hover:bg-slate-800/40 text-xs transition-all">
                 <i class="ph ph-currency-dollar text-sm text-amber-400"></i>
@@ -129,6 +137,15 @@
               </button>
             </div>
           </div>
+
+          <!-- CloryAI Flows Navigation Button -->
+          <button id="nav-cloryai-flows" onclick="switchView('cloryai-flows')" class="w-full flex items-center justify-between px-3.5 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/60 transition-all mt-1 group">
+            <div class="flex items-center gap-3">
+              <i class="ph ph-git-fork text-base text-emerald-400 group-hover:rotate-45 transition-transform"></i>
+              <span class="font-bold text-slate-200">CloryAI Flows</span>
+            </div>
+            <span class="bg-emerald-500/20 text-emerald-400 text-[9px] font-bold px-1.5 py-0.5 rounded">NEW</span>
+          </button>
           
           <button class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/60 transition-all mt-1">
             <i class="ph ph-gear text-base"></i>
@@ -157,6 +174,11 @@
         <div id="top-tabs-container" class="flex items-center gap-1 overflow-x-auto py-1 max-w-full">
           <button id="tab-dashboard" onclick="switchView('dashboard')" class="flex items-center gap-1.5 px-3 py-1 rounded text-xs font-semibold bg-orange-50 text-cloudx-main border border-orange-200 transition">
             <span>Dashboard</span>
+            <i class="ph ph-x text-slate-400 hover:text-slate-700"></i>
+          </button>
+          <button id="tab-live-chat" onclick="switchView('live-chat')" class="hidden items-center gap-1.5 px-3 py-1 rounded text-xs font-medium bg-slate-100 text-slate-700 hover:bg-slate-200 transition">
+            <i class="ph ph-chat-circle-dots text-sky-500 text-xs"></i>
+            <span>Omnichannel Chat</span>
             <i class="ph ph-x text-slate-400 hover:text-slate-700"></i>
           </button>
           <button id="tab-report" onclick="switchView('report')" class="hidden items-center gap-1.5 px-3 py-1 rounded text-xs font-medium bg-slate-100 text-slate-700 hover:bg-slate-200 transition">
@@ -191,7 +213,12 @@
           </button>
           <button id="tab-agent-config" onclick="switchView('agent-config')" class="hidden items-center gap-1.5 px-3 py-1 rounded text-xs font-medium bg-slate-100 text-slate-700 hover:bg-slate-200 transition">
             <i class="ph ph-robot text-xs text-cloudx-main"></i>
-            <span id="tab-agent-name-title">Agent Config</span>
+            <span id="tab-agent-name-title">Service Agent Config</span>
+            <i class="ph ph-x text-slate-400 hover:text-slate-700"></i>
+          </button>
+          <button id="tab-cloryai-flows" onclick="switchView('cloryai-flows')" class="hidden items-center gap-1.5 px-3 py-1 rounded text-xs font-medium bg-slate-100 text-slate-700 hover:bg-slate-200 transition">
+            <i class="ph ph-git-fork text-xs text-emerald-500"></i>
+            <span>CloryAI Flows</span>
             <i class="ph ph-x text-slate-400 hover:text-slate-700"></i>
           </button>
         </div>
@@ -217,7 +244,7 @@
         </div>
       </header>
 
-      <!-- ================= VIEW 1: DASHBOARD ================= -->
+      <!-- 1. DASHBOARD VIEW CONTAINER -->
       <main id="view-dashboard" class="p-4 space-y-4 max-w-[1600px] w-full mx-auto">
         <div class="flex flex-wrap items-center justify-between gap-3 pb-1">
           <h1 id="dashboard-main-title" class="text-sm font-bold text-slate-800">Service Agent Dashboard</h1>
@@ -232,7 +259,7 @@
           </div>
         </div>
 
-        <!-- 1. SERVICE AGENT DASHBOARD -->
+        <!-- SERVICE AGENT DASHBOARD -->
         <div id="dashboard-service" class="space-y-4">
           <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
             <div class="lg:col-span-4 bg-white p-4 rounded-xl border border-slate-200 shadow-xs space-y-4">
@@ -303,15 +330,15 @@
             <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-xs space-y-2">
               <h4 class="text-xs font-bold text-slate-700 uppercase">SOURCE TICKET</h4>
               <div class="space-y-1.5 text-xs">
-                <div class="flex justify-between text-slate-600"><span>Phone</span><span class="font-bold text-sky-600">64</span></div>
+                <div class="flex justify-between text-slate-600"><span>Phone / Zalo</span><span class="font-bold text-sky-600">64</span></div>
                 <div class="w-full bg-sky-500 h-2 rounded-full"></div>
-                <div class="flex justify-between text-slate-400 text-[10px]"><span>Website / Zalo</span><span>0</span></div>
+                <div class="flex justify-between text-slate-400 text-[10px]"><span>Website / Telegram</span><span>0</span></div>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- 2. SALES AGENT DASHBOARD -->
+        <!-- SALES AGENT DASHBOARD -->
         <div id="dashboard-sales" class="hidden space-y-4">
           <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
             <div class="lg:col-span-5 bg-white rounded-xl border border-slate-200 p-4 shadow-xs space-y-3">
@@ -380,9 +407,9 @@
                 <div>
                   <h4 class="text-xs font-bold text-slate-900 mb-2">Leads by Sources</h4>
                   <div class="space-y-2 text-[10px]">
-                    <div><span>Phone</span><div class="w-full bg-sky-500 h-2 rounded-full"></div></div>
+                    <div><span>Phone / Zalo</span><div class="w-full bg-sky-500 h-2 rounded-full"></div></div>
                     <div><span>Website</span><div class="w-full bg-slate-300 h-2 rounded-full w-[30%]"></div></div>
-                    <div><span>Zalo</span><div class="w-full bg-slate-300 h-2 rounded-full w-[20%]"></div></div>
+                    <div><span>Telegram</span><div class="w-full bg-slate-300 h-2 rounded-full w-[20%]"></div></div>
                   </div>
                 </div>
               </div>
@@ -440,7 +467,7 @@
           </div>
         </div>
 
-        <!-- 3. QA AGENT DASHBOARD -->
+        <!-- QA AGENT DASHBOARD -->
         <div id="dashboard-qa" class="hidden space-y-4">
           <div class="grid grid-cols-1 md:grid-cols-12 gap-4">
             <div class="md:col-span-3 bg-white p-4 rounded-xl border border-slate-200 shadow-xs space-y-2">
@@ -491,7 +518,166 @@
         </div>
       </main>
 
-      <!-- ================= VIEW 2: REPORT ================= -->
+      <!-- 2. LIVE CHAT VIEW -->
+      <main id="view-live-chat" class="hidden p-4 space-y-4 max-w-[1600px] w-full mx-auto">
+        <div class="flex items-center justify-between pb-1">
+          <div class="flex items-center gap-3">
+            <h1 class="text-sm font-bold text-slate-800">Omnichannel Chat Workspace</h1>
+            <span class="px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 text-xs font-bold flex items-center gap-1">
+              <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span> Live Webhook Active
+            </span>
+          </div>
+
+          <!-- Channel Filter Badges -->
+          <div class="flex items-center gap-1.5 text-xs">
+            <button onclick="filterChatChannel('all')" class="px-2.5 py-1 rounded-lg bg-slate-800 text-white font-semibold">Tất cả (4)</button>
+            <button onclick="filterChatChannel('zalo')" class="px-2 py-1 rounded-lg bg-white border border-slate-200 text-blue-600 font-medium hover:bg-blue-50 flex items-center gap-1">
+              <i class="ph ph-chat-circle text-xs"></i> Zalo OA
+            </button>
+            <button onclick="filterChatChannel('facebook')" class="px-2 py-1 rounded-lg bg-white border border-slate-200 text-indigo-600 font-medium hover:bg-indigo-50 flex items-center gap-1">
+              <i class="ph ph-facebook-logo text-xs"></i> Messenger
+            </button>
+            <button onclick="filterChatChannel('telegram')" class="px-2 py-1 rounded-lg bg-white border border-slate-200 text-sky-500 font-medium hover:bg-sky-50 flex items-center gap-1">
+              <i class="ph ph-paper-plane text-xs"></i> Telegram
+            </button>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 h-[calc(100vh-140px)] min-h-[600px]">
+          <!-- Column 1: Conversation List (3 cols) -->
+          <div class="lg:col-span-3 bg-white rounded-xl border border-slate-200 shadow-xs flex flex-col overflow-hidden">
+            <div class="p-3 border-b border-slate-100 space-y-2">
+              <div class="relative">
+                <input type="text" placeholder="Tìm theo tên, SĐT, ID kênh..." class="w-full text-xs px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-lg pr-8 focus:outline-none focus:border-cloudx-main">
+                <i class="ph ph-magnifying-glass absolute right-2.5 top-2 text-slate-400 text-xs"></i>
+              </div>
+            </div>
+
+            <div class="flex-1 overflow-y-auto divide-y divide-slate-100 text-xs">
+              <div onclick="selectConversation('chat-1')" id="chat-item-1" class="p-3 hover:bg-slate-50 cursor-pointer transition bg-orange-50/60 border-l-4 border-cloudx-main">
+                <div class="flex items-center justify-between mb-1">
+                  <div class="flex items-center gap-2">
+                    <span class="w-6 h-6 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-[10px]">Z</span>
+                    <span class="font-bold text-slate-900 truncate">A Minh (Retail Director)</span>
+                  </div>
+                  <span class="text-[10px] text-slate-400 font-mono">10:42</span>
+                </div>
+                <p class="text-[11px] text-slate-600 truncate mb-1.5">"Cho anh xin báo giá chi tiết gói Enterprise cho 50 điểm..."</p>
+                <div class="flex items-center justify-between">
+                  <span class="px-2 py-0.5 rounded bg-amber-100 text-amber-800 text-[9px] font-bold">🤖 CloryAI Sales</span>
+                  <span class="w-4 h-4 rounded-full bg-rose-600 text-white text-[9px] font-bold flex items-center justify-center">2</span>
+                </div>
+              </div>
+
+              <div onclick="selectConversation('chat-2')" id="chat-item-2" class="p-3 hover:bg-slate-50 cursor-pointer transition">
+                <div class="flex items-center justify-between mb-1">
+                  <div class="flex items-center gap-2">
+                    <span class="w-6 h-6 rounded-full bg-emerald-500 text-white flex items-center justify-center font-bold text-[10px]">W</span>
+                    <span class="font-bold text-slate-900 truncate">Khách Hàng #19000119</span>
+                  </div>
+                  <span class="text-[10px] text-slate-400 font-mono">10:15</span>
+                </div>
+                <p class="text-[11px] text-slate-500 truncate mb-1.5">"Log webhook báo lỗi kết nối callback 500 em ơi..."</p>
+                <div class="flex items-center justify-between">
+                  <span class="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 text-[9px] font-bold">🤖 CloryAI Service</span>
+                  <span class="text-[10px] text-slate-400">Web Chat</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Column 2: Active Conversation Window (6 cols) -->
+          <div class="lg:col-span-6 bg-white rounded-xl border border-slate-200 shadow-xs flex flex-col overflow-hidden">
+            <div class="p-3 border-b border-slate-200 flex items-center justify-between bg-slate-50">
+              <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-sm">Z</div>
+                <div>
+                  <div class="flex items-center gap-2">
+                    <h3 class="font-bold text-xs text-slate-900">A Minh (Retail Director)</h3>
+                    <span class="px-1.5 py-0.5 bg-blue-100 text-blue-700 font-bold text-[9px] rounded">Zalo OA</span>
+                  </div>
+                  <p class="text-[10px] text-slate-500">Kênh: <strong>CloudX Retail Official OA</strong> • Trạng thái: <span class="text-emerald-600 font-bold">Verified</span></p>
+                </div>
+              </div>
+
+              <div class="flex items-center gap-2">
+                <button onclick="convertChatToLead()" class="px-2.5 py-1.5 bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold rounded-lg shadow-xs flex items-center gap-1">
+                  <i class="ph ph-funnel-simple"></i> + Tạo Lead
+                </button>
+                <button onclick="convertChatToTicket()" class="px-2.5 py-1.5 bg-cloudx-main hover:bg-cloudx-hover text-white text-xs font-bold rounded-lg shadow-xs flex items-center gap-1">
+                  <i class="ph ph-ticket"></i> + Tạo Ticket
+                </button>
+              </div>
+            </div>
+
+            <!-- Messages Container -->
+            <div id="chat-messages-box" class="flex-1 p-4 overflow-y-auto space-y-3.5 bg-slate-50/50 text-xs">
+              <div class="text-center"><span class="px-2.5 py-0.5 bg-slate-200 text-slate-600 text-[10px] rounded-full font-mono">Hôm nay 10:35 AM</span></div>
+
+              <div class="flex items-start gap-2 max-w-[80%]">
+                <div class="w-7 h-7 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-[10px] flex-shrink-0">Z</div>
+                <div class="bg-white p-3 rounded-2xl rounded-tl-none border border-slate-200 shadow-xs space-y-1">
+                  <span class="text-[10px] font-bold text-slate-500 block">A Minh (Zalo OA)</span>
+                  <p class="text-slate-800">Chào CloudXCS! Bên anh đang có 50 chuỗi cửa hàng bán lẻ, anh muốn tìm hiểu giải pháp AI Agent kết hợp Ticket chăm sóc tự động.</p>
+                  <span class="text-[9px] text-slate-400 font-mono block text-right">10:36 AM</span>
+                </div>
+              </div>
+
+              <div class="flex items-start gap-2 max-w-[85%] ml-auto flex-row-reverse">
+                <div class="w-7 h-7 rounded-full bg-orange-500 text-white flex items-center justify-center font-bold text-[10px] flex-shrink-0">AI</div>
+                <div class="bg-orange-600 text-white p-3 rounded-2xl rounded-tr-none shadow-xs space-y-1">
+                  <div class="flex items-center justify-between gap-2 border-b border-orange-400/50 pb-1 mb-1">
+                    <span class="text-[10px] font-bold text-amber-200">🤖 CloryAI Sales Agent #1 (Tự động)</span>
+                    <i class="ph ph-sparkle text-amber-300"></i>
+                  </div>
+                  <p class="text-slate-50 leading-relaxed">Dạ chào anh Minh! CloudXCS Enterprise hoàn toàn đáp ứng xuất sắc quy mô 50 cửa hàng của bên anh với các tính năng tự động chia Lead và phân luồng hỗ trợ Ticket.</p>
+                  <span class="text-[9px] text-orange-200 font-mono block text-right">10:37 AM</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Copilot Suggestion Box -->
+            <div class="p-2 bg-amber-50 border-t border-b border-amber-200 flex items-center justify-between text-xs">
+              <div class="flex items-center gap-2">
+                <i class="ph ph-sparkle text-amber-500 font-bold"></i>
+                <span class="text-slate-700 font-semibold">Gợi ý AI (Copilot):</span>
+              </div>
+              <div class="flex items-center gap-1.5">
+                <button onclick="useAiSuggestion(1)" class="px-2 py-1 bg-white border border-amber-300 hover:bg-amber-100 rounded text-[11px] font-medium text-slate-800">Gửi báo giá Enterprise $15k</button>
+                <button onclick="useAiSuggestion(2)" class="px-2 py-1 bg-white border border-amber-300 hover:bg-amber-100 rounded text-[11px] font-medium text-slate-800">Đặt lịch Demo 10h Thứ 2</button>
+              </div>
+            </div>
+
+            <div class="p-3 bg-white space-y-2">
+              <div class="flex items-center gap-2">
+                <input type="text" id="chat-input-field" placeholder="Nhập tin nhắn Zalo phản hồi..." class="w-full text-xs px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-cloudx-main font-medium">
+                <button onclick="sendChatMessage()" class="px-4 py-2 bg-cloudx-main hover:bg-cloudx-hover text-white text-xs font-bold rounded-lg shadow-sm transition flex items-center gap-1">
+                  <span>Gửi</span> <i class="ph ph-paper-plane-right-fill"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Column 3: Customer Context Panel (3 cols) -->
+          <div class="lg:col-span-3 bg-white rounded-xl border border-slate-200 shadow-xs p-4 flex flex-col space-y-4 overflow-y-auto">
+            <h4 class="text-xs font-bold text-slate-800 uppercase tracking-wider">THÔNG TIN KHÁCH HÀNG</h4>
+            <div class="flex items-center gap-3 border-b border-slate-100 pb-3">
+              <div class="w-11 h-11 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center font-bold text-base">AM</div>
+              <div>
+                <h5 class="font-bold text-xs text-slate-900">A Minh (Retail Director)</h5>
+                <p class="text-[11px] text-slate-500 font-mono">Zalo ID: 884920194</p>
+                <span class="px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 font-bold text-[9px] inline-block mt-1">Lead Tiềm Năng 🔥</span>
+              </div>
+            </div>
+            <div class="space-y-2 text-xs">
+              <div class="flex justify-between"><span class="text-slate-500">Email:</span><span class="font-mono text-slate-800">minh.retail@dntg.vn</span></div>
+              <div class="flex justify-between"><span class="text-slate-500">Công ty:</span><button onclick="switchView('company-detail')" class="font-bold text-cloudx-main hover:underline">DNTG Group</button></div>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <!-- 3. REPORT VIEW -->
       <main id="view-report" class="hidden p-4 space-y-4 max-w-[1600px] w-full mx-auto">
         <h1 class="text-sm font-bold text-slate-800">Report</h1>
         <div class="bg-white rounded-xl border border-slate-200 p-4 shadow-xs space-y-4">
@@ -554,7 +740,7 @@
         </div>
       </main>
 
-      <!-- ================= VIEW 3A: LEADS LIST ================= -->
+      <!-- 4. LEADS LIST VIEW -->
       <main id="view-leads-list" class="hidden p-4 space-y-4 max-w-[1600px] w-full mx-auto">
         <h1 class="text-sm font-bold text-slate-800">Leads & Opportunities</h1>
         <div class="bg-white rounded-xl border border-slate-200 shadow-xs overflow-hidden">
@@ -587,32 +773,20 @@
                 <td class="py-2.5 px-3 text-center"><span class="text-rose-600 font-bold">Urgent</span></td>
                 <td class="py-2.5 px-3 text-center"><span class="px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 font-semibold text-[10px]">Open</span></td>
               </tr>
-              <tr class="hover:bg-slate-50 cursor-pointer" onclick="switchView('lead-detail')">
-                <td class="py-2.5 px-3 font-bold text-slate-900">#1332 INBOUND - Software Upgrade <span class="text-sky-500 font-bold ml-1">❄️ Cold</span></td>
-                <td class="py-2.5 px-3">A Trung 0918 xxxxxx</td>
-                <td class="py-2.5 px-3 text-slate-500">Standard License</td>
-                <td class="py-2.5 px-3 font-mono">10/01/2026</td>
-                <td class="py-2.5 px-3">Lê Đào Tuyết Anh</td>
-                <td class="py-2.5 px-3 text-center"><span class="text-slate-500 font-bold">Low</span></td>
-                <td class="py-2.5 px-3 text-center"><span class="px-2 py-0.5 rounded bg-slate-100 text-slate-600 font-semibold text-[10px]">Closed</span></td>
-              </tr>
             </tbody>
           </table>
         </div>
       </main>
 
-      <!-- ================= VIEW 3B: LEAD / SALES OPPORTUNITY DETAIL ================= -->
+      <!-- LEAD DETAIL VIEW -->
       <main id="view-lead-detail" class="hidden p-4 space-y-4 max-w-[1600px] w-full mx-auto">
-        <!-- Lead Header Badges -->
         <div class="flex items-center justify-between bg-white p-3 rounded-xl border border-slate-200 shadow-xs">
           <div class="flex items-center gap-2">
             <span class="px-2.5 py-1 bg-amber-50 text-amber-600 font-bold text-xs rounded-md border border-amber-200">Sales Lead</span>
             <span class="px-2.5 py-1 bg-rose-50 text-rose-600 font-bold text-xs rounded-md border border-rose-200">🔥 Hot Opportunity</span>
-            <span class="px-2.5 py-1 bg-blue-50 text-blue-600 font-semibold text-xs rounded-md">Quote Pending</span>
           </div>
           <div class="flex items-center gap-2">
             <span class="px-2.5 py-1 bg-emerald-100 text-emerald-800 font-bold text-xs rounded">High Value</span>
-            <span class="px-2.5 py-1 bg-amber-100 text-amber-800 font-bold text-xs rounded">In Pipeline</span>
           </div>
         </div>
 
@@ -622,30 +796,16 @@
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
-          <!-- Left Column: Audio Player + AI Sales Summary + Speech to Text -->
           <div class="lg:col-span-8 space-y-4">
-            <!-- Audio Widget -->
             <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-xs flex flex-wrap items-center justify-between gap-3">
               <div class="flex items-center gap-3">
                 <button class="w-10 h-10 rounded-full bg-amber-500 hover:bg-amber-600 text-white flex items-center justify-center font-bold shadow-md">
                   <i class="ph ph-play-fill text-lg"></i>
                 </button>
                 <div class="flex items-center gap-2 text-xs font-mono text-slate-600">
-                  <span>0:00</span>
-                  <span>/</span>
-                  <span>1:45</span>
-                  <div class="w-48 bg-slate-200 h-2 rounded-full overflow-hidden ml-2">
-                    <div class="bg-amber-500 h-full w-[35%]"></div>
-                  </div>
+                  <span>0:00</span><span>/</span><span>1:45</span>
+                  <div class="w-48 bg-slate-200 h-2 rounded-full overflow-hidden ml-2"><div class="bg-amber-500 h-full w-[35%]"></div></div>
                 </div>
-              </div>
-              <div class="flex items-center gap-2">
-                <button class="px-3 py-1.5 bg-amber-500 text-white rounded-lg text-xs font-bold hover:bg-amber-600 transition flex items-center gap-1.5">
-                  <i class="ph ph-plus"></i> Add Sales Note
-                </button>
-                <button class="px-3 py-1.5 bg-slate-900 text-white rounded-lg text-xs font-bold hover:bg-slate-800 transition flex items-center gap-1.5">
-                  <i class="ph ph-sparkle text-amber-400"></i> AI Sales Analysis
-                </button>
               </div>
             </div>
 
@@ -658,132 +818,20 @@
                 </div>
                 <span class="px-2 py-0.5 rounded bg-amber-50 text-amber-700 font-bold text-[10px]">CloryAI Sales Agent</span>
               </div>
-
-              <div class="space-y-2 text-xs text-slate-700">
-                <div class="flex items-start gap-2">
-                  <i class="ph ph-target text-amber-500 flex-shrink-0 mt-0.5"></i>
-                  <p><strong>Nhu cầu chính:</strong> Khách hàng tìm hiểu giải pháp CloudXCS Enterprise kết hợp CloryAI Agent cho chuỗi 50 điểm bán lẻ.</p>
-                </div>
-                <div class="flex items-start gap-2">
-                  <i class="ph ph-chat-circle-dots text-sky-500 flex-shrink-0 mt-0.5"></i>
-                  <p><strong>Nội dung trao đổi:</strong> Nhân viên tư vấn (Nguyễn Ngọc Liên) đã giới thiệu tính năng tự động phân loại Lead, điều phối ticket và báo giá sơ bộ gói Enterprise $15,000/năm.</p>
-                </div>
-                <div class="flex items-start gap-2">
-                  <i class="ph ph-check-circle text-emerald-500 flex-shrink-0 mt-0.5"></i>
-                  <p><strong>Kết quả & Bước tiếp theo:</strong> Khách hàng rất hài lòng với Demo trực quan, yêu cầu gửi hợp đồng mẫu và đặt lịch làm việc trực tiếp cùng Trưởng phòng Kinh doanh vào 10:00 AM Thứ Hai.</p>
-                </div>
-              </div>
-
-              <div class="pt-2 border-t border-slate-100 flex flex-wrap gap-4 text-[11px] text-slate-500 font-medium">
-                <span>Mức độ quan tâm: <b class="text-emerald-600">Rất cao / Tiềm năng lớn</b></span>
-                <span>Thời lượng cuộc gọi: <b class="text-slate-800 font-mono">1 phút 45 giây</b></span>
-                <span>Sản phẩm quan tâm: <b class="text-amber-600">CloudXCS Enterprise + AI Agent</b></span>
-              </div>
-            </div>
-
-            <!-- Full Transcript Dark Box -->
-            <div class="bg-slate-900 text-slate-200 p-4 rounded-xl shadow-lg space-y-3 font-sans text-xs">
-              <div class="flex items-center justify-between border-b border-slate-800 pb-2">
-                <div class="flex items-center gap-2">
-                  <i class="ph ph-waveform text-amber-400"></i>
-                  <span class="font-bold text-xs uppercase text-slate-100">VĂN BẢN GHI ÂM TƯ VẤN BÁN HÀNG (SPEECH-TO-TEXT)</span>
-                </div>
-                <button onclick="showToast('Sao chép', 'Đã chép toàn bộ văn bản ghi âm cuộc gọi tư vấn', 'emerald')" class="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded text-[10px] font-medium flex items-center gap-1 border border-slate-700">
-                  <i class="ph ph-copy"></i> Sao chép
-                </button>
-              </div>
-
-              <div class="space-y-3 pt-1 font-sans text-xs">
-                <div>
-                  <span class="text-amber-400 font-bold block mb-0.5">Sales Agent (Nguyễn Ngọc Liên) <span class="text-[10px] font-mono text-slate-500">00:02</span></span>
-                  <p class="text-slate-300 italic pl-3 border-l-2 border-amber-500/50">"Dạ CloudXCS xin nghe, em Liên có thể hỗ trợ thông tin báo giá giải pháp AI Agent cho anh Minh ạ?"</p>
-                </div>
-                <div>
-                  <span class="text-sky-400 font-bold block mb-0.5">Khách hàng (A Minh 0913 xxxxxx) <span class="text-[10px] font-mono text-slate-500">00:10</span></span>
-                  <p class="text-slate-300 italic pl-3 border-l-2 border-sky-500/50">"Chào em, bên anh đang mở rộng chuỗi 50 cửa hàng retail. Anh cần tư vấn giải pháp tự động nhận lead và hỗ trợ ticket chăm sóc khách hàng tự động."</p>
-                </div>
-                <div>
-                  <span class="text-amber-400 font-bold block mb-0.5">Sales Agent (Nguyễn Ngọc Liên) <span class="text-[10px] font-mono text-slate-500">00:35</span></span>
-                  <p class="text-slate-300 italic pl-3 border-l-2 border-amber-500/50">"Dạ tuyệt vời quá anh Minh! Gói CloudXCS Enterprise hoàn toàn đáp ứng nhu cầu này của bên anh. Em sẽ tạo báo giá chi tiết gửi qua Email kèm hợp đồng nháp nhé!"</p>
-                </div>
-              </div>
+              <p class="text-xs text-slate-700"><strong>Nhu cầu chính:</strong> Khách hàng tìm hiểu giải pháp CloudXCS Enterprise kết hợp CloryAI Agent cho chuỗi 50 điểm bán lẻ.</p>
             </div>
           </div>
 
-          <!-- Right Column: Opportunity Properties & Contact Detail -->
           <div class="lg:col-span-4 space-y-4">
-            <!-- Estimated Value Card -->
             <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-xs space-y-2">
               <span class="text-xs font-bold text-slate-500 uppercase">GIÁ TRỊ CƠ HỘI DỰ KIẾN</span>
               <div class="text-3xl font-extrabold text-amber-600 font-mono">$15,000 / năm</div>
-              <p class="text-[11px] text-slate-500">Dự kiến chốt: <strong class="text-slate-800 font-mono">15/08/2026</strong></p>
-            </div>
-
-            <!-- Properties Form Card -->
-            <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-xs space-y-3 text-xs">
-              <h4 class="font-bold text-slate-800 uppercase tracking-wider">PROPERTIES</h4>
-
-              <div class="space-y-2.5">
-                <div>
-                  <label class="block text-slate-600 font-medium mb-1">Giai đoạn (Stage)</label>
-                  <select class="w-full text-xs p-2 border border-slate-300 rounded-lg bg-white font-medium">
-                    <option>Interested</option>
-                    <option selected>Quoted (Đã báo giá)</option>
-                    <option>Potential</option>
-                    <option>Close-Won</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label class="block text-slate-600 font-medium mb-1">Nguồn Lead (Source)</label>
-                  <select class="w-full text-xs p-2 border border-slate-300 rounded-lg bg-white font-medium">
-                    <option selected>Inbound Call</option>
-                    <option>Website Form</option>
-                    <option>Zalo Offical Account</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label class="block text-slate-600 font-medium mb-1">Độ ưu tiên</label>
-                  <select class="w-full text-xs p-2 border border-slate-300 rounded-lg bg-white font-bold text-rose-600">
-                    <option selected>Urgent / Hot 🔥</option>
-                    <option>Normal</option>
-                    <option>Low</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label class="block text-slate-600 font-medium mb-1">Nhân viên phụ trách</label>
-                  <input type="text" value="Nguyễn Ngọc Liên" class="w-full text-xs p-2 border border-slate-300 rounded-lg bg-slate-50 font-semibold">
-                </div>
-              </div>
-
-              <button onclick="showToast('Cập nhật thành công', 'Đã lưu thuộc tính Cơ hội bán hàng #1328', 'emerald')" class="w-full py-2.5 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-lg shadow-sm transition mt-2">
-                Update Opportunity
-              </button>
-            </div>
-
-            <!-- Contact Detail Card -->
-            <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-xs space-y-3">
-              <h4 class="text-xs font-bold text-slate-800 uppercase">CONTACT DETAIL</h4>
-              <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-full bg-amber-100 text-amber-700 flex items-center justify-center font-bold">
-                  AM
-                </div>
-                <div>
-                  <h5 class="font-bold text-xs text-slate-900">A Minh (Retail Director)</h5>
-                  <p class="text-[11px] text-slate-500 font-mono">Phone: 0913 xxxxxx</p>
-                </div>
-              </div>
-              <button onclick="switchView('company-detail')" class="text-[11px] text-cloudx-main font-bold hover:underline block pt-1">
-                View Company Info (#DNTG) →
-              </button>
             </div>
           </div>
         </div>
       </main>
 
-      <!-- ================= VIEW 4A: TICKET LIST ================= -->
+      <!-- 5. TICKET LIST VIEW -->
       <main id="view-ticket-list" class="hidden p-4 space-y-4 max-w-[1600px] w-full mx-auto">
         <h1 class="text-sm font-bold text-slate-800">Tickets</h1>
         <div class="bg-white rounded-xl border border-slate-200 shadow-xs overflow-hidden">
@@ -814,14 +862,11 @@
         </div>
       </main>
 
-      <!-- ================= VIEW 4B: TICKET DETAIL (MATCHING IMAGE 23b31c.jpg) ================= -->
+      <!-- TICKET DETAIL VIEW -->
       <main id="view-ticket-detail" class="hidden p-4 space-y-4 max-w-[1600px] w-full mx-auto">
-        <!-- Top Status Bar -->
         <div class="flex items-center justify-between bg-white p-3 rounded-xl border border-slate-200 shadow-xs">
           <div class="flex items-center gap-2">
             <span class="px-2.5 py-1 bg-rose-50 text-rose-600 font-bold text-xs rounded-md border border-rose-200">Ticket Detail</span>
-            <span class="px-2.5 py-1 bg-rose-50 text-rose-600 font-medium text-xs rounded-md">First response due</span>
-            <span class="px-2.5 py-1 bg-rose-50 text-rose-600 font-medium text-xs rounded-md">Overdue</span>
           </div>
           <div class="flex items-center gap-2">
             <span class="px-2.5 py-1 bg-emerald-50 text-emerald-700 font-bold text-xs rounded">Low</span>
@@ -829,351 +874,66 @@
           </div>
         </div>
 
-        <!-- Ticket Title Header -->
         <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-xs">
           <h1 class="text-lg font-bold text-slate-900">#1411 OUTBOUND CALL 19000119</h1>
           <p class="text-xs text-slate-500 mt-0.5">Created by <span class="font-semibold text-slate-700">Phan Thanh Nam</span> at 4 hour ago</p>
         </div>
-
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
-          <!-- Left Column: Audio + AI Summary + Transcript -->
-          <div class="lg:col-span-8 space-y-4">
-            <!-- Audio Player Bar -->
-            <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-xs space-y-3">
-              <div class="flex items-center justify-between">
-                <div class="flex items-center gap-3">
-                  <div class="w-8 h-8 rounded-full bg-emerald-600 text-white flex items-center justify-center font-bold text-xs">P</div>
-                  <div>
-                    <span class="font-bold text-xs text-slate-900 block">Phan Thanh Nam</span>
-                    <span class="text-[10px] text-slate-400">Created on 4 hour ago</span>
-                  </div>
-                </div>
-                <div class="relative w-48">
-                  <input type="text" placeholder="Search in note" class="w-full text-xs px-3 py-1 bg-slate-50 border border-slate-200 rounded-lg pr-7">
-                  <i class="ph ph-magnifying-glass absolute right-2.5 top-2 text-slate-400 text-xs"></i>
-                </div>
-              </div>
-
-              <div class="flex items-center gap-3 bg-slate-50 p-2.5 rounded-xl border border-slate-200">
-                <button class="w-8 h-8 rounded-full bg-cloudx-main text-white flex items-center justify-center font-bold shadow-xs">
-                  <i class="ph ph-play-fill text-xs"></i>
-                </button>
-                <div class="flex items-center gap-2 text-xs font-mono text-slate-600">
-                  <span>0:00</span>
-                  <span>/</span>
-                  <span>0:56</span>
-                  <div class="w-56 bg-slate-200 h-1.5 rounded-full overflow-hidden ml-2">
-                    <div class="bg-cloudx-main h-full w-[25%]"></div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="flex items-center gap-2">
-                <button class="px-3 py-1.5 bg-cloudx-main hover:bg-cloudx-hover text-white rounded-lg text-xs font-bold transition flex items-center gap-1">
-                  <i class="ph ph-plus"></i> Add Note
-                </button>
-                <button class="px-3 py-1.5 bg-slate-900 text-white rounded-lg text-xs font-bold transition flex items-center gap-1">
-                  <i class="ph ph-[#EE5A36] ph-sparkle text-orange-400"></i> Full Transcription AI
-                </button>
-              </div>
-            </div>
-
-            <!-- AI Call Summary Box -->
-            <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-xs space-y-3">
-              <div class="flex items-center justify-between border-b border-slate-100 pb-2">
-                <div class="flex items-center gap-2">
-                  <i class="ph ph-sparkle text-amber-500 text-base"></i>
-                  <h3 class="text-xs font-bold uppercase tracking-wider text-slate-800">TÓM TẮT CUỘC GỌI (AI CALL SUMMARY)</h3>
-                </div>
-                <span class="px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 font-bold text-[10px]">CloudXCS Agent</span>
-              </div>
-
-              <div class="space-y-2 text-xs text-slate-700">
-                <div class="flex items-start gap-2">
-                  <i class="ph ph-target text-rose-500 flex-shrink-0 mt-0.5"></i>
-                  <p><strong>Mục đích cuộc gọi:</strong> Khách hàng phản ánh sự cố kết nối API không nhận được Webhook callback tự động khi tạo Ticket.</p>
-                </div>
-                <div class="flex items-start gap-2">
-                  <i class="ph ph-chat-circle-dots text-sky-500 flex-shrink-0 mt-0.5"></i>
-                  <p><strong>Nội dung trao đổi chính:</strong> Nhân viên hỗ trợ (Phan Thanh Nam) đã kiểm tra log hệ thống, phát hiện IP server của khách hàng bị chặn tạm thời do vượt ngưỡng tần suất request. Nhân viên đã tiến hành whitelist IP và hướng dẫn khách hàng cấu hình lại token xác thực.</p>
-                </div>
-                <div class="flex items-start gap-2">
-                  <i class="ph ph-check-circle text-emerald-500 flex-shrink-0 mt-0.5"></i>
-                  <p><strong>Kết quả & Hướng xử lý:</strong> Sự cố đã được khắc phục tại chỗ. Khách hàng đã test gửi lại webhook thành công và đồng ý đóng ticket này.</p>
-                </div>
-              </div>
-
-              <div class="pt-2 border-t border-slate-100 flex flex-wrap gap-4 text-[11px] text-slate-500 font-medium">
-                <span>Thái độ: <b class="text-emerald-600">Tích cực / Hài lòng</b></span>
-                <span>Thời lượng: <b class="text-slate-800 font-mono">56 giây</b></span>
-                <span>Phân loại: <b class="text-sky-600">Technical Support</b></span>
-              </div>
-            </div>
-
-            <!-- Full Transcript Dark Box -->
-            <div class="bg-slate-900 text-slate-200 p-4 rounded-xl shadow-lg space-y-3 font-sans text-xs">
-              <div class="flex items-center justify-between border-b border-slate-800 pb-2">
-                <div class="flex items-center gap-2">
-                  <i class="ph ph-waveform text-cloudx-main"></i>
-                  <span class="font-bold text-xs uppercase text-slate-100">VĂN BẢN GHI ÂM ĐẦY ĐỦ (SPEECH-TO-TEXT)</span>
-                </div>
-                <button onclick="showToast('Sao chép', 'Đã chép toàn bộ nội dung văn bản ghi âm', 'emerald')" class="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded text-[10px] font-medium flex items-center gap-1 border border-slate-700">
-                  <i class="ph ph-copy"></i> Sao chép
-                </button>
-              </div>
-
-              <div class="space-y-3 pt-1 font-sans text-xs">
-                <div>
-                  <span class="text-emerald-400 font-bold block mb-0.5">Agent (Phan Thanh Nam) <span class="text-[10px] font-mono text-slate-500">00:02</span></span>
-                  <p class="text-slate-300 italic pl-3 border-l-2 border-emerald-500/50">"Dạ CloudXCS xin nghe, em Thanh Nam có thể hỗ trợ gì cho anh chị ạ?"</p>
-                </div>
-                <div>
-                  <span class="text-amber-400 font-bold block mb-0.5">Khách hàng (19000119) <span class="text-[10px] font-mono text-slate-500">00:08</span></span>
-                  <p class="text-slate-300 italic pl-3 border-l-2 border-amber-500/50">"Chào em, bên anh đang kết nối API để tự động tạo ticket mà từ sáng tới giờ hệ thống báo lỗi không nhận được webhook callback."</p>
-                </div>
-                <div>
-                  <span class="text-emerald-400 font-bold block mb-0.5">Agent (Phan Thanh Nam) <span class="text-[10px] font-mono text-slate-500">00:20</span></span>
-                  <p class="text-slate-300 italic pl-3 border-l-2 border-emerald-500/50">"Dạ em kiểm tra trên hệ thống thì thấy địa chỉ IP server bên anh bị khóa tạm thời do gửi vượt ngưỡng quy định. Em đã hỗ trợ whitelist IP cho bên mình rồi ạ."</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Right Column: SLAs, Properties, Contact, 5 Recent -->
-          <div class="lg:col-span-4 space-y-4">
-            <!-- Due Times Card -->
-            <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-xs space-y-3 text-xs">
-              <div>
-                <label class="block text-slate-500 font-medium mb-1">First response due time</label>
-                <input type="text" value="2026-08-06 11:46:59" readonly class="w-full text-xs p-2 bg-slate-50 border border-slate-200 rounded font-mono text-slate-700">
-              </div>
-              <div>
-                <label class="block text-slate-500 font-medium mb-1">* Resolution due time</label>
-                <input type="text" value="2026-08-06 12:01:59" readonly class="w-full text-xs p-2 bg-slate-50 border border-slate-200 rounded font-mono text-slate-700">
-              </div>
-            </div>
-
-            <!-- Properties Card -->
-            <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-xs space-y-3 text-xs">
-              <h4 class="font-bold text-slate-800 uppercase tracking-wider">PROPERTIES</h4>
-
-              <div class="space-y-2.5">
-                <div>
-                  <label class="block text-slate-600 font-medium mb-1">Type</label>
-                  <select class="w-full text-xs p-2 border border-slate-300 rounded-lg bg-white font-medium">
-                    <option selected>Other</option>
-                    <option>Technical Issue</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label class="block text-slate-600 font-medium mb-1">Source</label>
-                  <select class="w-full text-xs p-2 border border-slate-300 rounded-lg bg-white font-medium">
-                    <option selected>Phone</option>
-                    <option>Zalo / Web</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label class="block text-slate-600 font-medium mb-1">Status</label>
-                  <select class="w-full text-xs p-2 border border-slate-300 rounded-lg bg-white font-medium">
-                    <option selected>Closed</option>
-                    <option>Open</option>
-                    <option>Solved</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label class="block text-slate-600 font-medium mb-1">Priority</label>
-                  <select class="w-full text-xs p-2 border border-slate-300 rounded-lg bg-white font-medium">
-                    <option selected>Low</option>
-                    <option>High</option>
-                    <option>Urgent</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label class="block text-slate-600 font-medium mb-1">* Department</label>
-                  <select class="w-full text-xs p-2 border border-slate-300 rounded-lg bg-white font-medium">
-                    <option selected>Đồng Nhất</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label class="block text-slate-600 font-medium mb-1">* Group</label>
-                  <select class="w-full text-xs p-2 border border-slate-300 rounded-lg bg-white font-medium">
-                    <option selected>Technical Support</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label class="block text-slate-600 font-medium mb-1">Assigned To</label>
-                  <input type="text" value="Phan Thanh Nam" class="w-full text-xs p-2 border border-slate-300 rounded-lg bg-slate-50 font-semibold">
-                </div>
-              </div>
-
-              <button onclick="showToast('Cập nhật thành công', 'Đã lưu thông tin Ticket #1411', 'emerald')" class="w-full py-2.5 bg-cloudx-main hover:bg-cloudx-hover text-white font-bold rounded-lg shadow-sm transition mt-2">
-                Update
-              </button>
-            </div>
-
-            <!-- Contact Detail Card -->
-            <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-xs space-y-3">
-              <h4 class="text-xs font-bold text-slate-800 uppercase">CONTACT DETAIL</h4>
-              <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-full bg-orange-100 text-cloudx-main flex items-center justify-center font-bold">
-                  U
-                </div>
-                <div>
-                  <h5 class="font-bold text-xs text-slate-900">Unknown 19000119</h5>
-                  <p class="text-[11px] text-slate-500 font-mono">Phone: 19000119</p>
-                </div>
-              </div>
-              <button onclick="switchView('contacts-list')" class="text-[11px] text-cloudx-main font-bold hover:underline block pt-1">
-                View more info →
-              </button>
-            </div>
-
-            <!-- 5 Most Recent Tickets Widget -->
-            <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-xs space-y-3">
-              <h4 class="text-xs font-bold text-slate-800 uppercase">5 MOST RECENT TICKETS</h4>
-              <div class="space-y-2.5 text-xs">
-                <div class="p-2 bg-slate-50 rounded border-l-2 border-cloudx-main">
-                  <span class="font-bold text-slate-900 block">#1411 OUTBOUND CALL 19000119</span>
-                  <span class="text-[10px] text-slate-400 font-mono">06-08-2026 11:31:59 | Closed</span>
-                </div>
-                <div class="p-2 bg-slate-50 rounded">
-                  <span class="font-bold text-slate-800 block">#1410 OUTBOUND CALL 19000119</span>
-                  <span class="text-[10px] text-slate-400 font-mono">05-08-2026 10:44:42 | Solved</span>
-                </div>
-                <div class="p-2 bg-slate-50 rounded">
-                  <span class="font-bold text-slate-800 block">#1409 OUTBOUND CALL 19000119</span>
-                  <span class="text-[10px] text-slate-400 font-mono">05-08-2026 10:18:55 | Open</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
       </main>
 
-      <!-- ================= VIEW 5: CONTACTS LIST ================= -->
+      <!-- 6. CONTACTS LIST VIEW -->
       <main id="view-contacts-list" class="hidden p-4 space-y-4 max-w-[1600px] w-full mx-auto">
         <h1 class="text-sm font-bold text-slate-800">Contacts</h1>
         <div class="bg-white rounded-xl border border-slate-200 shadow-xs overflow-hidden">
           <div class="p-3 bg-slate-50 border-b border-slate-200 flex items-center justify-between flex-wrap gap-2">
             <button class="px-3.5 py-1.5 bg-cloudx-main text-white text-xs font-semibold rounded shadow-xs">Add New ▾</button>
             <div class="flex items-center gap-2">
-              <input type="text" placeholder="Search by contact name, co..." class="px-3 py-1.5 text-xs border border-slate-300 rounded w-64">
-              <button class="px-3 py-1.5 bg-slate-100 text-slate-700 text-xs font-medium rounded border border-slate-300">Reset</button>
+              <input type="text" placeholder="Search contact..." class="px-3 py-1.5 text-xs border border-slate-300 rounded w-64">
               <button class="px-3.5 py-1.5 bg-cloudx-main text-white text-xs font-semibold rounded">Filter</button>
             </div>
           </div>
           <table class="w-full text-left border-collapse text-xs">
             <thead>
               <tr class="bg-slate-100/80 border-b border-slate-200 text-slate-600 font-bold uppercase text-[11px]">
-                <th class="py-2.5 px-3">NAME</th>
-                <th class="py-2.5 px-3">GENDER</th>
-                <th class="py-2.5 px-3">COMPANY</th>
-                <th class="py-2.5 px-3">PHONE</th>
-                <th class="py-2.5 px-3">WORK PHONE</th>
-                <th class="py-2.5 px-3">EMAIL</th>
+                <th class="py-2.5 px-3">NAME</th><th class="py-2.5 px-3">GENDER</th><th class="py-2.5 px-3">COMPANY</th><th class="py-2.5 px-3">PHONE</th>
               </tr>
             </thead>
             <tbody class="divide-y divide-slate-100 text-slate-700">
-              <tr class="hover:bg-slate-50 cursor-pointer">
-                <td class="py-2.5 px-3 font-bold text-slate-900">Unknown 0017472022766</td>
-                <td class="py-2.5 px-3 text-slate-500">Other</td>
-                <td class="py-2.5 px-3 text-slate-400">---</td>
-                <td class="py-2.5 px-3 font-mono">0017472022766</td>
-                <td class="py-2.5 px-3 text-slate-400">---</td>
-                <td class="py-2.5 px-3 text-slate-400">---</td>
-              </tr>
-              <tr class="hover:bg-slate-50 cursor-pointer">
-                <td class="py-2.5 px-3 font-bold text-slate-900">New contact 00639175811296</td>
-                <td class="py-2.5 px-3 text-slate-500">Other</td>
-                <td class="py-2.5 px-3 text-slate-400">---</td>
-                <td class="py-2.5 px-3 font-mono">00639175811296</td>
-                <td class="py-2.5 px-3 text-slate-400">---</td>
-                <td class="py-2.5 px-3 text-slate-400">---</td>
-              </tr>
               <tr class="hover:bg-slate-50 cursor-pointer">
                 <td class="py-2.5 px-3 font-bold text-slate-900">Anh Long</td>
                 <td class="py-2.5 px-3 text-slate-500">Other</td>
                 <td class="py-2.5 px-3 font-bold text-cloudx-main hover:underline" onclick="event.stopPropagation(); switchView('company-detail')">DNTG</td>
                 <td class="py-2.5 px-3 font-mono">0902993440</td>
-                <td class="py-2.5 px-3 text-slate-400">---</td>
-                <td class="py-2.5 px-3 text-slate-400">---</td>
               </tr>
             </tbody>
           </table>
-          <div class="p-3 bg-slate-50 border-t border-slate-200 text-xs text-slate-500 flex items-center justify-between">
-            <span>Showing 1 to 10 of 740 entries</span>
-            <div class="flex gap-1 font-mono text-[11px]">
-              <button class="px-2 py-0.5 border rounded">&lt;</button>
-              <button class="px-2 py-0.5 bg-cloudx-main text-white font-bold rounded">1</button>
-              <button class="px-2 py-0.5 border rounded">2</button>
-              <button class="px-2 py-0.5 border rounded">3</button>
-              <span class="px-1">...</span>
-              <button class="px-2 py-0.5 border rounded">74</button>
-              <button class="px-2 py-0.5 border rounded">&gt;</button>
-            </div>
-          </div>
         </div>
       </main>
 
-      <!-- ================= VIEW 6: COMPANY DETAIL (#DNTG) ================= -->
+      <!-- 7. COMPANY DETAIL VIEW -->
       <main id="view-company-detail" class="hidden p-4 space-y-4 max-w-[1600px] w-full mx-auto">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
           <div class="lg:col-span-4 bg-white p-5 rounded-xl border border-slate-200 shadow-xs space-y-4">
             <div class="flex items-center gap-3">
-              <div class="w-12 h-12 rounded-full bg-orange-100 text-cloudx-main flex items-center justify-center font-bold text-xl">
-                <i class="ph ph-buildings"></i>
-              </div>
-              <div>
-                <h3 class="font-extrabold text-lg text-slate-900">DNTG</h3>
-                <p class="text-xs text-slate-500 font-medium">DONGNHAT TECHNOLOGY GROUP</p>
-              </div>
+              <div class="w-12 h-12 rounded-full bg-orange-100 text-cloudx-main flex items-center justify-center font-bold text-xl"><i class="ph ph-buildings"></i></div>
+              <div><h3 class="font-extrabold text-lg text-slate-900">DNTG</h3><p class="text-xs text-slate-500 font-medium">DONGNHAT TECHNOLOGY GROUP</p></div>
             </div>
-            <div class="space-y-2 text-xs border-t border-slate-100 pt-3">
-              <div class="flex justify-between"><span class="text-slate-500">Tax Number:</span><span class="text-slate-400">--</span></div>
-              <div class="flex justify-between"><span class="text-slate-500">Industry:</span><span class="font-semibold text-slate-800">Technology</span></div>
-            </div>
-            <button class="w-full py-2 bg-cloudx-main hover:bg-cloudx-hover text-white text-xs font-bold rounded-lg transition">Edit Company</button>
-          </div>
-
-          <div class="lg:col-span-8 bg-white p-5 rounded-xl border border-slate-200 shadow-xs space-y-4">
-            <h3 class="font-bold text-xs text-slate-800 uppercase tracking-wider">CONTACT LIST</h3>
-            <table class="w-full text-left border-collapse text-xs">
-              <thead>
-                <tr class="bg-slate-50 border-b border-slate-200 text-slate-600 font-bold uppercase text-[11px]">
-                  <th class="py-2 px-3">Name</th>
-                  <th class="py-2 px-3">Gender</th>
-                  <th class="py-2 px-3">Phone</th>
-                </tr>
-              </thead>
-              <tbody class="divide-y divide-slate-100 text-slate-700">
-                <tr><td class="py-2.5 px-3 font-bold text-slate-900">Anh Long</td><td class="py-2.5 px-3 text-slate-500">Other</td><td class="py-2.5 px-3 font-mono">0902993440</td></tr>
-                <tr><td class="py-2.5 px-3 font-bold text-slate-900">PhươngTL</td><td class="py-2.5 px-3 text-slate-500">Female</td><td class="py-2.5 px-3 font-mono">0908442308</td></tr>
-              </tbody>
-            </table>
           </div>
         </div>
       </main>
 
-      <!-- ================= VIEW 7: DEDICATED AGENT CONFIGURATION (MATCHING IMAGE 23aefa.jpg) ================= -->
+      <!-- 8. AGENT CONFIG VIEW -->
       <main id="view-agent-config" class="hidden p-4 md:p-6 space-y-6 max-w-[1600px] w-full mx-auto">
-        <!-- Breadcrumbs & Page Header -->
+        <!-- Top Header & Status Toggle -->
         <div class="flex items-center justify-between flex-wrap gap-3">
           <div>
             <nav id="config-breadcrumbs" class="text-xs text-slate-500 mb-1">CloryAI Agents &gt; Service Agent Config</nav>
             <h1 id="config-page-title" class="text-xl font-bold text-slate-900">Quản lý Service Agent <span class="text-xs px-2 py-0.5 rounded bg-slate-200 font-normal">v2.4</span></h1>
           </div>
 
-          <!-- Real-Time Status Toggle Badge -->
           <div class="bg-white p-2.5 px-4 rounded-xl border border-slate-200 shadow-xs flex items-center gap-3">
             <span class="text-xs text-slate-500 font-medium">Trạng thái Agent:</span>
             <div id="status-indicator" class="flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
-              <span id="status-ping" class="w-2 h-2 rounded-full bg-emerald-500"></span>
+              <span id="status-ping" class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
               <span id="status-text">Online</span>
             </div>
             <label class="relative inline-flex items-center cursor-pointer ml-2">
@@ -1183,120 +943,392 @@
           </div>
         </div>
 
-        <!-- Section 1: Thông tin Agent -->
+        <!-- Section 1: Quản lý thông tin Agent -->
         <section class="bg-white rounded-xl border border-slate-200 p-5 shadow-xs space-y-4">
           <div class="flex items-center gap-2 border-b border-slate-100 pb-3">
             <i class="ph ph-identification-card text-cloudx-main text-lg"></i>
             <h2 class="text-sm font-bold text-slate-800">1. Quản lý thông tin Agent</h2>
           </div>
+
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label class="block text-xs font-semibold text-slate-700 mb-1">Tên Agent *</label>
-              <input type="text" id="agent-input-name" value="CloudX Service Agent #1" class="w-full text-xs px-3 py-2 rounded-lg border border-slate-300 font-medium text-slate-800">
+              <input type="text" id="agent-input-name" value="CloudX Service Agent #1" class="w-full text-xs px-3 py-2 rounded-lg border border-slate-300 font-medium text-slate-800 focus:outline-none focus:border-cloudx-main">
             </div>
             <div>
               <label class="block text-xs font-semibold text-slate-700 mb-1">Vị trí / Phân vùng làm việc</label>
-              <input type="text" id="agent-input-pos" value="Customer Support Line 1 - Tier 1 Technical" class="w-full text-xs px-3 py-2 rounded-lg border border-slate-300 text-slate-800">
+              <input type="text" id="agent-input-pos" value="Customer Support Line 1 - Tier 1 Technical" class="w-full text-xs px-3 py-2 rounded-lg border border-slate-300 text-slate-800 focus:outline-none focus:border-cloudx-main">
             </div>
             <div class="md:col-span-2">
               <label class="block text-xs font-semibold text-slate-700 mb-1">Mô tả nhiệm vụ Agent</label>
-              <textarea id="agent-input-desc" rows="2" class="w-full text-xs px-3 py-2 rounded-lg border border-slate-300 text-slate-800">Tự động trả lời câu hỏi thường gặp của khách hàng, phân loại sự cố kỹ thuật và hỗ trợ tự động tạo Ticket trên hệ thống CloudXCS Ticket System khi phát sinh hỗ trợ chuyên sâu.</textarea>
+              <textarea id="agent-input-desc" rows="3" class="w-full text-xs px-3 py-2 rounded-lg border border-slate-300 text-slate-800 font-medium focus:outline-none focus:border-cloudx-main">Tự động trả lời câu hỏi thường gặp của khách hàng, phân loại sự cố kỹ thuật và hỗ trợ tự động tạo Ticket trên hệ thống CloudXCS Ticket System khi phát sinh hỗ trợ chuyên sâu.</textarea>
             </div>
           </div>
         </section>
 
-        <!-- Section 2: Prompts & Knowledge Base Training -->
+        <!-- Section 2: Huấn luyện Agent (Prompts & Knowledge Base) -->
         <section class="bg-white rounded-xl border border-slate-200 p-5 shadow-xs space-y-5">
           <div class="flex items-center justify-between border-b border-slate-100 pb-3">
             <div class="flex items-center gap-2">
               <i class="ph ph-brain text-cloudx-main text-lg"></i>
               <h2 class="text-sm font-bold text-slate-800">2. Huấn luyện Agent (Prompts & Knowledge Base)</h2>
             </div>
-            <button onclick="insertTemplate()" class="text-xs text-cloudx-main font-bold hover:underline flex items-center gap-1">
-              <i class="ph ph-magic-wand"></i> Chèn mẫu Prompt chuẩn
+            <button onclick="insertStandardPrompt()" class="text-xs text-cloudx-main hover:text-cloudx-hover font-semibold flex items-center gap-1 hover:underline">
+              <i class="ph ph-sparkle text-amber-500"></i> Chèn mẫu Prompt chuẩn
             </button>
           </div>
 
-          <!-- Dual Prompts Grid -->
           <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
-            <div>
-              <div class="flex items-center justify-between mb-1.5">
-                <label class="text-xs font-bold text-slate-700">Prompt hiện tại (Current Prompt)</label>
-                <button onclick="copyPrompt()" class="text-[11px] text-slate-500 hover:text-slate-800 flex items-center gap-1 font-semibold">
+            <!-- Current Prompt Box -->
+            <div class="space-y-1.5">
+              <div class="flex items-center justify-between">
+                <label class="block text-xs font-bold text-slate-700">Prompt hiện tại (Current Prompt)</label>
+                <button onclick="copyPrompt()" class="text-[11px] text-slate-500 hover:text-slate-800 font-medium flex items-center gap-1">
                   <i class="ph ph-copy"></i> Copy
                 </button>
               </div>
-              <textarea id="current-prompt" readonly rows="10" class="w-full text-xs p-3 bg-slate-50 border border-slate-300 rounded-lg font-mono text-slate-800 leading-relaxed"></textarea>
+              <textarea id="current-prompt" readonly rows="10" class="w-full text-xs p-3 bg-slate-50 border border-slate-200 rounded-lg font-mono text-slate-700 leading-relaxed focus:outline-none cursor-default select-text">Bạn là CloudX Service Agent #1, trợ lý chăm sóc khách hàng tự động của hệ thống CloudXCS Ticket System.
+
+NHIỆM VỤ CHÍNH:
+1. Tiếp nhận câu hỏi và sự cố từ khách hàng qua các kênh Zalo, Facebook, Website.
+2. Tra cứu tài liệu kỹ thuật và giải đáp thắc mắc tần suất cao (FAQs).
+3. Phân loại mức độ ưu tiên sự cố (Low, Normal, High, Urgent).
+4. Khởi tạo Ticket hỗ trợ kỹ thuật và gán bộ phận chuyên trách khi quá thẩm quyền.</textarea>
             </div>
 
-            <div>
-              <div class="flex items-center justify-between mb-1.5">
-                <label class="text-xs font-bold text-slate-900">Prompt mới (New Prompt Update)</label>
-                <span class="text-[10px] text-slate-400">Nhập chỉ dẫn huấn luyện mới...</span>
-              </div>
-              <textarea id="new-prompt" rows="10" placeholder="Nhập Prompt huấn luyện mới cho AI Agent tại đây..." class="w-full text-xs p-3 border border-slate-300 rounded-lg font-mono text-slate-800 leading-relaxed focus:outline-none focus:border-cloudx-main"></textarea>
+            <!-- New Prompt Update Box -->
+            <div class="space-y-1.5">
+              <label class="block text-xs font-bold text-slate-900">Prompt mới (New Prompt Update)</label>
+              <textarea id="new-prompt" rows="10" placeholder="Nhập chỉ dẫn huấn luyện mới..." class="w-full text-xs p-3 border border-slate-300 rounded-lg font-mono text-slate-800 leading-relaxed focus:outline-none focus:border-cloudx-main">Bạn là CloudX Service Agent #1 chuyên sâu, tự động chẩn đoán lỗi Webhook/API và hỗ trợ xử lý sự cố cấp tốc.
+
+NÂNG CAO CSKH:
+1. Hướng dẫn chi tiết các bước kiểm tra Whitelist IP và API Token.
+2. Tự động gửi link khảo sát CSAT sau khi xử lý xong sự cố.
+3. Cảnh báo khẩn cấp cho Trưởng nhóm CSKH nếu phát hiện khách hàng thất vọng.</textarea>
             </div>
           </div>
 
-          <!-- Documents and URLs Knowledge Links -->
-          <div class="grid grid-cols-1 lg:grid-cols-2 gap-5 pt-2">
-            <!-- Training Files Uploads -->
-            <div class="space-y-2">
+          <!-- Section 3: Training Documents & Knowledge Base Links -->
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-5 pt-3 border-t border-slate-100">
+            <!-- Training Documents (3 Files) -->
+            <div class="space-y-3">
               <label class="block text-xs font-bold text-slate-800">Tài liệu đào tạo (3 Tệp PDF/DOCX)</label>
+              
               <div class="space-y-2 text-xs">
                 <div class="flex items-center justify-between p-2.5 bg-slate-50 border border-slate-200 rounded-lg">
-                  <div class="flex items-center gap-2 truncate">
-                    <i class="ph ph-file-pdf text-rose-500 text-base"></i>
-                    <span id="doc-file-1" class="font-medium text-slate-700 truncate">HDSD_CloudXCS_API_v2.4.pdf</span>
+                  <div class="flex items-center gap-2 overflow-hidden">
+                    <i class="ph ph-file-pdf text-rose-500 text-base flex-shrink-0"></i>
+                    <span id="doc-file-1" class="truncate text-slate-700 font-medium">HDSD_CloudXCS_API_v2.4.pdf</span>
                   </div>
-                  <span class="px-2 py-0.5 bg-emerald-50 text-emerald-700 text-[10px] font-bold rounded flex-shrink-0">Đã tải lên</span>
+                  <span class="px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 text-[10px] font-bold border border-emerald-200">Đã tải lên</span>
                 </div>
 
                 <div class="flex items-center justify-between p-2.5 bg-slate-50 border border-slate-200 rounded-lg">
-                  <div class="flex items-center gap-2 truncate">
-                    <i class="ph ph-file-doc text-blue-500 text-base"></i>
-                    <span id="doc-file-2" class="font-medium text-slate-700 truncate">Kich_Ban_Xuly_SuCo_KyThuat.docx</span>
+                  <div class="flex items-center gap-2 overflow-hidden">
+                    <i class="ph ph-file-doc text-blue-500 text-base flex-shrink-0"></i>
+                    <span id="doc-file-2" class="truncate text-slate-700 font-medium">Kich_Ban_Xuly_SuCo_KyThuat.docx</span>
                   </div>
-                  <span class="px-2 py-0.5 bg-emerald-50 text-emerald-700 text-[10px] font-bold rounded flex-shrink-0">Đã tải lên</span>
+                  <span class="px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 text-[10px] font-bold border border-emerald-200">Đã tải lên</span>
                 </div>
 
-                <div class="flex items-center justify-between p-2 bg-white border border-dashed border-slate-300 rounded-lg">
-                  <input type="text" placeholder="Thêm tài liệu thứ 3 (Tùy chọn)..." class="text-xs w-full border-none focus:outline-none text-slate-600 px-1">
-                  <button onclick="showToast('Tải tài liệu', 'Đã thêm tài liệu huấn luyện mới', 'emerald')" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 text-[10px] font-bold rounded flex-shrink-0">Tải lên</button>
+                <div class="flex items-center justify-between p-2.5 bg-slate-50 border border-dashed border-slate-300 rounded-lg">
+                  <div class="flex items-center gap-2 text-slate-400">
+                    <i class="ph ph-upload-simple text-base"></i>
+                    <span id="doc-file-3" class="italic">Thêm tài liệu thứ 3 (Tùy chọn)...</span>
+                  </div>
+                  <button onclick="showToast('Tải tài liệu', 'Đã mở trình chọn tệp tài liệu đào tạo', 'blue')" class="px-2.5 py-0.5 bg-white border border-slate-300 rounded text-[10px] text-slate-700 font-semibold hover:bg-slate-100">Tải lên</button>
                 </div>
               </div>
             </div>
 
-            <!-- Website URLs Knowledge Base -->
-            <div class="space-y-2">
+            <!-- Knowledge Base URLs (3 Links) -->
+            <div class="space-y-3">
               <label class="block text-xs font-bold text-slate-800">Liên kết tài liệu / Website (3 URL)</label>
+              
               <div class="space-y-2 text-xs">
-                <div class="flex items-center gap-2 p-2 bg-white border border-slate-200 rounded-lg">
-                  <i class="ph ph-link text-slate-400"></i>
-                  <input type="text" id="doc-url-1" value="https://docs.cloudxcs.com/api/v2/webhook-guide" class="w-full text-xs font-mono text-slate-700 border-none focus:outline-none">
+                <div class="relative">
+                  <i class="ph ph-link absolute left-3 top-2.5 text-slate-400"></i>
+                  <input type="text" id="url-link-1" value="https://docs.cloudxcs.com/api/v2/webhook-guide" class="w-full text-xs pl-8 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-lg font-mono text-slate-700">
                 </div>
-
-                <div class="flex items-center gap-2 p-2 bg-white border border-slate-200 rounded-lg">
-                  <i class="ph ph-link text-slate-400"></i>
-                  <input type="text" id="doc-url-2" value="https://cloudxcs.com/knowledgebase/sla-policy" class="w-full text-xs font-mono text-slate-700 border-none focus:outline-none">
+                <div class="relative">
+                  <i class="ph ph-link absolute left-3 top-2.5 text-slate-400"></i>
+                  <input type="text" id="url-link-2" value="https://cloudxcs.com/knowledgebase/sla-policy" class="w-full text-xs pl-8 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-lg font-mono text-slate-700">
                 </div>
-
-                <div class="flex items-center gap-2 p-2 bg-white border border-slate-200 rounded-lg">
-                  <i class="ph ph-link text-slate-400"></i>
-                  <input type="text" id="doc-url-3" value="https://danh-muc-huong-dan-3..." class="w-full text-xs font-mono text-slate-700 border-none focus:outline-none">
+                <div class="relative">
+                  <i class="ph ph-link absolute left-3 top-2.5 text-slate-400"></i>
+                  <input type="text" id="url-link-3" value="https://danh-muc-huong-dan-support..." class="w-full text-xs pl-8 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-lg font-mono text-slate-700">
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- Bottom Submit Training Footer -->
-          <div class="flex flex-wrap items-center justify-between border-t border-slate-100 pt-4 gap-3">
-            <span class="text-xs text-slate-500 italic">Kiểm tra thông tin trước khi áp dụng thay đổi cho AI Agent.</span>
-            <button onclick="submitTraining()" class="px-6 py-2.5 bg-cloudx-main hover:bg-cloudx-hover text-white text-xs font-bold rounded-lg shadow-md transition flex items-center gap-2">
-              <i class="ph ph-paper-plane-tilt"></i> Submit Training
+          <!-- Footer Action Buttons -->
+          <div class="flex items-center justify-between pt-3 border-t border-slate-100">
+            <span class="text-[11px] text-slate-400 italic">Kiểm tra thông tin trước khi áp dụng thay đổi cho AI Agent.</span>
+            <button onclick="submitTraining()" class="px-6 py-2 bg-cloudx-main hover:bg-cloudx-hover text-white text-xs font-bold rounded-lg shadow-md transition flex items-center gap-1.5">
+              <i class="ph ph-paper-plane-right-fill text-sm"></i> Submit Training
             </button>
           </div>
         </section>
+      </main>
+
+      <!-- 9. CLORYAI FLOWS VIEW -->
+      <main id="view-cloryai-flows" class="hidden p-4 md:p-6 space-y-6 max-w-[1600px] w-full mx-auto">
+        <div class="flex flex-wrap items-center justify-between gap-4 border-b border-slate-200 pb-4">
+          <div>
+            <div class="flex items-center gap-2">
+              <i class="ph ph-git-fork text-2xl text-emerald-500"></i>
+              <h1 class="text-xl font-bold text-slate-900">CloryAI Flows (Workflow Automation System)</h1>
+            </div>
+            <p class="text-xs text-slate-500 mt-1">Thiết lập quy trình tự động hóa liên kết giữa các CloryAI Agent (Sales, Service, CSAT, Growth, QA) cho doanh nghiệp.</p>
+          </div>
+
+          <button onclick="showToast('Tạo Flow', 'Mở trình dựng Flow tùy chỉnh mới', 'emerald')" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-lg shadow-sm transition flex items-center gap-1.5">
+            <i class="ph ph-plus text-sm"></i> + Tạo Flow Tùy Chỉnh
+          </button>
+        </div>
+
+        <!-- Flow Navigation Tabs -->
+        <div class="flex border-b border-slate-200 gap-6 text-xs font-bold">
+          <button id="flow-tab-builder" onclick="switchFlowTab('builder')" class="pb-2.5 border-b-2 border-emerald-500 text-emerald-600 flex items-center gap-1.5">
+            <i class="ph ph-tree-structure"></i> 1. Quy Trình Trực Quan (Flow Builder)
+          </button>
+          <button id="flow-tab-editor" onclick="switchFlowTab('editor')" class="pb-2.5 border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-1.5">
+            <i class="ph ph-note-pencil"></i> 2. Soạn Nội Dung (Zalo / Email Content)
+          </button>
+          <button id="flow-tab-logs" onclick="switchFlowTab('logs')" class="pb-2.5 border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-1.5">
+            <i class="ph ph-chart-line-up"></i> 3. Báo Cáo & Lịch Sử Hoạt Động
+          </button>
+        </div>
+
+        <!-- TAB CONTENT 1: FLOW BUILDER -->
+        <div id="flow-section-builder" class="space-y-6">
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <!-- Flow Preset Card 1: Sales Flow -->
+            <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-xs space-y-3 relative overflow-hidden">
+              <div class="flex items-center justify-between">
+                <span class="px-2 py-0.5 rounded bg-amber-100 text-amber-800 font-bold text-[10px]">CRM Sales Flow</span>
+                <label class="relative inline-flex items-center cursor-pointer">
+                  <input type="checkbox" checked onchange="toggleFlowStatus('Sales Flow', this)" class="sr-only peer">
+                  <div class="w-8 h-4 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-emerald-500"></div>
+                </label>
+              </div>
+              <h3 class="font-bold text-sm text-slate-900">1. CloryAI Sales Flow</h3>
+              <p class="text-xs text-slate-500">Tự động hóa chăm sóc khách hàng từ lúc tạo Lead ➔ Gửi khảo sát CSAT ➔ Chấm điểm QA song song.</p>
+              <div class="pt-2 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-600">
+                <span>Đã chạy: <b class="font-mono text-slate-900">1,240 lượt</b></span>
+                <span class="text-emerald-600 font-bold">Tỷ lệ thành công 99%</span>
+              </div>
+            </div>
+
+            <!-- Flow Preset Card 2: Service Flow -->
+            <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-xs space-y-3 relative overflow-hidden">
+              <div class="flex items-center justify-between">
+                <span class="px-2 py-0.5 rounded bg-sky-100 text-sky-800 font-bold text-[10px]">Support Ticket Flow</span>
+                <label class="relative inline-flex items-center cursor-pointer">
+                  <input type="checkbox" checked onchange="toggleFlowStatus('Service Flow', this)" class="sr-only peer">
+                  <div class="w-8 h-4 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-emerald-500"></div>
+                </label>
+              </div>
+              <h3 class="font-bold text-sm text-slate-900">2. CloryAI Service Flow</h3>
+              <p class="text-xs text-slate-500">Tự động phân loại hỗ trợ Ticket ➔ Đóng ticket ➔ Gửi tin nhắn khảo sát CSAT sau 1h.</p>
+              <div class="pt-2 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-600">
+                <span>Đã chạy: <b class="font-mono text-slate-900">3,890 lượt</b></span>
+                <span class="text-emerald-600 font-bold">Tỷ lệ thành công 98.4%</span>
+              </div>
+            </div>
+
+            <!-- Flow Preset Card 3: Growth Flow -->
+            <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-xs space-y-3 relative overflow-hidden border-2 border-emerald-500/40">
+              <div class="flex items-center justify-between">
+                <span class="px-2 py-0.5 rounded bg-purple-100 text-purple-800 font-bold text-[10px]">Upsell & Cross-sell</span>
+                <label class="relative inline-flex items-center cursor-pointer">
+                  <input type="checkbox" checked onchange="toggleFlowStatus('Growth Flow', this)" class="sr-only peer">
+                  <div class="w-8 h-4 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-emerald-500"></div>
+                </label>
+              </div>
+              <h3 class="font-bold text-sm text-slate-900">3. CloryAI Growth Flow 🔥</h3>
+              <p class="text-xs text-slate-500">Khảo sát CSAT sau 1h ➔ Tự động gửi gợi ý gói dịch vụ cao cấp Zalo/Email sau 24h.</p>
+              <div class="pt-2 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-600">
+                <span>Đã chạy: <b class="font-mono text-slate-900">856 lượt</b></span>
+                <span class="text-purple-600 font-bold">Chuyển đổi 15.8%</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Visual Workflow Diagram Canvas -->
+          <div class="bg-white rounded-xl border border-slate-200 p-5 shadow-xs space-y-5">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+              <div class="flex items-center gap-2">
+                <i class="ph ph-flow-arrow text-emerald-500 text-lg"></i>
+                <h3 class="font-bold text-sm text-slate-800">Sơ đồ Quy trình Chi tiết: CloryAI Growth Flow</h3>
+              </div>
+              <span class="text-xs text-slate-400">Trạng thái: <strong class="text-emerald-600">Active</strong></span>
+            </div>
+
+            <div class="space-y-4 text-xs">
+              <!-- Node 1: Trigger -->
+              <div class="flex items-center gap-4 p-3 bg-slate-50 border border-slate-200 rounded-xl">
+                <div class="w-8 h-8 rounded-lg bg-orange-500 text-white flex items-center justify-center font-bold text-xs flex-shrink-0">1</div>
+                <div class="flex-1">
+                  <span class="font-bold text-slate-900 block">Trigger Kích Hoạt Ban Đầu</span>
+                  <p class="text-slate-500">CloryAI Service Agent hỗ trợ tư vấn & Giải quyết ticket hỗ trợ thành công (Status = Solved/Closed).</p>
+                </div>
+                <span class="px-2.5 py-1 bg-white border border-slate-200 rounded text-[11px] font-mono font-semibold">Event: Ticket_Closed</span>
+              </div>
+
+              <!-- Node 2: Timer 1h + CSAT Agent -->
+              <div class="flex items-center gap-4 p-3 bg-amber-50/70 border border-amber-200 rounded-xl ml-6 border-l-4 border-l-amber-500">
+                <div class="w-8 h-8 rounded-lg bg-amber-500 text-white flex items-center justify-center font-bold text-xs flex-shrink-0">2</div>
+                <div class="flex-1">
+                  <div class="flex items-center gap-2 mb-0.5">
+                    <span class="font-bold text-slate-900">Trigger Chờ (Delay 1 giờ) ➔ CSAT Agent</span>
+                    <span class="px-2 py-0.5 bg-white text-amber-800 text-[10px] font-bold rounded border border-amber-200">Timer: 1 Hour</span>
+                  </div>
+                  <p class="text-slate-600">CloryAI CSAT Agent tự động gửi tin nhắn Zalo OA / Email khảo sát mức độ hài lòng khách hàng. Phản hồi được ghi nhận trực tiếp vào Ticket.</p>
+                </div>
+                <div class="flex flex-col items-end gap-1">
+                  <span class="text-[10px] text-purple-700 font-bold bg-purple-50 px-2 py-0.5 rounded border border-purple-200">🤖 QA Agent Bật (Chấm điểm song song)</span>
+                </div>
+              </div>
+
+              <!-- Node 3: Timer 24h + Growth Agent Upsell -->
+              <div class="flex items-center gap-4 p-3 bg-emerald-50/70 border border-emerald-200 rounded-xl ml-12 border-l-4 border-l-emerald-500">
+                <div class="w-8 h-8 rounded-lg bg-emerald-600 text-white flex items-center justify-center font-bold text-xs flex-shrink-0">3</div>
+                <div class="flex-1">
+                  <div class="flex items-center gap-2 mb-0.5">
+                    <span class="font-bold text-slate-900">Trigger Chờ (Delay 24 giờ) ➔ Growth Agent</span>
+                    <span class="px-2 py-0.5 bg-white text-emerald-800 text-[10px] font-bold rounded border border-emerald-200">Timer: 24 Hours</span>
+                  </div>
+                  <p class="text-slate-600">CloryAI Growth Agent phân tích lịch sử quan tâm, tự động gửi tin nhắn Zalo Nêu ưu đãi (kèm Link liên kết đến Zalo OA / Hotline).</p>
+                </div>
+                <button onclick="switchFlowTab('editor')" class="px-3 py-1 bg-emerald-600 text-white text-[11px] font-bold rounded hover:bg-emerald-700 transition">Sửa Mẫu Content</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB CONTENT 2: CONTENT EDITOR -->
+        <div id="flow-section-editor" class="hidden space-y-6">
+          <div class="bg-white rounded-xl border border-slate-200 p-5 shadow-xs space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+              <h3 class="font-bold text-sm text-slate-900 flex items-center gap-2">
+                <i class="ph ph-paper-plane-tilt text-cloudx-main"></i> Trình Soạn Thảo Mẫu Nối Dung Gửi Đi (Zalo / Email Template Editor)
+              </h3>
+              <div class="flex items-center gap-2">
+                <button onclick="insertVariable('{Customer_Name}')" class="px-2 py-1 bg-slate-100 hover:bg-slate-200 rounded text-[11px] font-mono text-slate-700">+ {Customer_Name}</button>
+                <button onclick="insertVariable('{Product_Interest}')" class="px-2 py-1 bg-slate-100 hover:bg-slate-200 rounded text-[11px] font-mono text-slate-700">+ {Product_Interest}</button>
+                <button onclick="insertVariable('{Zalo_OA_Link}')" class="px-2 py-1 bg-slate-100 hover:bg-slate-200 rounded text-[11px] font-mono text-slate-700">+ {Zalo_OA_Link}</button>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-5 text-xs">
+              <div class="space-y-3">
+                <div>
+                  <label class="block font-semibold text-slate-700 mb-1">Kênh gửi nội dung</label>
+                  <select class="w-full text-xs p-2 border border-slate-300 rounded-lg bg-white font-bold">
+                    <option selected>Zalo Official Account (ZNS Template)</option>
+                    <option>Email Marketing (HTML Email)</option>
+                    <option>SMS Brandname</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label class="block font-semibold text-slate-700 mb-1">Tên Mẫu Nội Dung</label>
+                  <input type="text" value="Growth Flow - ZNS Giới Thiệu Gói Nâng Cấp Enterprise" class="w-full text-xs p-2 border border-slate-300 rounded-lg font-medium">
+                </div>
+
+                <div>
+                  <label class="block font-semibold text-slate-700 mb-1">Nội dung tin nhắn mẫu (Message Template)</label>
+                  <textarea id="flow-template-text" rows="7" class="w-full text-xs p-3 border border-slate-300 rounded-lg font-mono text-slate-800 leading-relaxed">Chào {Customer_Name}! Cảm ơn bạn đã tin tưởng dịch vụ CloudXCS.
+Nhân dịp nâng cấp hệ thống, CloryAI Growth trân trọng gửi tặng bạn ưu đãi 20% khi đăng ký thêm module {Product_Interest}.
+Nhấn vào liên kết dưới đây để nhận ưu đãi hoặc liên hệ Hotline: {Zalo_OA_Link}</textarea>
+                </div>
+
+                <button onclick="saveTemplate()" class="w-full py-2.5 bg-cloudx-main hover:bg-cloudx-hover text-white font-bold rounded-lg shadow-sm transition">Lưu Mẫu Nội Dung</button>
+              </div>
+
+              <!-- Live Mobile Preview Card -->
+              <div class="bg-slate-900 text-slate-100 p-4 rounded-xl space-y-3 flex flex-col justify-between">
+                <div>
+                  <span class="text-[10px] font-bold uppercase text-emerald-400 block mb-2 tracking-wider">XEM TRƯỚC TIN NHẮN ZALO (LIVE PREVIEW)</span>
+                  <div class="bg-white text-slate-900 p-3.5 rounded-2xl space-y-2 shadow-md">
+                    <div class="flex items-center gap-2 border-b border-slate-100 pb-2">
+                      <div class="w-6 h-6 rounded-full bg-blue-600 text-white font-bold text-[10px] flex items-center justify-center">Z</div>
+                      <span class="font-bold text-xs text-slate-800">CloudX Official OA</span>
+                    </div>
+                    <p class="text-xs leading-relaxed text-slate-700">Chào <strong>A Minh (Retail Director)</strong>! Cảm ơn bạn đã tin tưởng dịch vụ CloudXCS.<br>Nhân dịp nâng cấp hệ thống, CloryAI Growth trân trọng gửi tặng bạn ưu đãi 20% khi đăng ký thêm module <strong>CloudXCS Enterprise + AI Agent</strong>.<br>Nhấn vào liên kết dưới đây để nhận ưu đãi hoặc liên hệ Hotline.</p>
+                    <button class="w-full py-2 bg-blue-600 text-white font-bold text-xs rounded-lg shadow-xs">👉 Xem Ưu Đãi Trên Zalo OA</button>
+                  </div>
+                </div>
+                <p class="text-[10px] text-slate-400 italic text-center">Nội dung sẽ tự động thay thế biến động tương ứng với dữ liệu từng khách hàng.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB CONTENT 3: LOGS & ANALYTICS -->
+        <div id="flow-section-logs" class="hidden space-y-6">
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center text-xs">
+            <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-xs">
+              <span class="text-slate-500 font-bold block">Tổng lượt Flow thực thi</span>
+              <span class="text-2xl font-extrabold text-slate-900 font-mono mt-1">5,986</span>
+            </div>
+            <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-xs">
+              <span class="text-slate-500 font-bold block">Tỷ lệ chạy thành công</span>
+              <span class="text-2xl font-extrabold text-emerald-600 font-mono mt-1">98.8%</span>
+            </div>
+            <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-xs">
+              <span class="text-slate-500 font-bold block">Phản hồi Khảo sát CSAT</span>
+              <span class="text-2xl font-extrabold text-sky-600 font-mono mt-1">42.5%</span>
+            </div>
+            <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-xs">
+              <span class="text-slate-500 font-bold block">Tỷ lệ Click Growth Link</span>
+              <span class="text-2xl font-extrabold text-purple-600 font-mono mt-1">15.8%</span>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-xl border border-slate-200 shadow-xs overflow-hidden">
+            <div class="p-3.5 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
+              <h3 class="text-xs font-bold text-slate-800 uppercase">Nhật Ký Thực Thi Quy Trình Thời Gian Thực (Flow Execution Log)</h3>
+              <button onclick="showToast('Xuất Báo Cáo', 'Đã xuất file log thực thi Flow ra CSV', 'emerald')" class="px-3 py-1 bg-white border border-slate-300 text-slate-700 text-xs font-medium rounded flex items-center gap-1">
+                <i class="ph ph-download-simple"></i> Export Log CSV
+              </button>
+            </div>
+            <div class="overflow-x-auto">
+              <table class="w-full text-left border-collapse text-xs">
+                <thead>
+                  <tr class="bg-slate-100/80 border-b border-slate-200 text-slate-600 font-bold uppercase text-[10px]">
+                    <th class="py-2.5 px-3">Log ID & Thời gian</th>
+                    <th class="py-2.5 px-3">Tên Quy Trình</th>
+                    <th class="py-2.5 px-3">Khách Hàng Kích Hoạt</th>
+                    <th class="py-2.5 px-3">Bước Hiện Tại (Node Step)</th>
+                    <th class="py-2.5 px-3 text-center">Điểm QA Song Song</th>
+                    <th class="py-2.5 px-3 text-center">Trạng Thái</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100 text-slate-700 font-medium">
+                  <tr>
+                    <td class="py-2.5 px-3 font-mono text-[11px]">#FL-9942 <span class="text-slate-400">| 10:45 AM</span></td>
+                    <td class="py-2.5 px-3 font-bold text-purple-700">3. CloryAI Growth Flow</td>
+                    <td class="py-2.5 px-3">A Minh (0913 xxxxxx)</td>
+                    <td class="py-2.5 px-3">Growth Agent - Đã gửi Zalo ưu đãi <span class="text-emerald-600 font-bold">(Clicked Link)</span></td>
+                    <td class="py-2.5 px-3 text-center font-mono font-bold text-sky-600">92/100</td>
+                    <td class="py-2.5 px-3 text-center"><span class="px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 font-bold text-[10px]">Completed</span></td>
+                  </tr>
+                  <tr>
+                    <td class="py-2.5 px-3 font-mono text-[11px]">#FL-9941 <span class="text-slate-400">| 09:30 AM</span></td>
+                    <td class="py-2.5 px-3 font-bold text-sky-700">2. CloryAI Service Flow</td>
+                    <td class="py-2.5 px-3">Khách Hàng #19000119</td>
+                    <td class="py-2.5 px-3">CSAT Agent - Đang chờ khảo sát (Timer 1h)</td>
+                    <td class="py-2.5 px-3 text-center font-mono font-bold text-amber-600">85/100</td>
+                    <td class="py-2.5 px-3 text-center"><span class="px-2 py-0.5 rounded bg-amber-50 text-amber-700 font-bold text-[10px]">Waiting Delay</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
       </main>
 
     </div>
@@ -1313,21 +1345,29 @@
     </div>
   </div>
 
+  <!-- JAVASCRIPT APPLICATION LOGIC -->
   <script>
-    // Detailed Configuration Data for All 3 CloryAI Agents
     const agentsData = {
       sales: {
         key: 'sales',
         name: "CloudX Sales Agent #1",
         position: "Inbound Sales & Lead Qualification - Tier 1",
-        desc: "Tự động tư vấn dịch vụ, báo giá gói giải pháp CloudXCS, thu thập nhu cầu khách hàng tiềm năng và tự động khởi tạo Lead / Ticket cho phòng Kinh doanh.",
-        currentPrompt: "Bạn là CloudX Sales Agent #1, đại diện tư vấn bán hàng tự động của CloudXCS.\n\nNHIỆM VỤ CHÍNH:\n1. Tiếp cận và giới thiệu các gói tính năng Ticket System phù hợp cho quy mô doanh nghiệp.\n2. Thu thập nhu cầu của khách hàng: Số lượng nhân sự hỗ trợ, kênh tiếp nhận (Phone/Zalo/Web), ngân sách dự kiến.\n3. Báo giá sơ bộ và hẹn lịch Demo trực tiếp với Chuyên viên Kinh doanh.\n4. Tạo Lead/Ticket kinh doanh mới trên CloudXCS.",
-        newPrompt: "Bạn là CloudX Sales Agent #1 chuyên sâu, hỗ trợ chốt hợp đồng và đề xuất ưu đãi tự động.\n\nNÂNG CAO TƯ VẤN SALES:\n1. Tự động so sánh bảng giá các gói CloudXCS Standard vs Enterprise.\n2. Đề xuất chương trình khuyến mãi tháng và miễn phí trải nghiệm AI Service Agent trong 14 ngày.\n3. Chuyển giao thông tin khách hàng VIP ngay lập tức cho Trưởng phòng Kinh doanh.",
-        file1: "Bảng_Gia_CloudXCS_Enterprise_2026.pdf",
-        file2: "Kich_Ban_Chot_Sale_Truc_Tuyen.docx",
-        url1: "https://docs.cloudxcs.com/sales/pricing-matrix",
-        url2: "https://cloudxcs.com/knowledgebase/enterprise-features",
-        url3: "https://cloudxcs.com/demo-booking-schedule",
+        desc: "Tự động tư vấn dịch vụ, báo giá gói giải pháp CloudXCS, thu thập nhu cầu khách hàng tiềm năng qua Zalo/FB/Tele và tự động khởi tạo Lead / Ticket cho phòng Kinh doanh.",
+        currentPrompt: `Bạn là CloudX Sales Agent #1, đại diện tư vấn bán hàng tự động của CloudXCS.
+
+NHIỆM VỤ CHÍNH:
+1. Tiếp cận và giới thiệu các gói tính năng Ticket System phù hợp cho quy mô doanh nghiệp.
+2. Thu thập nhu cầu của khách hàng: Số lượng nhân sự hỗ trợ, kênh tiếp nhận (Phone/Zalo/Web), ngân sách dự kiến.
+3. Báo giá sơ bộ và hẹn lịch Demo trực tiếp với Chuyên viên Kinh doanh.
+4. Tạo Lead/Ticket kinh doanh mới trên CloudXCS.`,
+        newPrompt: `Bạn là CloudX Sales Agent #1 chuyên sâu, hỗ trợ chốt hợp đồng và đề xuất ưu đãi tự động.
+
+NÂNG CAO TƯ VẤN SALES:
+1. Tự động so sánh bảng giá các gói CloudXCS Standard vs Enterprise.
+2. Đề xuất chương trình khuyến mãi tháng và miễn phí trải nghiệm AI Service Agent trong 14 ngày.
+3. Chuyển giao thông tin khách hàng VIP ngay lập tức cho Trưởng phòng Kinh doanh.`,
+        docs: ["HDSD_CloudXCS_Sales_v2.4.pdf", "Kich_Ban_Tu_Van_Bao_Gia.docx", "Thêm tài liệu thứ 3 (Tùy chọn)..."],
+        urls: ["https://docs.cloudxcs.com/api/v2/sales-pricing", "https://cloudxcs.com/knowledgebase/sales-policy", "https://danh-muc-huong-dan-sales..."],
         status: "online"
       },
       service: {
@@ -1335,60 +1375,112 @@
         name: "CloudX Service Agent #1",
         position: "Customer Support Line 1 - Tier 1 Technical",
         desc: "Tự động trả lời câu hỏi thường gặp của khách hàng, phân loại sự cố kỹ thuật và hỗ trợ tự động tạo Ticket trên hệ thống CloudXCS Ticket System khi phát sinh hỗ trợ chuyên sâu.",
-        currentPrompt: "Bạn là CloudX Service Agent #1, trợ lý chăm sóc khách hàng tự động của hệ thống CloudXCS Ticket System.\n\nNHIỆM VỤ CHÍNH:\n1. Giải đáp các thắc mắc kỹ thuật phổ biến từ người dùng.\n2. Phân loại mức độ ưu tiên sự cố (Urgent/High/Low) dựa trên mô tả của khách hàng.\n3. Tự động khởi tạo Ticket hỗ trợ kỹ thuật khi vượt ngoài khả năng giải quyết trực tiếp.",
-        newPrompt: "Bạn là CloudX Service Agent #1, chuyên viên tư vấn và tự động phân loại Ticket cho hệ thống CloudXCS.\n\nHƯỚNG DẪN BỔ SUNG:\n1. Tự động tra cứu log sự cố kết nối API Callback/Webhook.\n2. Hướng dẫn khách hàng tự Whitelist IP máy chủ trên portal quản trị.",
-        file1: "HDSD_CloudXCS_API_v2.4.pdf",
-        file2: "Kich_Ban_Xuly_SuCo_KyThuat.docx",
-        url1: "https://docs.cloudxcs.com/api/v2/webhook-guide",
-        url2: "https://cloudxcs.com/knowledgebase/sla-policy",
-        url3: "https://danh-muc-huong-dan-3...",
+        currentPrompt: `Bạn là CloudX Service Agent #1, trợ lý chăm sóc khách hàng tự động của hệ thống CloudXCS Ticket System.
+
+NHIỆM VỤ CHÍNH:
+1. Tiếp nhận câu hỏi và sự cố từ khách hàng qua các kênh Zalo, Facebook, Website.
+2. Tra cứu tài liệu kỹ thuật và giải đáp thắc mắc tần suất cao (FAQs).
+3. Phân loại mức độ ưu tiên sự cố (Low, Normal, High, Urgent).
+4. Khởi tạo Ticket hỗ trợ kỹ thuật và gán bộ phận chuyên trách khi quá thẩm quyền.`,
+        newPrompt: `Bạn là CloudX Service Agent #1 chuyên sâu, tự động chẩn đoán lỗi Webhook/API và hỗ trợ xử lý sự cố cấp tốc.
+
+NÂNG CAO CSKH:
+1. Hướng dẫn chi tiết các bước kiểm tra Whitelist IP và API Token.
+2. Tự động gửi link khảo sát CSAT sau khi xử lý xong sự cố.
+3. Cảnh báo khẩn cấp cho Trưởng nhóm CSKH nếu phát hiện khách hàng thất vọng.`,
+        docs: ["HDSD_CloudXCS_API_v2.4.pdf", "Kich_Ban_Xuly_SuCo_KyThuat.docx", "Thêm tài liệu thứ 3 (Tùy chọn)..."],
+        urls: ["https://docs.cloudxcs.com/api/v2/webhook-guide", "https://cloudxcs.com/knowledgebase/sla-policy", "https://danh-muc-huong-dan-support..."],
         status: "online"
       },
       qa: {
         key: 'qa',
         name: "CloudX QA Agent #1",
         position: "Quality Assurance & Evaluation Support",
-        desc: "Tự động chấm điểm cuộc gọi, đánh giá mức độ tuân thủ quy trình giao tiếp CSKH và phân tích cảm xúc (Sentiment Analysis) của khách hàng.",
-        currentPrompt: "Bạn là CloudX QA Agent #1, chuyên viên kiểm định chất lượng cuộc gọi tự động.\n\nTIÊU CHÍ CHẤM ĐIỂM:\n1. Lời chào tiêu chuẩn (10 điểm).\n2. Khai thác đúng trọng tâm sự cố (30 điểm).\n3. Đưa ra giải pháp chính xác (40 điểm).\n4. Thái độ lịch sự, chuyên nghiệp (20 điểm).",
-        newPrompt: "Bạn là CloudX QA Agent #1 chuyên sâu, tự động chấm điểm và lập báo cáo xu hướng Sentiment.\n\nBỔ SUNG QUY TRÌNH QA:\n1. Cảnh báo lập tức tới Trưởng phòng khi có cuộc gọi Critical Fail (điểm < 60).\n2. Tổng hợp các lỗi giao tiếp phổ biến để đưa vào tài liệu Huấn luyện Đào tạo định kỳ.",
-        file1: "Quy_Chuan_Danh_Gia_Cuoc_Goi_QA.pdf",
-        file2: "Tieu_Chuan_Giao_Tiep_Khach_Hang.docx",
-        url1: "https://docs.cloudxcs.com/qa/evaluation-criteria",
-        url2: "https://cloudxcs.com/qa/sentiment-metrics",
-        url3: "https://cloudxcs.com/coaching-reports-2026",
+        desc: "Tự động chấm điểm cuộc gọi & cuộc hội thoại Chat đa kênh, đánh giá mức độ tuân thủ quy trình giao tiếp CSKH.",
+        currentPrompt: `Bạn là CloudX QA Agent #1, chuyên viên kiểm định chất lượng cuộc gọi tự động.
+
+NHIỆM VỤ CHÍNH:
+1. Phân tích văn bản ghi âm (Speech-To-Text) và lịch sử chat đa kênh.
+2. Chấm điểm tuân thủ 5 tiêu chí CSKH: Chào hỏi, Khai thác nhu cầu, Giải pháp, Thái độ, Lời chào kết.
+3. Phát hiện lỗi vi phạm Critical Fails (Thái độ thô lỗ, sai chính sách).`,
+        newPrompt: `Bạn là CloudX QA Agent #1 chuyên sâu, tự động chấm điểm và lập báo cáo xu hướng Sentiment khách hàng.
+
+NÂNG CAO CHẤM ĐIỂM:
+1. Tổng hợp điểm trung bình 30 ngày cho từng nhân viên CSKH.
+2. Đề xuất danh sách Agent cần Coaching bổ sung.
+3. Phân tích sắc thái cảm xúc (Sentiment) theo thời gian thực.`,
+        docs: ["Tieu_Chuan_Cham_Diem_QA_2026.pdf", "Quy_Trinh_Dao_Tao_CSKH.docx", "Thêm tài liệu thứ 3 (Tùy chọn)..."],
+        urls: ["https://docs.cloudxcs.com/qa/standard-2026", "https://cloudxcs.com/knowledgebase/qa-rubric", "https://danh-muc-huong-dan-qa..."],
         status: "online"
       }
     };
 
     let activeAgentKey = 'service';
 
-    function switchAgent(agentKey) {
-      activeAgentKey = agentKey;
-      const data = agentsData[agentKey];
-      if (!data) return;
-      
-      document.getElementById('agent-input-name').value = data.name;
-      document.getElementById('agent-input-pos').value = data.position;
-      document.getElementById('agent-input-desc').value = data.desc;
-      document.getElementById('current-prompt').value = data.currentPrompt;
-      document.getElementById('new-prompt').value = data.newPrompt;
-      
-      document.getElementById('doc-file-1').innerText = data.file1;
-      document.getElementById('doc-file-2').innerText = data.file2;
-      document.getElementById('doc-url-1').value = data.url1;
-      document.getElementById('doc-url-2').value = data.url2;
-      document.getElementById('doc-url-3').value = data.url3;
+    function switchView(viewName) {
+      const views = [
+        'dashboard',
+        'live-chat',
+        'report',
+        'leads-list',
+        'lead-detail',
+        'ticket-list',
+        'ticket-detail',
+        'contacts-list',
+        'company-detail',
+        'agent-config',
+        'cloryai-flows'
+      ];
 
-      document.getElementById('config-breadcrumbs').innerText = `CloryAI Agents > ${data.name.split(' ')[1]} Agent Config`;
-      document.getElementById('config-page-title').innerHTML = `Quản lý ${data.name.split(' ')[1]} Agent <span class="text-xs px-2 py-0.5 rounded bg-slate-200 font-normal">v2.4</span>`;
-      document.getElementById('tab-agent-name-title').innerText = `${data.name.split(' ')[1]} Agent`;
+      views.forEach(v => {
+        const viewEl = document.getElementById(`view-${v}`);
+        const tabEl = document.getElementById(`tab-${v}`);
 
-      const toggle = document.getElementById('status-toggle');
-      if (toggle) toggle.checked = (data.status === 'online');
-      updateStatusUI(data.status === 'online');
+        if (v === viewName) {
+          if (viewEl) viewEl.classList.remove('hidden');
+          if (tabEl) {
+            tabEl.classList.remove('hidden');
+            tabEl.classList.add('flex', 'bg-orange-50', 'text-cloudx-main', 'border', 'border-orange-200', 'font-semibold');
+          }
+        } else {
+          if (viewEl) viewEl.classList.add('hidden');
+          if (tabEl) {
+            if (v === 'dashboard') {
+              tabEl.classList.remove('bg-orange-50', 'text-cloudx-main', 'border', 'border-orange-200', 'font-semibold');
+              tabEl.classList.add('bg-slate-100', 'text-slate-700');
+            } else {
+              tabEl.classList.add('hidden');
+            }
+          }
+        }
+      });
 
-      switchView('agent-config');
-      showToast("Cấu hình Agent", `Đã mở trang quản lý ${data.name}`, "blue");
+      // Update active navigation state on sidebar buttons
+      const navMap = {
+        'dashboard': 'nav-dashboard',
+        'live-chat': 'nav-live-chat',
+        'report': 'nav-report',
+        'leads-list': 'nav-leads-list',
+        'ticket-list': 'nav-ticket-list',
+        'contacts-list': 'nav-contacts-list',
+        'company-detail': 'nav-company-detail',
+        'cloryai-flows': 'nav-cloryai-flows'
+      };
+
+      Object.keys(navMap).forEach(key => {
+        const navBtn = document.getElementById(navMap[key]);
+        if (navBtn) {
+          if (key === viewName) {
+            navBtn.classList.add('bg-slate-800/80', 'text-white', 'font-semibold');
+            navBtn.classList.remove('text-slate-400');
+          } else {
+            navBtn.classList.remove('bg-slate-800/80', 'text-white', 'font-semibold');
+            navBtn.classList.add('text-slate-400');
+          }
+        }
+      });
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     function switchDashboard(type) {
@@ -1413,30 +1505,172 @@
       }
     }
 
-    function switchView(viewName) {
-      const views = ['dashboard', 'report', 'leads-list', 'lead-detail', 'ticket-list', 'ticket-detail', 'contacts-list', 'company-detail', 'agent-config'];
+    function switchAgent(agentKey) {
+      activeAgentKey = agentKey;
+      const data = agentsData[agentKey];
+      if (!data) return;
       
-      views.forEach(v => {
-        const viewEl = document.getElementById(`view-${v}`);
-        const tabEl = document.getElementById(`tab-${v}`);
+      const inputName = document.getElementById('agent-input-name');
+      const inputPos = document.getElementById('agent-input-pos');
+      const inputDesc = document.getElementById('agent-input-desc');
+      const currentPrompt = document.getElementById('current-prompt');
+      const newPrompt = document.getElementById('new-prompt');
 
-        if (v === viewName) {
-          if (viewEl) viewEl.classList.remove('hidden');
-          if (tabEl) {
-            tabEl.classList.remove('hidden');
-            tabEl.classList.add('flex', 'bg-orange-50', 'text-cloudx-main', 'border', 'border-orange-200', 'font-semibold');
-          }
+      if (inputName) inputName.value = data.name;
+      if (inputPos) inputPos.value = data.position;
+      if (inputDesc) inputDesc.value = data.desc;
+      if (currentPrompt) currentPrompt.value = data.currentPrompt;
+      if (newPrompt) newPrompt.value = data.newPrompt;
+
+      // Update documents & URLs
+      if (data.docs) {
+        if (document.getElementById('doc-file-1')) document.getElementById('doc-file-1').innerText = data.docs[0] || 'Tệp tài liệu 1';
+        if (document.getElementById('doc-file-2')) document.getElementById('doc-file-2').innerText = data.docs[1] || 'Tệp tài liệu 2';
+        if (document.getElementById('doc-file-3')) document.getElementById('doc-file-3').innerText = data.docs[2] || 'Thêm tài liệu thứ 3 (Tùy chọn)...';
+      }
+
+      if (data.urls) {
+        if (document.getElementById('url-link-1')) document.getElementById('url-link-1').value = data.urls[0] || '';
+        if (document.getElementById('url-link-2')) document.getElementById('url-link-2').value = data.urls[1] || '';
+        if (document.getElementById('url-link-3')) document.getElementById('url-link-3').value = data.urls[2] || '';
+      }
+      
+      const breadcrumbs = document.getElementById('config-breadcrumbs');
+      if (breadcrumbs) breadcrumbs.innerText = `CloryAI Agents > ${data.name.split(' ')[1]} Agent Config`;
+
+      const pageTitle = document.getElementById('config-page-title');
+      if (pageTitle) pageTitle.innerHTML = `Quản lý ${data.name.split(' ')[1]} Agent <span class="text-xs px-2 py-0.5 rounded bg-slate-200 font-normal">v2.4</span>`;
+
+      const tabTitle = document.getElementById('tab-agent-name-title');
+      if (tabTitle) tabTitle.innerText = `${data.name.split(' ')[1]} Agent Config`;
+
+      const toggle = document.getElementById('status-toggle');
+      if (toggle) toggle.checked = (data.status === 'online');
+      updateStatusUI(data.status === 'online');
+
+      switchView('agent-config');
+      showToast("Cấu hình Agent", `Đã tải trang quản lý ${data.name}`, "blue");
+    }
+
+    function insertStandardPrompt() {
+      const data = agentsData[activeAgentKey];
+      const newPromptField = document.getElementById('new-prompt');
+      if (data && newPromptField) {
+        newPromptField.value = data.newPrompt;
+        showToast("Mẫu Prompt chuẩn", `Đã chèn mẫu Prompt chuẩn cho ${data.name}`, "emerald");
+      }
+    }
+
+    function copyPrompt() {
+      const currentPromptField = document.getElementById('current-prompt');
+      if (currentPromptField) {
+        currentPromptField.select();
+        document.execCommand('copy');
+        showToast("Copy Prompt", "Đã sao chép Prompt hiện tại vào bộ nhớ tạm", "blue");
+      }
+    }
+
+    function submitTraining() {
+      const data = agentsData[activeAgentKey];
+      const newPromptVal = document.getElementById('new-prompt').value.trim();
+      const currentPromptField = document.getElementById('current-prompt');
+
+      if (data && newPromptVal) {
+        data.currentPrompt = newPromptVal;
+        if (currentPromptField) currentPromptField.value = newPromptVal;
+        showToast("Huấn luyện AI thành công", `Đã cập nhật bộ Prompt & Knowledge Base mới cho ${data.name}`, "emerald");
+      } else {
+        showToast("Lỗi huấn luyện", "Vui lòng nhập nội dung chỉ dẫn huấn luyện mới", "rose");
+      }
+    }
+
+    function switchFlowTab(tabKey) {
+      const tabs = ['builder', 'editor', 'logs'];
+      tabs.forEach(t => {
+        const btn = document.getElementById(`flow-tab-${t}`);
+        const sec = document.getElementById(`flow-section-${t}`);
+        if (t === tabKey) {
+          if (btn) btn.className = "pb-2.5 border-b-2 border-emerald-500 text-emerald-600 flex items-center gap-1.5 font-bold";
+          if (sec) sec.classList.remove('hidden');
         } else {
-          if (viewEl) viewEl.classList.add('hidden');
-          if (tabEl && !['dashboard'].includes(v)) {
-            tabEl.classList.add('hidden');
-          } else if (tabEl) {
-            tabEl.classList.remove('bg-orange-50', 'text-cloudx-main', 'border', 'border-orange-200', 'font-semibold');
-            tabEl.classList.add('bg-slate-100', 'text-slate-700');
-          }
+          if (btn) btn.className = "pb-2.5 border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-1.5 font-medium";
+          if (sec) sec.classList.add('hidden');
         }
       });
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function toggleFlowStatus(flowName, checkbox) {
+      const active = checkbox.checked;
+      showToast("Cập nhật Flow", `Đã ${active ? 'kích hoạt' : 'tạm dừng'} quy trình ${flowName}`, active ? "emerald" : "slate");
+    }
+
+    function insertVariable(varName) {
+      const area = document.getElementById('flow-template-text');
+      if (area) {
+        area.value += varName;
+        showToast("Chèn Biến Động", `Đã chèn biến ${varName} vào mẫu nội dung`, "blue");
+      }
+    }
+
+    function saveTemplate() {
+      showToast("Lưu Mẫu Tin Nhắn", "Đã cập nhật mẫu ZNS gửi tự động cho Growth Flow", "emerald");
+    }
+
+    function selectConversation(chatId) {
+      document.querySelectorAll('[id^="chat-item-"]').forEach(el => {
+        el.classList.remove('bg-orange-50/60', 'border-l-4', 'border-cloudx-main');
+      });
+      const activeItem = document.getElementById(chatId.replace('chat-', 'chat-item-'));
+      if (activeItem) {
+        activeItem.classList.add('bg-orange-50/60', 'border-l-4', 'border-cloudx-main');
+      }
+      showToast("Hội thoại Zalo OA", "Đã chọn tin nhắn của A Minh (Retail Director)", "blue");
+    }
+
+    function sendChatMessage() {
+      const field = document.getElementById('chat-input-field');
+      const box = document.getElementById('chat-messages-box');
+      if (!field || !field.value.trim() || !box) return;
+
+      const val = field.value.trim();
+      const msgDiv = document.createElement('div');
+      msgDiv.className = "flex items-start gap-2 max-w-[85%] ml-auto flex-row-reverse";
+      msgDiv.innerHTML = `
+        <div class="w-7 h-7 rounded-full bg-slate-800 text-white flex items-center justify-center font-bold text-[10px] flex-shrink-0">TN</div>
+        <div class="bg-slate-900 text-white p-3 rounded-2xl rounded-tr-none shadow-xs space-y-1">
+          <span class="text-[10px] font-bold text-slate-400 block">Agent Nam (Phản hồi trực tiếp)</span>
+          <p class="text-slate-100">${val}</p>
+          <span class="text-[9px] text-slate-400 font-mono block text-right">Mới đây</span>
+        </div>
+      `;
+      box.appendChild(msgDiv);
+      box.scrollTop = box.scrollHeight;
+      field.value = '';
+      showToast("Tin nhắn Zalo", "Đã gửi phản hồi thành công qua Zalo OA", "emerald");
+    }
+
+    function useAiSuggestion(idx) {
+      const field = document.getElementById('chat-input-field');
+      if (!field) return;
+      if (idx === 1) {
+        field.value = "Dạ chào anh Minh! Em gửi anh báo giá sơ bộ gói Enterprise $15,000/năm bao gồm đầy đủ tích hợp Zalo, Facebook, Telegram và CloryAI Agents ạ.";
+      } else {
+        field.value = "Em xin phép đặt lịch làm việc Demo giải pháp cùng Trưởng phòng Kinh doanh bên em vào lúc 10:00 AM Thứ 2 nhé anh!";
+      }
+    }
+
+    function convertChatToLead() {
+      switchView('lead-detail');
+      showToast("Tạo Lead thành công", "Đã tự động trích xuất thông tin chat Zalo sang Cơ Hội Bán Hàng #1328", "emerald");
+    }
+
+    function convertChatToTicket() {
+      switchView('ticket-detail');
+      showToast("Tạo Ticket thành công", "Đã chuyển đoạn chat Zalo thành Ticket Hỗ Trợ Kỹ Thuật #1411", "emerald");
+    }
+
+    function filterChatChannel(channel) {
+      showToast("Lọc kênh Chat", `Đã lọc danh sách hội thoại theo kênh: ${channel.toUpperCase()}`, "blue");
     }
 
     function handleStatusToggle(checkbox) {
@@ -1496,36 +1730,6 @@
         viBtn.className = "px-2 py-0.5 rounded-full font-medium text-slate-500 hover:text-slate-800";
         showToast("Language", "Switched to English", "blue");
       }
-    }
-
-    function insertTemplate() {
-      const newPromptEl = document.getElementById('new-prompt');
-      if (newPromptEl) {
-        newPromptEl.value = `[BẢN MẪU CHUẨN CLORYAI]
-Bạn là ${agentsData[activeAgentKey].name}.
-- Luôn giữ thái độ chuyên nghiệp, thân thiện.
-- Trả lời ngắn gọn, đi thẳng vào vấn đề.
-- Khởi tạo Ticket / Lead tự động khi nhận thông tin đầy đủ.`;
-        showToast("Chèn Mẫu Prompt", "Đã chèn mẫu Prompt chỉ dẫn chuẩn", "emerald");
-      }
-    }
-
-    function copyPrompt() {
-      const currentPromptEl = document.getElementById('current-prompt');
-      if (currentPromptEl) {
-        const text = currentPromptEl.value;
-        const input = document.createElement('textarea');
-        input.value = text;
-        document.body.appendChild(input);
-        input.select();
-        document.execCommand('copy');
-        document.body.removeChild(input);
-        showToast("Sao Chép", "Đã chép nội dung Current Prompt vào Clipboard", "emerald");
-      }
-    }
-
-    function submitTraining() {
-      showToast("Huấn Luyện Thành Công!", `Agent ${agentsData[activeAgentKey].name} đã tiếp nhận prompt mới.`, "emerald");
     }
 
     function toggleSubmenu() {
